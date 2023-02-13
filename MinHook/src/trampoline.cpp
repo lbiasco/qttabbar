@@ -28,7 +28,8 @@
 
 #include <cassert>
 #include <vector>
-#include "pstdint.h"
+#include <stdint.h>
+//#include "pstdint.h"
 
 #if defined _M_X64
 #include "hde64/include/hde64.h"
