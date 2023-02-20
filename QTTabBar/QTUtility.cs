@@ -1080,13 +1080,6 @@ namespace QTTabBarLib {
             switch (Config.Lang.BuiltInLangSelectedIndex)
             {
                 case 0: keyValuePairs = Resources_String.ResourceManager.GetResourceStrings(); break;
-                case 1: keyValuePairs = Resource_String_zh_CN.ResourceManager.GetResourceStrings(); break;
-                case 2: keyValuePairs = Resources_String_de_DE.ResourceManager.GetResourceStrings(); break;
-                case 3: keyValuePairs = Resources_String_pt_BR.ResourceManager.GetResourceStrings(); break;
-                case 4: keyValuePairs = Resources_String_es_ES.ResourceManager.GetResourceStrings(); break;
-                case 5: keyValuePairs = Resources_String_fr_FR.ResourceManager.GetResourceStrings(); break;
-                case 6: keyValuePairs = Resources_String_tr_TR.ResourceManager.GetResourceStrings(); break;
-                case 7: keyValuePairs = Resources_String_ru_RU.ResourceManager.GetResourceStrings(); break;
             }
 
             // 如果加载为空， 则读取默认的应用语言

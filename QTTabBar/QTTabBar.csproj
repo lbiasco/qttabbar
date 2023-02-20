@@ -339,13 +339,6 @@
     <Compile Include="RegistryUtil.cs" />
     <Compile Include="Resources_Image.cs" />
     <Compile Include="Resources_String.cs" />
-    <Compile Include="Resources_String_de_DE.cs" />
-    <Compile Include="Resources_String_es_ES.cs" />
-    <Compile Include="Resources_String_fr_FR.cs" />
-    <Compile Include="Resources_String_pt_BR.cs" />
-    <Compile Include="Resources_String_ru_RU.cs" />
-    <Compile Include="Resources_String_tr_TR.cs" />
-    <Compile Include="Resource_String_zh_CN.cs" />
     <Compile Include="SFGAO.cs" />
     <Compile Include="ShellColors.cs" />
     <Compile Include="ShellContextMenu.cs" />
@@ -570,30 +563,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources_String.resx">
       <DependentUpon>Resources_String.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources_String_de_DE.resx">
-      <DependentUpon>Resources_String_de_DE.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources_String_es_ES.resx">
-      <DependentUpon>Resources_String_es_ES.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources_String_fr_FR.resx">
-      <DependentUpon>Resources_String_fr_FR.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources_String_pt_BR.resx">
-      <DependentUpon>Resources_String_pt_BR.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources_String_ru_RU.resx">
-      <DependentUpon>Resources_String_ru_RU.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources_String_tr_TR.resx">
-      <DependentUpon>Resources_String_tr_TR.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resource_String_zh_CN.resx">
-      <DependentUpon>Resource_String_zh_CN.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

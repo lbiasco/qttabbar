@@ -7,6 +7,6 @@ for /f "delims=" %%i in ('dir /ad /b' ) do @if exist "%CD%\%%i\obj" @rmdir /s /q
 del  /f /s /q *.plg
 del /f /s /q *.aps
 del /f /s /q *.cache
-::del /f /s /q *.dll
+del /f /s /q Plugins\**.dll
 
 pause
