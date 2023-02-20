@@ -48,7 +48,7 @@ namespace QTTabBarLib {
             WorkingConfig.skin.SkinAutoColorChangeClose = false;
             Config.Skin.SkinAutoColorChangeClose = false;
             QTUtility2.log("reset SwitchNighMode");
-            WorkingConfig.skin.SwitchNighMode( QTUtility.getNightMode() );
+            WorkingConfig.skin.SwitchNightMode( QTUtility.getNightMode() );
             DataContext = WorkingConfig.skin;
         }
 
@@ -106,32 +106,6 @@ namespace QTTabBarLib {
                 ((Button)sender).Tag = cd.Color;
             }
         }
-		
-
-        private void btnImportSkin_Click(object sender, RoutedEventArgs e)
-        {
-            // 导入皮肤.
-            System.Windows.MessageBox.Show("双击注册表可以直接导入");
-        }
-
-        private void btnExportSkin_Click(object sender, RoutedEventArgs e)
-        {
-            // 导出皮肤.
-            using (System.Windows.Forms.SaveFileDialog sf = new System.Windows.Forms.SaveFileDialog())
-            {
-                sf.Filter = "Registry file (*.reg)|*.reg";
-                sf.RestoreDirectory = true;
-                System.DateTime dt = System.DateTime.Now;
-                sf.FileName = "QTTabBarSettingsSkin-" + dt.Year + "-" + dt.Month + "-" + dt.Day + ".reg";
-                if (System.Windows.Forms.DialogResult.OK == sf.ShowDialog())
-                {
-                    RegFileWriter.Export(RegConst.Root_Config_Skin, sf.FileName);
-                }
-            }
-        }
-
-
-
 
         // Draws a control to a bitmap
         private static BitmapSource ConvertToBitmapSource(UIElement element) {

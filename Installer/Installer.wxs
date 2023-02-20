@@ -166,6 +166,34 @@ Language="1033"
  -->
 
                   <!-- Add by qwop   end -->
+
+                  <Directory Id="TabSkinImages" Name="tab_skin_images">
+                    <Component Id="rounded_dark_w_sep" Guid="27af1a85-9a01-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Rounded_dark_with_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Rounded_dark_with_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                    <Component Id="rounded_dark_wo_sep" Guid="27af1a85-9a02-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Rounded_dark_without_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Rounded_dark_without_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                    <Component Id="rounded_lite_w_sep" Guid="27af1a85-9a03-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Rounded_lite_with_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Rounded_lite_with_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                    <Component Id="rounded_lite_wo_sep" Guid="27af1a85-9a04-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Rounded_lite_without_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Rounded_lite_without_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                    <Component Id="square_dark_w_sep" Guid="27af1a85-9a05-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Square_dark_with_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Square_dark_with_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                    <Component Id="square_dark_wo_sep" Guid="27af1a85-9a06-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Square_dark_without_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Square_dark_without_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                    <Component Id="square_lite_w_sep" Guid="27af1a85-9a07-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Square_lite_with_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Square_lite_with_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                    <Component Id="square_lite_wo_sep" Guid="27af1a85-9a08-4c20-bdeb-d73fd4bd9574">
+                      <File Id="Square_lite_without_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Square_lite_without_separator.png" KeyPath="yes" Checksum="yes"/>
+                    </Component>
+                  </Directory>
+                  
                   
                   <?foreach arch in x86;x64 ?>
                         <?if $(var.arch) = x64?>
@@ -302,7 +330,16 @@ Language="1033"
             <ComponentRef Id="ActivateByMouseHover" />
             <ComponentRef Id="config" />
             <ComponentRef Id="libai" />
-          
+
+          <ComponentRef Id="rounded_dark_w_sep" />
+          <ComponentRef Id="rounded_dark_wo_sep" />
+          <ComponentRef Id="rounded_lite_w_sep" />
+          <ComponentRef Id="rounded_lite_wo_sep" />
+          <ComponentRef Id="square_dark_w_sep" />
+          <ComponentRef Id="square_dark_wo_sep" />
+          <ComponentRef Id="square_lite_w_sep" />
+          <ComponentRef Id="square_lite_wo_sep" />
+
           <!-- add by qwop -->
             <?foreach arch in x86;x64 ?>
                 <!-- RegKeys -->

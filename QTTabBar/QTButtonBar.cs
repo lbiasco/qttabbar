@@ -1013,7 +1013,7 @@ namespace QTTabBarLib {
                 // add by indiff dark mode
                 QTUtility.InNightMode = QTUtility.getNightMode();
                 QTUtility2.log("OnExplorerAttached SwitchNighMode");
-                Config.Skin.SwitchNighMode(QTUtility.InNightMode);
+                Config.Skin.SwitchNightMode(QTUtility.InNightMode);
                 ConfigManager.UpdateConfig(true);
                 PInvoke.SetRedraw(ExplorerHandle, true);
                 PInvoke.RedrawWindow(ExplorerHandle, IntPtr.Zero, IntPtr.Zero, 0x289);

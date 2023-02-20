@@ -465,7 +465,7 @@ namespace QTTabBarLib {
                 // PreviewMaxHeight = 256;
                 //  字体配置
                 PreviewFont = Control.DefaultFont;
-                PreviewFont = new Font(new FontFamily("微软雅黑"), 9f);
+                PreviewFont = new Font(new FontFamily("Segoe UI"), 9f);
                 // 文本类型扩展名
                 TextExt = new List<string> { 
                     ".txt",".rtf"
@@ -558,93 +558,47 @@ namespace QTTabBarLib {
             public bool DrawVerticalExplorerBarBgColor { get; set; }
 
             public _Skin() {
-                /* UseTabSkin = false;
-                 TabImageFile = "";
-                 TabSizeMargin = Padding.Empty;
-                 TabContentMargin = Padding.Empty;
-                 OverlapPixels = 0;
-                 HitTestTransparent = false;
-                 TabHeight = 24;
-                 TabMinWidth = 50;
-                 TabMaxWidth = 200;
-                 FixedWidthTabs = false;
-                 TabTextFont = Control.DefaultFont;
-                 TabTextActiveColor = Color.Black;
-                 TabTextInactiveColor = Color.Black;
-                 TabTextHotColor = Color.Black;
-                 TabShadActiveColor = Color.Gray;
-                 TabShadInactiveColor = Color.White;
-                 TabShadHotColor = Color.White;
-                 TabTitleShadows = false;
-                 TabTextCentered = false;
-                 UseRebarBGColor = false;
-                 RebarColor = Color.Gray;
-                 UseRebarImage = false;
-                 RebarStretchMode = StretchMode.Full;
-                 RebarImageFile = "";
-                 RebarImageSeperateBars = false;
-                 RebarSizeMargin = Padding.Empty;
-                 ActiveTabInBold = false;*/
-
-                /* qwop's default value. */
-                UseTabSkin = false;  // 标签背景
-                TabImageFile = "";  // 标签背景文件
-                TabSizeMargin = Padding.Empty;  // 设置边缘
-                TabContentMargin = Padding.Empty; // 内容边缘
-                OverlapPixels = 0;  // 
+                UseTabSkin = false;
+                TabImageFile = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "tab_skin_images\\Rounded_lite_with_separator.png";
+                TabSizeMargin = Padding.Empty;
+                TabContentMargin = Padding.Empty;
+                OverlapPixels = 0;
                 HitTestTransparent = false;
                 TabHeight = 24;
                 TabMinWidth = 50;
                 TabMaxWidth = 200;
                 FixedWidthTabs = false;
-                TabTextFont = new Font(new FontFamily("微软雅黑"), 9f);
-                ToolBarTextColor = Color.Black;  // 工具栏文本颜色
-                TabTextActiveColor = Color.Black;
-                TabTextInactiveColor = Color.Black;
-                TabTextHotColor = Color.Black;
-                // TabShadActiveColor = Color.Gray;
-                TabShadActiveColor = Color.WhiteSmoke;
-                TabShadInactiveColor = Color.WhiteSmoke;
-                TabShadHotColor = Color.WhiteSmoke;
-                RebarColor = Color.WhiteSmoke;
-                // RebarColor = Color.FromArgb(230,230,230);
-                // 设置标签背景色
-                // RebarColor = Color.FromArgb(245, 246, 247);
-                TabTitleShadows = false;  // 标签文本阴影是否启用
-                TabTextCentered = true; // 标签文本是否居中
-                UseRebarBGColor = true;  // 是否启用配置背景颜色
-                UseRebarImage = false;  // 是否工具栏自定义图片,启用自定义图片
-                RebarStretchMode = StretchMode.Tile;  // 布局方式
-                RebarImageFile = "";  // 工具栏自定义图片
+                TabTextFont = new Font(new FontFamily("Segoe UI"), 9f);
+                ToolBarTextColor = Color.White;
+                TabTextActiveColor = Color.White;
+                TabTextInactiveColor = Color.White;
+                TabTextHotColor = Color.White;
+                TabShadActiveColor = Color.Black;
+                TabShadInactiveColor = Color.Black;
+                TabShadHotColor = Color.Black;
+                RebarColor = Color.FromArgb(25, 25, 25);
+                TabTitleShadows = false;
+                TabTextCentered = true;
+                UseRebarBGColor = true;
+                UseRebarImage = false;
+                RebarStretchMode = StretchMode.Tile;
+                RebarImageFile = "";
                 RebarImageSeperateBars = false;
                 RebarSizeMargin = Padding.Empty;
                 ActiveTabInBold = true;
-                SkinAutoColorChangeClose = false;  // 是否关闭自动变色？
-                DrawHorizontalExplorerBarBgColor = false; // 
-                DrawVerticalExplorerBarBgColor = false; // 
+                SkinAutoColorChangeClose = false;
             }
 
-            internal void SwitchNighMode(bool isNighMode)
+            internal void SwitchNightMode(bool isNightMode)
             {
                 if (this.SkinAutoColorChangeClose)
                 {
                     return;
                 }
 
-                if (isNighMode)
+                if (isNightMode)
                 {
-                    QTUtility2.log("change nightMode white skinChanged " + this.SkinAutoColorChangeClose);
-                    // UseTabSkin = false;  // 标签背景
-                    // TabImageFile = "";  // 标签背景文件
-                    // TabSizeMargin = Padding.Empty;  // 设置边缘
-                    // TabContentMargin = Padding.Empty; // 内容边缘
-                    // OverlapPixels = 0;  // 
-                    // HitTestTransparent = false;
-                    // TabHeight = 24;
-                    // TabMinWidth = 50;
-                    // TabMaxWidth = 200;
-                    // FixedWidthTabs = false;
-                    // TabTextFont = new Font(new FontFamily("微软雅黑"), 9f );
+                    TabImageFile = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\QTTabBar\\tab_skin_images\\Rounded_dark_with_separator.png";
                     ToolBarTextColor = Color.White;
                     TabTextActiveColor = Color.White;
                     TabTextInactiveColor = Color.White;
@@ -652,56 +606,21 @@ namespace QTTabBarLib {
                     TabShadActiveColor = Color.Black;
                     TabShadInactiveColor = Color.Black;
                     TabShadHotColor = Color.Black;
-                    RebarColor = Color.Black;
+                    RebarColor = Color.FromArgb(25, 25, 25);
                     UseRebarBGColor = true;
-                    // TabTitleShadows = false;
-                    // TabTextCentered = false;
-                    // UseRebarBGColor = false;
-                    // RebarColor = Color.FromArgb(230,230,230);
-                    // 设置标签背景色
-                    
-                    // UseRebarImage = false;  // 是否工具栏自定义图片,启用自定义图片
-                    // RebarStretchMode = StretchMode.Tile;
-                    // RebarImageFile = "";  // 工具栏自定义图片
-                    // RebarImageSeperateBars = false;
-                    // RebarSizeMargin = Padding.Empty;
-                    // ActiveTabInBold = true;
                 }
                 else
                 {
-                    // UseTabSkin = false;  // 标签背景
-                    // TabImageFile = "";  // 标签背景文件
-                    // TabSizeMargin = Padding.Empty;  // 设置边缘
-                    // TabContentMargin = Padding.Empty; // 内容边缘
-                    // OverlapPixels = 0;  // 
-                    // HitTestTransparent = false;
-                    // TabHeight = 24;
-                    // TabMinWidth = 50;
-                    // TabMaxWidth = 200;
-                    // FixedWidthTabs = false;
-                    // TabTextFont = new Font(new FontFamily("微软雅黑"), 9f);
-                    QTUtility2.log("change nightMode black skinChanged " + this.SkinAutoColorChangeClose);
+                    TabImageFile = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\QTTabBar\\tab_skin_images\\Rounded_lite_with_separator.png";
                     ToolBarTextColor = Color.Black;
                     TabTextActiveColor = Color.Black;
                     TabTextInactiveColor = Color.Black;
                     TabTextHotColor = Color.Black;
-                    // TabShadActiveColor = Color.FromArgb(245, 246, 247);
                     TabShadActiveColor = Color.White;
                     TabShadInactiveColor = Color.White;
                     TabShadHotColor = Color.White;
-                    // RebarColor = Color.FromArgb(245, 246, 247);
-                    RebarColor = Color.White;
-                    // TabTitleShadows = false;
-                    // TabTextCentered = false;
+                    RebarColor = Color.WhiteSmoke;
                     UseRebarBGColor = true;
-                    // // RebarColor = Color.FromArgb(230,230,230);
-                    // // 设置标签背景色
-                    // UseRebarImage = false;  // 是否工具栏自定义图片,启用自定义图片
-                    // RebarStretchMode = StretchMode.Tile;
-                    // RebarImageFile = "";  // 工具栏自定义图片
-                    // RebarImageSeperateBars = false;
-                    // RebarSizeMargin = Padding.Empty;
-                    // ActiveTabInBold = true;
                 }
                 SkinAutoColorChangeClose = false;
             }
@@ -922,36 +841,6 @@ namespace QTTabBarLib {
                 {
                     BuiltInLangSelectedIndex = 1;
                     BuiltInLang = "简体中文";
-                }
-                else if (uiCulture.Equals("de_DE") || lUiCulture.Equals("de"))
-                {
-                    BuiltInLangSelectedIndex = 2;
-                    BuiltInLang = "German";
-                }
-                else if (uiCulture.Equals("pt_BR") || lUiCulture.Equals("br") ||  lUiCulture.Equals("pt"))
-                {
-                    BuiltInLangSelectedIndex = 3;
-                    BuiltInLang = "Brazil";
-                }
-                else if (uiCulture.Equals("es_ES") || lUiCulture.Equals("es") )
-                {
-                    BuiltInLangSelectedIndex = 4;
-                    BuiltInLang = "Spanish";
-                }
-                else if (uiCulture.Equals("fr_FR") || lUiCulture.Equals("fr"))
-                {
-                    BuiltInLangSelectedIndex = 5;
-                    BuiltInLang = "French";
-                }
-                else if (uiCulture.Equals("tr_TR") || lUiCulture.Equals("tr"))
-                {
-                    BuiltInLangSelectedIndex = 6;
-                    BuiltInLang = "Turkish";
-                }
-                else if (uiCulture.Equals("ru_RU") || lUiCulture.Equals("ru_RU"))
-                {
-                    BuiltInLangSelectedIndex = 7;
-                    BuiltInLang = "Russian";
                 }
                 else {
                     BuiltInLangSelectedIndex = 0;

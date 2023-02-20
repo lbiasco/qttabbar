@@ -598,7 +598,7 @@ namespace QTTabBarLib {
                         case WM.SYSCOLORCHANGE:
                             QTUtility.InNightMode = QTUtility.getNightMode();
                             QTUtility2.log("SYSCOLORCHANGE SwitchNighMode");
-                            Config.Skin.SwitchNighMode(QTUtility.InNightMode ); // 如果关闭自动变色则不进行变色
+                            Config.Skin.SwitchNightMode(QTUtility.InNightMode ); // 如果关闭自动变色则不进行变色
                             ConfigManager.UpdateConfig(true);
                             this.tabControl1.InitializeColors();
                             PInvoke.SetRedraw(ExplorerHandle, true);

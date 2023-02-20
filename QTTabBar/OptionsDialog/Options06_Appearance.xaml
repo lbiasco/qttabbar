@@ -502,26 +502,8 @@
                 </qt:MarginCombo.Style>
             </qt:MarginCombo>
         </Grid>
-        <Label
-            Content="{qt:Resx Key=Options_Page06_Appearance, Index=30}"
-            Style="{StaticResource SectionHeaderStyle}"/>
         <StackPanel
             Margin="13,1,0,1"
-            Orientation="Horizontal">
-            <Button
-				x:Name="btnImportSkin"
-                Click="btnImportSkin_Click"
-                Content="{qt:Resx Key=Options_Page06_Appearance, Index=31}"
-                Height="23"
-                Margin="0,0,10,0"
-                Width="100"/>
-            <Button
-				x:Name="btnExportSkin"
-                Click="btnExportSkin_Click"
-                Content="{qt:Resx Key=Options_Page06_Appearance, Index=32}"
-                Height="23"
-                Margin="0,0,10,0"
-                Width="100"/>
-        </StackPanel>
+            Orientation="Horizontal"/>
     </StackPanel>
 </qt:OptionsDialogTab>
