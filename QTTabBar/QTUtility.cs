@@ -1121,40 +1121,9 @@ namespace QTTabBarLib {
             }
         }
 
-
-        public static bool isChinese()
-        {
-            var uiCulture = System.Globalization.CultureInfo.InstalledUICulture.Name;
-            var lUiCulture = uiCulture.ToLower();
-            if (uiCulture.Equals("zh-CN") || lUiCulture.Equals("zh") || lUiCulture.Equals("cn"))
-            {
-                return true;
-            }
-            else if (uiCulture.Equals("de_DE") || lUiCulture.Equals("de"))
-            {
-            }
-            else if (uiCulture.Equals("pt_BR") || lUiCulture.Equals("br") || lUiCulture.Equals("pt"))
-            {
-            }
-            else if (uiCulture.Equals("es_ES") || lUiCulture.Equals("es"))
-            {
-            }
-            else if (uiCulture.Equals("fr_FR") || lUiCulture.Equals("fr"))
-            {
-            }
-            else if (uiCulture.Equals("tr_TR") || lUiCulture.Equals("tr"))
-            {
-            }
-            else
-            {
-            }
-
-            return false;
-        }
-
         internal static string DefaultNewFileName()
         {
-            return isChinese() ? "新建文本文档" : "newDocument";
+            return "newDocument";
         }
 
 

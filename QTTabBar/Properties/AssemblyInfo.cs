@@ -85,4 +85,4 @@ using System.Resources;
 // "en" or "ja-JP"
 // if you want release global edition, change this to "en" from "ja-JP".
 // This improves lookup performance for the first resource you load, and can reduce your working set. 
-[assembly: NeutralResourcesLanguage("zh-CN")]
+[assembly: NeutralResourcesLanguage("en")]

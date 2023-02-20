@@ -677,65 +677,7 @@ namespace Qwop {
 
                     case 7:
                         {
-                            // 11. 管理员方式启动
-                            string selectedPath = pluginServer.SelectedTab.Address.Path;
-                            string binPath = Path.Combine(selectedPath, "bin");
-                            string mvndexe = Path.Combine(binPath, "mvnd.exe");
-                            // string exePath = Path.Combine(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%"), @"\QTTabBar\SetHome.exe");
-                            //  string exePath = @"%PROGRAMDATA%\QTTabBar\SetHome.exe";
-
-                            string exePath = @"C:\ProgramData\QTTabBar\SetHome.exe";
-                            if (!File.Exists(exePath))
-                            {
-                                exePath = @"D:\ProgramData\QTTabBar\SetHome.exe";
-                            }
-                            if (!File.Exists(exePath))
-                            {
-                                exePath = @"E:\ProgramData\QTTabBar\SetHome.exe";
-                            }
-                            if (!File.Exists(exePath))
-                            {
-                                exePath = @"F:\ProgramData\QTTabBar\SetHome.exe";
-                            }
-                            if (!File.Exists(exePath))
-                            {
-                                exePath = @"G:\ProgramData\QTTabBar\SetHome.exe";
-                            }
-                            if (!File.Exists(exePath))
-                            {
-                                exePath = @"H:\ProgramData\QTTabBar\SetHome.exe";
-                            }
-
-
-                            if (File.Exists(exePath))
-                            {
-                                var process = new Process
-                                 {
-                                     StartInfo =
-                                     {
-                                         WorkingDirectory = selectedPath,
-                                         UseShellExecute = true,
-                                         FileName = exePath,
-                                         CreateNoWindow = true,
-                                         Verb = "runas"
-                                     }
-                                 };
-                                process.Start();
-
-                                /*new Thread(() =>
-                                {
-                                    Thread.Sleep( 3000 );
-
-                                    
-                                    PowerShell.Create().AddCommand("setx")
-                                        .AddParameter("JAVA_HOME", selectedPath)
-                                        .AddParameter("/M")
-                                        .Invoke();
-                                }).Start();*/
-                            }
-                            else {
-                                MessageBox.Show( "未找到可执行文件SetHome");
-                            }
+                            // Used to be SetHome
                             break;
                         }
 

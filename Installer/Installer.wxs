@@ -150,10 +150,6 @@ Language="1033"
                     <File Id="f18" Name="ShowStatusBar.dll" Source="..\Plugins\ShowStatusBar\bin\Release\ShowStatusBar.dll" KeyPath="yes" />
                   </Component>
 
-                  <Component Id="SetHome" Win64="yes" Guid="27af1a85-9a08-4c18-bdeb-d73fd4bd9571" DisableRegistryReflection="yes">
-                    <File Id="f19" Name="SetHome.exe" Source="..\SetHome\bin\Release\SetHome.exe" KeyPath="yes" />
-                  </Component>
-
                   <Component Id="config" Win64="yes" Guid="27af1a85-9a08-4c18-bdeb-d73fd4bd9572" DisableRegistryReflection="yes">
                       <File Id="f20" Name="config.ini" Source="config.ini" KeyPath="yes" />
                   </Component>
@@ -304,7 +300,6 @@ Language="1033"
           <!--<ComponentRef Id="SampleSplitButton" /> -->
             <ComponentRef Id="ShowStatusBar" />
             <ComponentRef Id="ActivateByMouseHover" />
-            <ComponentRef Id="SetHome" />
             <ComponentRef Id="config" />
             <ComponentRef Id="libai" />
           

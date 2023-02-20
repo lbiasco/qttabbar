@@ -558,6 +558,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="QTTabBarClass.resx">
+      <DependentUpon>QTTabBarClass.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources_Image.resx">
       <DependentUpon>Resources_Image.cs</DependentUpon>
     </EmbeddedResource>
@@ -896,9 +899,7 @@
     <Content Include="Resources\imgBarBg.jpg" />
     <Content Include="todo.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="quizo\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <COMReference Include="SHDocVw">
       <Guid>{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}</Guid>
