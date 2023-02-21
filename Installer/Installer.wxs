@@ -94,20 +94,7 @@
                   <Component Id="CreateNewItem" Win64="yes" Guid="27af1a85-9a08-4c09-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
                     <File Id="f9" Name="CreateNewItem.dll" Source="..\Plugins\CreateNewItem\bin\Release\CreateNewItem.dll" KeyPath="yes" />
                   </Component>
-                  <Component Id="Memo" Win64="yes" Guid="27af1a85-9a08-4c10-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f10" Name="Memo.dll" Source="..\Plugins\Memo\bin\Release\Memo.dll" KeyPath="yes" />
-                  </Component>
-                  <Component Id="MigemoLoader" Win64="yes" Guid="27af1a85-9a08-4c11-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f11" Name="MigemoLoader.dll" Source="..\Plugins\MigemoLoader\bin\Release\MigemoLoader.dll" KeyPath="yes" />
-                  </Component>
-				          <Component Id="QTClock" Win64="yes" Guid="27af1a85-9a08-4c12-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f12" Name="QTClock.dll" Source="..\Plugins\QTClock\bin\Release\QTClock.dll" KeyPath="yes" />
-                  </Component>
-
-                  <Component Id="QTWindowManager" Win64="yes" Guid="27af1a85-9a08-4c13-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f13" Name="QTWindowManager.dll" Source="..\Plugins\QTWindowManager\bin\Release\QTWindowManager.dll" KeyPath="yes" />
-                  </Component>
-
+                  
                   <Component Id="QTFileTools" Win64="yes" Guid="27af1a85-9a08-4c14-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
                     <File Id="f14" Name="QTFileTools.dll" Source="..\Plugins\QTFileTools\bin\Release\QTFileTools.dll" KeyPath="yes" />
                   </Component>
@@ -120,33 +107,10 @@
                     <File Id="f16" Name="QTViewModeButton.dll" Source="..\Plugins\QTViewModeButton\bin\Release\QTViewModeButton.dll" KeyPath="yes" />
                   </Component>
 
-                  <Component Id="ActivateByMouseHover" Win64="yes" Guid="27af1a85-9a08-4c19-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f17" Name="ActivateByMouseHover.dll" Source="..\Plugins\ActivateByMouseHover\bin\Release\ActivateByMouseHover.dll" KeyPath="yes" />
-                  </Component>
-                  
-                  <!--
-                  <Component Id="SampleSplitButton" Win64="yes" Guid="27af1a85-9a08-4c17-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f17" Name="SampleSplitButton.dll" Source="..\Plugins\Sample\bin\Release\SampleSplitButton.dll" KeyPath="yes" />
-                  </Component> -->
-
-                  <Component Id="ShowStatusBar" Win64="yes" Guid="27af1a85-9a08-4c18-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f18" Name="ShowStatusBar.dll" Source="..\Plugins\ShowStatusBar\bin\Release\ShowStatusBar.dll" KeyPath="yes" />
-                  </Component>
-
                   <Component Id="config" Win64="yes" Guid="27af1a85-9a08-4c18-bdeb-d73fd4bd9572" DisableRegistryReflection="yes">
                       <File Id="f20" Name="config.ini" Source="config.ini" KeyPath="yes" />
                   </Component>
 
-                  <Component Id="libai" Win64="yes" Guid="27af1a85-9a08-4c18-bdeb-d73fd4bd9573" DisableRegistryReflection="yes">
-                    <File Id="f21" Name="libai.png" Source="libai.png" KeyPath="yes" />
-                  </Component>
-
-                  <!--
-
-                  <Component Id="ActivateByMouseHover" Win64="yes" Guid="27af1a85-9a08-4c19-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f19" Name="ActivateByMouseHover.dll" Source="..\Plugins\ActivateByMouseHover\bin\Release\ActivateByMouseHover.dll" KeyPath="yes" />
-                  </Component>
- -->
 
                   <!-- Add by qwop   end -->
 
@@ -220,21 +184,7 @@
                               <RegistryValue Name="InstallDate" Value="[Date] [Time]" Type="string" Action="write" KeyPath ="yes" />
                             </RegistryKey>
                         </Component>
-                      <!-- ignore nocaptureat
-                      
-                      <Component Id="NoCaptureAt_$(var.arch)" Win64="$(var.win64)" DisableRegistryReflection="$(var.win64)">
-                        <?if $(var.arch) = x64?>
-                        <Condition>VersionNT64</Condition>
-                        <?endif?>
-                        <RegistryKey Root="HKLM" Key="Software\QTTabBar" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                          ~1~ 不捕获控制面板@1@
-                          <RegistryValue Name="NoCaptureAt" Value="::{26EE0668-A00A-44D7-9371-BEB064C98683};::{26EE0668-A00A-44D7-9371-BEB064C98683}\\0" Type="string" Action="write" KeyPath ="yes" />
-                        </RegistryKey>
-                      </Component> -->           
-                  
-                        <!-- COM Objects  计算机\HKEY_CLASSES_ROOT\CLSID\{D2BF470E-ED1C-487F-A777-2BD8835EB6CE}
-                        计算机\HKEY_CURRENT_USER\Software\QTTabBar
-                        -->
+
                         <?foreach compName in QTTabBarClass;QTButtonBar;QTCoTaskBarClass;AutoLoader ?>
                             <?if $(var.compName) = QTTabBarClass?>
                                 <?define compGUID = {D2BF470E-ED1C-487F-A333-2BD8835EB6CE}?>
@@ -301,18 +251,11 @@
             <ComponentRef Id="QTQuick" />
             <ComponentRef Id="TurnOffRepeat" />
             <ComponentRef Id="CreateNewItem" />
-            <ComponentRef Id="Memo" />
-            <ComponentRef Id="MigemoLoader" />
-            <ComponentRef Id="QTClock" />
-            <ComponentRef Id="QTWindowManager" />
             <ComponentRef Id="QTFileTools" />
             <ComponentRef Id="FolderTreeButton" />
             <ComponentRef Id="QTViewModeButton" />
           <!--<ComponentRef Id="SampleSplitButton" /> -->
-            <ComponentRef Id="ShowStatusBar" />
-            <ComponentRef Id="ActivateByMouseHover" />
             <ComponentRef Id="config" />
-            <ComponentRef Id="libai" />
 
           <ComponentRef Id="rounded_dark_w_sep" />
           <ComponentRef Id="rounded_dark_wo_sep" />

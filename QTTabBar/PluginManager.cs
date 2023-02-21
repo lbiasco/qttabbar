@@ -73,16 +73,10 @@ namespace QTTabBarLib {
                 Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTQuick.dll", 
                 Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\TurnOffRepeat.dll", 
                 Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\CreateNewItem.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\FolderTreeButton.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\Memo.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\MigemoLoader.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTClock.dll", 
+                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\FolderTreeButton.dll",
                 Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTFileTools.dll", 
                 Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTViewModeButton.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTWindowManager.dll", 
-               // Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\SampleSplitButton.dll",                 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\ShowStatusBar.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\ActivateByMouseHover.dll"
+               // Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\SampleSplitButton.dll",
             };
 
             List<string> lists = new List<string>();
