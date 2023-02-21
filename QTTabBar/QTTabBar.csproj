@@ -307,9 +307,6 @@
     <Compile Include="OptionsDialog\Options11_ButtonBar.xaml.cs">
       <DependentUpon>Options11_ButtonBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsDialog\Options12_Plugins.xaml.cs">
-      <DependentUpon>Options12_Plugins.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OptionsDialog\Options14_About.xaml.cs">
       <DependentUpon>Options14_About.xaml</DependentUpon>
     </Compile>
@@ -621,10 +618,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="OptionsDialog\Options11_ButtonBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="OptionsDialog\Options12_Plugins.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

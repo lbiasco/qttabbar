@@ -181,7 +181,6 @@ namespace QTTabBarLib {
                     new Options09_Groups        { Index = i++}, // can not use dll
                     new Options10_Apps          { Index = i++},
                     new Options11_ButtonBar     { Index = i++},
-                    new Options12_Plugins       { Index = i++},
                     new Options14_About         { Index = i}
                 };
 

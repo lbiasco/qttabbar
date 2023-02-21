@@ -250,15 +250,6 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Manage third-party plugins.;Install a Plugin;(Disabled);by {0};{0} has been removed.;This plugin will be installed when you press OK or Apply.;This plugin will be enabled when you press OK or Apply.;This plugin will be disabled when you press OK or Apply.;Uninstalling this plugin will also uninstall the following plugins:;Proceed?;Enable;Disable 的本地化字符串。
-        /// </summary>
-        public static string Options_Page12_Plugins {
-            get {
-                return ResourceManager.GetString("Options_Page12_Plugins", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 View credits and version information.;Original code by {0};Lead Developer:;Other Developers:;Icons and graphics:;If you find QTTabBar useful, please consider making a small donation.;汉化修改：;Build by: {0} 的本地化字符串。
         /// </summary>
         public static string Options_Page14_About {
@@ -268,7 +259,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 QTTabBar Options;Reset all options on this page to their default values?;Reset all options to their default values?  This will not affect Groups, Applications, or Plugins.;Confirmation 的本地化字符串。
+        ///   查找类似 QTTabBar Options;Reset all options on this page to their default values?;Reset all options to their default values?  This will not affect Groups, or Applications.;Confirmation 的本地化字符串。
         /// </summary>
         public static string OptionsDialog {
             get {
@@ -324,7 +315,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;Applications;Button Bar;Plugins;About 的本地化字符串。
+        ///   查找类似 Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;Applications;Button Bar;About 的本地化字符串。
         /// </summary>
         public static string TabBar_Option_Genre {
             get {

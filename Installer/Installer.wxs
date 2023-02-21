@@ -84,22 +84,6 @@
                     <File Id="f6" Name="QTHookLib64.dll" Source="..\QTHookLib\bin\Release\QTHookLib64.dll" KeyPath="yes" />
                   </Component>
 
-                  <!-- Add by qwop start -->
-                  <Component Id="QTQuick" Win64="yes" Guid="27af1a85-9a08-4c07-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f7" Name="QTQuick.dll" Source="..\Plugins\QTQuick\bin\Release\QTQuick.dll" KeyPath="yes" />
-                  </Component>
-
-                  <Component Id="FolderTreeButton" Win64="yes" Guid="27af1a85-9a08-4c15-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f15" Name="FolderTreeButton.dll" Source="..\Plugins\QTFolderButton\bin\Release\FolderTreeButton.dll" KeyPath="yes" />
-                  </Component>
-
-                  <Component Id="config" Win64="yes" Guid="27af1a85-9a08-4c18-bdeb-d73fd4bd9572" DisableRegistryReflection="yes">
-                      <File Id="f20" Name="config.ini" Source="config.ini" KeyPath="yes" />
-                  </Component>
-
-
-                  <!-- Add by qwop   end -->
-
                   <Directory Id="TabSkinImages" Name="tab_skin_images">
                     <Component Id="rounded_dark_w_sep" Guid="27af1a85-9a01-4c20-bdeb-d73fd4bd9574">
                       <File Id="Rounded_dark_with_separator.png" Source="..\QTTabBar\Resources\tab_skin_images\Rounded_dark_with_separator.png" KeyPath="yes" Checksum="yes"/>
@@ -233,11 +217,7 @@
             <ComponentRef Id="QTTabBar" />
             <ComponentRef Id="HookLibrary32" />
             <ComponentRef Id="HookLibrary64" />
-            <!-- add by qwop -->
-            <ComponentRef Id="QTQuick" />
-            <ComponentRef Id="FolderTreeButton" />
           <!--<ComponentRef Id="SampleSplitButton" /> -->
-            <ComponentRef Id="config" />
 
           <ComponentRef Id="rounded_dark_w_sep" />
           <ComponentRef Id="rounded_dark_wo_sep" />
@@ -248,7 +228,6 @@
           <ComponentRef Id="square_lite_w_sep" />
           <ComponentRef Id="square_lite_wo_sep" />
 
-          <!-- add by qwop -->
             <?foreach arch in x86;x64 ?>
                 <!-- RegKeys -->
                 <ComponentRef Id="QTTabBarReg_$(var.arch)" />

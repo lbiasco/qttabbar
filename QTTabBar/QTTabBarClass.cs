@@ -997,18 +997,6 @@ namespace QTTabBarLib {
          */
         public override void CloseDW(uint dwReserved) {
             try {
-                /*string[] list1 = (from ITab tab in pluginServer.GetTabs()
-                                 where tab.Locked
-                                 select tab.Address.Path).ToArray();
-                MessageBox.Show(String.Join(",", list1));
-               
-
-                MessageBox.Show("¹Ø±Õ´°¿Ú:" + tabControl1.TabPages.Count );
-                string[] list = (from QTabItem item2 in tabControl1.TabPages
-                                 where item2.TabLocked
-                                 select item2.CurrentPath).ToArray();
-                MessageBox.Show(String.Join(",", list));
- */
                 string[] list = (from QTabItem item2 in tabControl1.TabPages
                                  where item2.TabLocked
                                  select item2.CurrentPath).ToArray();
@@ -4114,23 +4102,6 @@ namespace QTTabBarLib {
                     QTUtility2.log("QTTabBarClass imkey " + (BindAction)i);
                     return DoBindAction((BindAction)i);
                 }
-            }
-
-            // Check for plugin hotkeys.
-            foreach(var pair in Config.Keys.PluginShortcuts) {
-                int idx = Array.IndexOf(pair.Value, imkey);
-                if(idx == -1) continue;
-                Plugin plugin;
-                if(!pluginServer.TryGetPlugin(pair.Key, out plugin)) return false;
-                try {
-                    plugin.Instance.OnShortcutKeyPressed(idx);
-                }
-                catch(Exception exception) {
-                    PluginManager.HandlePluginException(exception,
-                            ExplorerHandle, plugin.PluginInformation.Name,
-                            "On shortcut key pressed. Index is " + idx);
-                }
-                return true;
             }
 
             // todo: apps and groups should use hash tables.

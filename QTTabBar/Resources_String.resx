@@ -157,7 +157,7 @@
     <value>Desktop Search;Image file is invalid.\r\n\r\nPlease specify 432 x 40 px image file.;Search Results in;shortcut;Choose your file;Choose your folder;Experimental;dummy</value>
   </data>
   <data name="OptionsDialog" xml:space="preserve">
-    <value>QTTabBar Options;Reset all options on this page to their default values?;Reset all options to their default values?  This will not affect Groups, Applications, or Plugins.;Confirmation</value>
+    <value>QTTabBar Options;Reset all options on this page to their default values?;Reset all options to their default values?  This will not affect Groups, or Applications.;Confirmation</value>
   </data>
   <data name="Options_Page01_Window" xml:space="preserve">
     <value>Change how Explorer Windows behave.;Single Window mode;Capture new Explorer windows as new tabs;Do not capture new Explorer windows;Default location for new windows and tabs;Session saving;Start a new session each time;Restore all tabs from the previous session;Restore only the locked tabs from the previous session;When the close button is clicked;Close the window;Close the current tab;Close all unlocked tabs;Send the window to the Task Tray on;Close;Minimize;Blue Plus Button</value>
@@ -192,9 +192,6 @@
   <data name="Options_Page11_ButtonBar" xml:space="preserve">
     <value>Customize the Button Bar.;Buttons;Button Bar Options;Large icons;Show labels on buttons;Lock the order of dropdown button menus;Lock the size of the search box;Custom Button Images</value>
   </data>
-  <data name="Options_Page12_Plugins" xml:space="preserve">
-    <value>Manage third-party plugins.;Install a Plugin;(Disabled);by {0};{0} has been removed.;This plugin will be installed when you press OK or Apply.;This plugin will be enabled when you press OK or Apply.;This plugin will be disabled when you press OK or Apply.;Uninstalling this plugin will also uninstall the following plugins:;Proceed?;Enable;Disable</value>
-  </data>
   <data name="Options_Page14_About" xml:space="preserve">
     <value>View credits and version information.;Original code by {0};Lead Developer:;Other Developers:;Icons and graphics:;If you find QTTabBar useful, please consider making a small donation.;汉化修改：;Build by: {0}</value>
   </data>
@@ -216,7 +213,7 @@
     <value>Create New Group;Group name:;Add all tabs</value>
   </data>
   <data name="TabBar_Option_Genre" xml:space="preserve">
-    <value>Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;Applications;Button Bar;Plugins;About</value>
+    <value>Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;Applications;Button Bar;About</value>
   </data>
   <data name="TaskBar_Menu" xml:space="preserve">
     <value>Taskbar;Desktop;Lock items;Draw title background;Menu by one click;Enable application shortcut keys</value>

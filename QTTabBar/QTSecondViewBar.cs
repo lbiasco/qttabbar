@@ -1406,18 +1406,6 @@ namespace QTTabBarLib
         {
             try
             {
-                /*string[] list1 = (from ITab tab in pluginServer.GetTabs()
-                                 where tab.Locked
-                                 select tab.Address.Path).ToArray();
-                MessageBox.Show(String.Join(",", list1));
-               
-
-                MessageBox.Show("关闭窗口:" + tabControl1.TabPages.Count );
-                string[] list = (from QTabItem item2 in tabControl1.TabPages
-                                 where item2.TabLocked
-                                 select item2.CurrentPath).ToArray();
-                MessageBox.Show(String.Join(",", list));
- */
                 this.viewContainer.Controls.Clear();
                 foreach (QTabItem tab in this.tabControl1.TabPages)
                     tab.OnClose();

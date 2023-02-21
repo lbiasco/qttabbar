@@ -47,7 +47,6 @@ namespace QTTabBarLib
         // private NavigationPane navPane;
         // private NavigationPane navigationPaneMouseEvent;
         // private ToolbarImageHelper toolbarImageHelper;
-        // private PluginManager pluginManager;
         private static int DefaultRebarCOLORREF = -1;
         private bool disposed;
         private bool fVerticalBarDisplayed;

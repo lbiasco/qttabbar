@@ -36,45 +36,9 @@ namespace QTTabBarLib {
             try {
                 int[] keys = WorkingConfig.keys.Shortcuts;
                 HotkeyEntries = new List<HotkeyEntry>();
-				// (int)BindAction.KEYBOARD_ACTION_COUNT keys.Length
                 for(int i = 0; i < (int)BindAction.KEYBOARD_ACTION_COUNT; ++i) {
                     HotkeyEntries.Add(new HotkeyEntry(keys, i));
                 }
-                /*
-                 for(int i = 0; i < (int)BindAction.KEYBOARD_ACTION_COUNT; ++i) {
-                    HotkeyEntries.Add(new HotkeyEntry(keys, i));
-                 }
-                 */
-
-                var PluginShortcuts = new Dictionary<string, int[]>();
-                foreach(var info in PluginManager.PluginInformations) {
-                    Plugin p;
-                    if(!PluginManager.TryGetStaticPluginInstance(info.PluginID, out p) || !p.PluginInformation.Enabled) continue;
-                    string[] actions = null;
-                    QTUtility2.log("plugin: " + p.PluginInformation.Name + " Enabled :" + p.PluginInformation.Enabled);
-                    try {
-                        if (null != p &&
-                            null != p.Instance && // 修复空指针问题 by indiff
-                            !p.Instance.QueryShortcutKeys(out actions))
-                        {
-                            actions = null;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        QTUtility2.MakeErrorLog(ex, "!p.Instance.QueryShortcutKeys");
-                    }
-                    if(actions == null) continue;
-                    if(WorkingConfig.keys.PluginShortcuts.TryGetValue(info.PluginID, out keys)) {
-                        Array.Resize(ref keys, actions.Length);
-                        PluginShortcuts[info.PluginID] = keys;
-                    }
-                    else {
-                        PluginShortcuts[info.PluginID] = new int[actions.Length];
-                    }
-                    HotkeyEntries.AddRange(actions.Select((act, i) => new HotkeyEntry(keys, i, act, p.PluginInformation.Name)));
-                }
-                WorkingConfig.keys.PluginShortcuts = PluginShortcuts;
 
                 ICollectionView view = CollectionViewSource.GetDefaultView(HotkeyEntries);
                 PropertyGroupDescription groupDescription = new PropertyGroupDescription("PluginName");

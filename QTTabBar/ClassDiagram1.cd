@@ -584,21 +584,6 @@
       <FileName>OptionsDialog\Options11_ButtonBar.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="QTTabBarLib.Options12_Plugins">
-    <Position X="8" Y="3" Width="1.5" />
-    <NestedTypes>
-      <Class Name="QTTabBarLib.Options12_Plugins.PluginEntry" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>OptionsDialog\Options12_Plugins.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>BAAAACAAAUAAAAAAEAAAAAAAAAAAAAACAAAAAJAACCA=</HashCode>
-      <FileName>OptionsDialog\Options12_Plugins.xaml.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="QTTabBarLib.Options14_About" Collapsed="true">
     <Position X="21.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
@@ -646,46 +631,6 @@
       <HashCode>AAAAADAAAEAAAAAAAAAAAAAAMAAIAAACAAEAAAAAAAA=</HashCode>
       <FileName>OptionsDialog\OptionsDialog.xaml.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="QTTabBarLib.PluginManager">
-    <Position X="21.25" Y="23.25" Width="2.5" />
-    <Compartments>
-      <Compartment Name="Nested Types" Collapsed="false" />
-    </Compartments>
-    <NestedTypes>
-      <Class Name="QTTabBarLib.PluginManager.PluginButton">
-        <TypeIdentifier>
-          <NewMemberFileName>PluginManager.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>AAAACAAAAACAAQIAAAAAAFAAAAAIAAQQAAMAACDACAA=</HashCode>
-      <FileName>PluginManager.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="QTTabBarLib.Plugin" Collapsed="true">
-    <Position X="3.25" Y="19" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAAQAAAAAAAAAQBIAAAAAAAAAAAAAAAQAEAAgCAAAA=</HashCode>
-      <FileName>PluginManager.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="QTTabBarLib.PluginInformation" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="6.75" Y="19" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>IAAAAAEAAiAgAIIAgAAAAAUAAAAAAAAAAAAAAAAAQAQ=</HashCode>
-      <FileName>PluginManager.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="QTTabBarLib.PluginAssembly" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="5" Y="19" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>JAAAgAAAACAgAsIggAAAAAcAgBAAAAAAAAEAAQEGAAA=</HashCode>
-      <FileName>PluginManager.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="QTTabBarLib.QTTabBarClass" Collapsed="true">
     <Position X="1.5" Y="20" Width="1.5" />
@@ -1120,13 +1065,6 @@
       <FileName>Interop\WM.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="QTTabBarLib.PluginKey" Collapsed="true">
-    <Position X="17.25" Y="26.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>PluginManager.cs</FileName>
-    </TypeIdentifier>
-  </Struct>
   <Struct Name="QTTabBarLib.LogData" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="5" Y="25.25" Width="1.5" />
     <TypeIdentifier>

@@ -68,8 +68,8 @@ namespace QTTabBarLib {
             ///////////// add default plugin by qwop 2012-07-10////////////////
             // the program data 's default plugin.
             string[] plugins = new string[] { 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTQuick.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\FolderTreeButton.dll",
+                //Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTQuick.dll", 
+                //Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\FolderTreeButton.dll",
                // Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\SampleSplitButton.dll",
             };
 

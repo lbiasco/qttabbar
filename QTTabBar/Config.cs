@@ -749,7 +749,6 @@ namespace QTTabBarLib {
         [Serializable]
         public class _Keys {
             public int[] Shortcuts               { get; set; }
-            public Dictionary<string, int[]> PluginShortcuts { get; set; } 
             public bool UseTabSwitcher           { get; set; }
 
             public _Keys() {
@@ -793,8 +792,6 @@ namespace QTTabBarLib {
                 // 修复数组越界问题 by indiff
                 var keyboardActionCount = (int)BindAction.KEYBOARD_ACTION_COUNT;
                 Shortcuts = new int[keyboardActionCount];
-                // 插件快捷键
-                PluginShortcuts = new Dictionary<string, int[]>();
                 foreach(var pair in dict)
                 {
                     var pairKey = (int)pair.Key;
@@ -1008,9 +1005,6 @@ namespace QTTabBarLib {
                 var keys = Config.Keys.Shortcuts;
                 Array.Resize(ref keys, (int)BindAction.KEYBOARD_ACTION_COUNT);
                 Config.Keys.Shortcuts = keys;
-                foreach(var pair in Config.Keys.PluginShortcuts.Where(p => p.Value == null).ToList()) {
-                    Config.Keys.PluginShortcuts.Remove(pair.Key);
-                }
                 if(QTUtility.IsXP) Config.Tweaks.AlwaysShowHeaders = false;
                 if(!QTUtility.IsWin7) Config.Tweaks.RedirectLibraryFolders = false;
                 if(!QTUtility.IsXP) Config.Tweaks.KillExtWhileRenaming = true;

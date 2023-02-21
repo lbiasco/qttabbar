@@ -185,50 +185,9 @@ namespace QTTabBarLib {
                 ButtonPool = new ObservableCollection<ButtonEntry>();
                 CurrentButtons = new ObservableCollection<ButtonEntry>();
 
-                // Create a list of all the plugin buttons.
-                int order = QTButtonBar.INTERNAL_BUTTON_COUNT;
-                var lstPluginIDs = new List<string>();
-                var dicPluginButtons = new Dictionary<string, ButtonEntry[]>();
-                foreach(PluginInformation pi in PluginManager.PluginInformations.Where(pi => pi.Enabled).OrderBy(pi => pi.Name)) {
-                    if(pi.PluginType == PluginType.Interactive) {
-                        lstPluginIDs.Add(pi.PluginID);
-                        dicPluginButtons[pi.PluginID] = new ButtonEntry[] { new ButtonEntry(this, order++, 0, pi) };
-                    }
-                    else if(pi.PluginType == PluginType.BackgroundMultiple) {
-                        Plugin plugin;
-                        if(PluginManager.TryGetStaticPluginInstance(pi.PluginID, out plugin)) {
-                            IBarMultipleCustomItems bmci = plugin.Instance as IBarMultipleCustomItems;
-                            try
-                            {
-                                if (bmci != null && bmci.Count > 0)
-                                {
-                                    lstPluginIDs.Add(pi.PluginID);
-                                    dicPluginButtons[pi.PluginID] =
-                                        bmci.Count.RangeSelect(i => new ButtonEntry(this, order++, i, pi)).ToArray();
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                QTUtility2.MakeErrorLog(ex, "dicPluginButtons");
-
-                            }
-                        }
-                    }
-                }
-
                 // Add the current buttons (right pane)
                 foreach(int i in WorkingConfig.bbar.ButtonIndexes) {
-                    int pluginIndex = i.HiWord() - 1;
-                    if(pluginIndex >= 0) {
-                        string id = WorkingConfig.bbar.ActivePluginIDs[pluginIndex];
-                        ButtonEntry[] buttons;
-                        if(dicPluginButtons.TryGetValue(id, out buttons) && i.LoWord() < buttons.Length) {
-                            CurrentButtons.Add(buttons[i.LoWord()]);
-                        }
-                    }
-                    else {
-                        CurrentButtons.Add(new ButtonEntry(this, i, i));
-                    }
+                    CurrentButtons.Add(new ButtonEntry(this, i, i));
                 }
 
                 // Add the rest of the buttons to the button pool (left pane)
@@ -239,9 +198,6 @@ namespace QTTabBarLib {
                     }
                 }
 
-                foreach(ButtonEntry entry in lstPluginIDs.SelectMany(pid => dicPluginButtons[pid]).Except(CurrentButtons)) {
-                    ButtonPool.Add(entry);
-                }
                 lstButtonBarPool.ItemsSource = ButtonPool;
                 lstButtonBarCurrent.ItemsSource = CurrentButtons;
              }
@@ -262,15 +218,6 @@ namespace QTTabBarLib {
                 List<string> activeIDs = new List<string>();
                 WorkingConfig.bbar.ButtonIndexes = CurrentButtons.Select(entry => {
                     int p = 0;
-                    if(entry.PluginInfo != null) {
-                        p = activeIDs.IndexOf(entry.PluginInfo.PluginID) + 1;
-                        if(p == 0) {
-                            activeIDs.Add(entry.PluginInfo.PluginID);
-                            p = activeIDs.Count;
-                        }
-                        p <<= 16;
-
-                    }
                     return p + entry.Index;
                 }).ToArray();
                 WorkingConfig.bbar.ActivePluginIDs = activeIDs.ToArray();
@@ -430,55 +377,13 @@ namespace QTTabBarLib {
         private class ButtonEntry : INotifyPropertyChanged {
             public event PropertyChangedEventHandler PropertyChanged;
             private Options11_ButtonBar parent;
-
-            public PluginInformation PluginInfo { get; private set; }
+            
             public int Index { get; private set; }
             public int Order { get; private set; }
-            public bool IsPluginButton { get { return PluginInfo != null; } }
-            public string PluginButtonText {
-                get {
-                    if(!IsPluginButton) return "";
-                    if(PluginInfo.PluginType == PluginType.BackgroundMultiple) {
-                        Plugin plugin;
-                        if(PluginManager.TryGetStaticPluginInstance(PluginInfo.PluginID, out plugin)) {
-                            try
-                            {
-                                return ((IBarMultipleCustomItems)plugin.Instance).GetName(Index);
-                            }
-                            catch (Exception ex)
-                            {
-                                QTUtility2.MakeErrorLog(ex, "PluginButtonText");
-
-                            }
-                        }
-                    }
-                    return PluginInfo.Name;
-                }
-            }
-
             public Image LargeImage { get { return getImage(true); } }
             public Image SmallImage { get { return getImage(false); } }
             private Image getImage(bool large) {
-                if(IsPluginButton) {
-                    if(PluginInfo.PluginType == PluginType.BackgroundMultiple) {
-                        Plugin plugin;
-                        if(PluginManager.TryGetStaticPluginInstance(PluginInfo.PluginID, out plugin)) {
-                            try
-                            {
-                                return ((IBarMultipleCustomItems)plugin.Instance).GetImage(large, Index);
-                            }
-                            catch (Exception ex)
-                            {
-                                QTUtility2.MakeErrorLog(ex, "getImage");
-
-                            }
-                        }
-                    }
-                    return large
-                            ? PluginInfo.ImageLarge ?? Resources_Image.imgPlugin24
-                            : PluginInfo.ImageSmall ?? Resources_Image.imgPlugin16;
-                }
-                else if(Index == 0 || Index >= QTButtonBar.BII_WINDOWOPACITY) {
+                if(Index == 0 || Index >= QTButtonBar.BII_WINDOWOPACITY) {
                     return null;
                 }
                 else {
@@ -488,11 +393,10 @@ namespace QTTabBarLib {
                 }
             }
 
-            public ButtonEntry(Options11_ButtonBar parent, int Order, int Index, PluginInformation PluginInfo = null) {
+            public ButtonEntry(Options11_ButtonBar parent, int Order, int Index) {
                 this.parent = parent;
                 this.Order = Order;
                 this.Index = Index;
-                this.PluginInfo = PluginInfo;
             }
         }
 
@@ -515,49 +419,5 @@ namespace QTTabBarLib {
                 btnAdd(entry, sel);
             }
         }
-
-        /*private void LstButtonBarCurrent_OnSelected(object sender, RoutedEventArgs e)
-        {
-            ButtonEntry entry = null;
-            if (sender == lstButtonBarCurrent)
-            {
-                int sel = lstButtonBarCurrent.SelectedIndex;
-                if (sel == -1) return;
-                entry = CurrentButtons[sel];
-                
-            }
-            else
-            {
-                int sel = lstButtonBarPool.SelectedIndex;
-                if (sel == -1) return;
-                entry = ButtonPool[sel];
-            }
-
-            if ( entry != null )
-            {
-                if (toolTip1 == null)
-                {
-                    toolTip1 = new ToolTip { Content = Content, IsOpen = true, StaysOpen = true };
-                }
-                else
-                {
-                    toolTip1.Opacity = 0.9;
-                    toolTip1.Content = entry.PluginInfo.Description;
-                    toolTip1.StaysOpen = true;
-                    toolTip1.IsOpen = true;
-
-                }
-            }
-            else
-            {
-                if (toolTip1 == null)
-                {
-                    toolTip1.IsOpen = false;
-                }
-            }
-        }
-
-        private ToolTip toolTip1;*/
-
     }
 }
