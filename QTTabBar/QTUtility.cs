@@ -234,10 +234,6 @@ namespace QTTabBarLib {
 
                 GetShellClickMode();
                 QTUtility2.log("QTUtility Get Shell Click Mode");
-
-                // Initialize plugins
-                PluginManager.Initialize();
-                QTUtility2.log("QTUtility 加载所有插件");
             }
             catch(Exception exception) {
                 // TODO: Any errors here would be very serious.  Alert the user as such.

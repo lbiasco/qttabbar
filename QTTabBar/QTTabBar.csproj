@@ -316,10 +316,6 @@
     <Compile Include="OptionsDialog\Options01_Window.xaml.cs">
       <DependentUpon>Options01_Window.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PluginManager.cs" />
-    <Compile Include="PluginServer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="PreMergeToMergedDeserializationBinder.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -885,7 +885,6 @@ namespace QTTabBarLib {
             StaticReg.ExecutedPathsList.MaxCapacity = Config.Misc.FileHistoryCount;
             DropDownMenuBase.InitializeMenuRenderer();
             ContextMenuStripEx.InitializeMenuRenderer();
-            PluginManager.RefreshPlugins();
             InstanceManager.LocalTabBroadcast(tabbar => tabbar.RefreshOptions());
             if(fBroadcast) {
                 // SyncTaskBarMenu(); todo

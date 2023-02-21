@@ -1772,7 +1772,6 @@ namespace QTTabBarLib
         protected List<ToolStripItem> lstPluginMenuItems_Sys;
         protected List<ToolStripItem> lstPluginMenuItems_Tab;
         protected ITravelLogStg TravelLog;
-        public QTTabBarClass.PluginServer pluginServer { get; set; }
 
         protected bool NavigatedByCode;
 
@@ -1955,10 +1954,6 @@ namespace QTTabBarLib
                     lstActivatedTabs.RemoveAt(0);
                 }
                 fNavigatedByTabSelection = NavigateToPastSpecialDir(CurrentTab.GetLogHash(true, 0));
-                if (pluginServer != null)
-                {
-                    pluginServer.OnTabChanged(tabControl1.SelectedIndex, selectedTab.CurrentIDL, selectedTab.CurrentPath);
-                }
                 if (tabControl1.Focused)
                 {
                     listView.SetFocus();
@@ -2019,10 +2014,6 @@ namespace QTTabBarLib
                 if (tabControl1.Focused)
                 {
                     listView.SetFocus();
-                }
-                if (pluginServer != null)
-                {
-                    pluginServer.OnTabChanged(tabControl1.SelectedIndex, CurrentTab.CurrentIDL, CurrentTab.CurrentPath);
                 }
             }
             QTUtility2.log("tabControl1_SelectedIndexChanged end");

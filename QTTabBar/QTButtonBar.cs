@@ -371,7 +371,6 @@ namespace QTTabBarLib {
             Height = Config.BBar.LargeButtons ? BARHEIGHT_LARGE_LARGE : BARHEIGHT_LARGE_SMALL;
             // 是否显示按钮标签
             bool showButtonLabels = Config.BBar.ShowButtonLabels;
-            UnloadPluginsOnCreation();
             foreach(int index in Config.BBar.ButtonIndexes) {
                 ToolStripItem item;
                 switch(index) {
@@ -900,7 +899,7 @@ namespace QTTabBarLib {
                 // the ButtonBar must have been closed when the Explorer window
                 // opened, so we won't get an initialization message.  Do 
                 // initialization now.
-                if(tabBar != null && tabBar.pluginServer != null) {
+                if(tabBar != null) {
                     // todo check
                     CreateItems();
                 }
@@ -1120,7 +1119,7 @@ namespace QTTabBarLib {
                                 return false;
                             }
                         }
-                        else if(tabbar == null || tabbar.pluginServer.FilterPlugin == null || !tabbar.pluginServer.FilterPlugin.QueryRegex(str, out regex) || regex == null) {
+                        else {
                             string input = Regex.Escape(str);
                             input = reAsterisc.Replace(input, ".*");
                             regex = new Regex(reQuestion.Replace(input, "."), RegexOptions.IgnoreCase);
@@ -1129,15 +1128,8 @@ namespace QTTabBarLib {
                         if(!ShellMethods.GetShellFolder(zero, out shellFolder)) {
                             return false;
                         }
-                        bool useFC = tabbar != null && tabbar.pluginServer.FilterCorePlugin != null;
-                        IFilterCore iFilterCore = null;
-                        QTPlugin.Interop.IShellFolder folder3 = null;
-                        if(useFC) {
-                            iFilterCore = tabbar.pluginServer.FilterCorePlugin;
-                            folder3 = (QTPlugin.Interop.IShellFolder)shellFolder;
-                        }
 
-                        if(!useFC && (regex.ToString().Length == 0 || regex.ToString() == ".*")) {
+                        if(regex.ToString().Length == 0 || regex.ToString() == ".*") {
                             addedItems = lstPUITEMIDCHILD.Count > 0;
                             foreach(IntPtr pIDLChild in lstPUITEMIDCHILD) {
                                 int num7;
@@ -1151,7 +1143,7 @@ namespace QTTabBarLib {
                             for(int i = 0; i < num2; i++) {
                                 IntPtr ptr4;
                                 if(view2.Item(i, out ptr4) != 0) continue;
-                                if((useFC && iFilterCore.IsMatch(folder3, ptr4, regex)) || (!useFC && CheckDisplayName(shellFolder, ptr4, regex))) {
+                                if(CheckDisplayName(shellFolder, ptr4, regex)) {
                                     PInvoke.CoTaskMemFree(ptr4);
                                 }
                                 else {
@@ -1166,7 +1158,7 @@ namespace QTTabBarLib {
                             int count = lstPUITEMIDCHILD.Count;
                             for(int j = 0; j < count; j++) {
                                 IntPtr pIDLChild = lstPUITEMIDCHILD[j];
-                                if((!useFC || !iFilterCore.IsMatch(folder3, pIDLChild, regex)) && (useFC || !CheckDisplayName(shellFolder, pIDLChild, regex))) continue;
+                                if(!CheckDisplayName(shellFolder, pIDLChild, regex)) continue;
                                 int num7;
                                 lstPUITEMIDCHILD.RemoveAt(j);
                                 count--;
@@ -1461,32 +1453,6 @@ namespace QTTabBarLib {
             }
         }
 
-        private void UnloadPluginsOnCreation() {
-            QTTabBarClass tabbar = InstanceManager.GetThreadTabBar();
-            if(tabbar == null) return;
-            foreach(Plugin plugin in tabbar.pluginServer.Plugins) {
-                PluginType pluginType = plugin.PluginInformation.PluginType;
-                string pluginID = plugin.PluginInformation.PluginID;
-                if(pluginType == PluginType.Interactive) {
-                    if(!Config.BBar.ActivePluginIDs.Contains(pluginID)) {
-                        tabbar.pluginServer.UnloadPluginInstance(pluginID, EndCode.Unloaded);
-                    }
-                }
-                else if((pluginType == PluginType.Background || pluginType == PluginType.BackgroundMultiple)
-                        && plugin.BackgroundButtonEnabled && !Config.BBar.ActivePluginIDs.Contains(pluginID)) {
-                    try {
-                        if(plugin.Instance != null) {
-                            plugin.Instance.Close(EndCode.Hidden);
-                        }
-                    }
-                    catch(Exception exception) {
-                        PluginManager.HandlePluginException(exception, ExplorerHandle, plugin.PluginInformation.Name, "Closing plugin button. (EndCode.Hidden)");
-                    }
-                    plugin.BackgroundButtonEnabled = false;
-                }
-            }
-        }
-
         [ComUnregisterFunction]
         private static void Unregister(Type t) {
             string name = t.GUID.ToString("B");
@@ -1609,25 +1575,6 @@ namespace QTTabBarLib {
             if(searchBox == null) return false;
             searchBox.Focus();
             searchBox.Text = text ?? "";
-            return true;
-        }
-
-        public bool UpdatePluginItem(string pid, IBarButton instance, bool fEnabled, bool fRefreshImage) {
-            int p = Array.IndexOf(Config.BBar.ActivePluginIDs, pid);
-            if(p == -1) return false;
-            p = (p + 1) << 16;
-            ToolStripItem item = toolStrip.Items.Cast<ToolStripItem>().FirstOrDefault(tsi => (int)tsi.Tag == p);
-            if(item == null) return false;
-            item.Enabled = fEnabled;
-            try {
-                item.ToolTipText = instance.Text;
-                if(fRefreshImage) {
-                    item.Image = instance.GetImage(Config.BBar.LargeButtons);
-                }
-            }
-            catch(Exception exception) {
-                PluginManager.HandlePluginException(exception, ExplorerHandle, pid, "Refreshing plugin image and text.");
-            }
             return true;
         }
 

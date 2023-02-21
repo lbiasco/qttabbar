@@ -636,7 +636,6 @@
     <Position X="1.5" Y="20" Width="1.5" />
     <TypeIdentifier>
       <HashCode>o5wX28/n9v0f9nfe42703Xt/53X1ax953+r3/pUtf60=</HashCode>
-      <FileName>PluginServer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QTTabBarLib.QMenuItem">

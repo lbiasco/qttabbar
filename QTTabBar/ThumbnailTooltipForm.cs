@@ -1343,30 +1343,17 @@ namespace QTTabBarLib {
             if(buffer.Length <= 0) {
                 return str;
             }
-            Encoding encoding = null;
-            if(PluginManager.IEncodingDetector != null) {
-                try {
-                    encoding = PluginManager.IEncodingDetector.GetEncoding(ref buffer);
-                }
-                catch(Exception exception2) {
-                    PluginManager.HandlePluginException(exception2, IntPtr.Zero, "Unknown IEncodingDetector", "Getting Encoding object.");
-                    QTUtility2.MakeErrorLog(exception2);
-                }
-            }
-            if(encoding == null) {
-                encoding = TxtEnc.GetEncoding(ref buffer);
+            Encoding encoding = TxtEnc.GetEncoding(ref buffer);
+            QTUtility2.log("TxtEnc :" + encoding.EncodingName + " " + encoding.CodePage);
 
-                QTUtility2.log("TxtEnc :" + encoding.EncodingName + " " + encoding.CodePage);
-
-                if((encoding == null) ||
-                   (((
-                         (Encoding.Default.CodePage != 0x3a4) &&
-                         (encoding.CodePage != 0xfde8)) && 
-                     ((encoding.CodePage != 0xfde9) && 
-                      (encoding.CodePage != 0x4b0))) 
-                    && (encoding.CodePage != 0x2ee0))) {
-                    encoding = Encoding.Default;
-                }
+            if((encoding == null) ||
+                (((
+                        (Encoding.Default.CodePage != 0x3a4) &&
+                        (encoding.CodePage != 0xfde8)) && 
+                    ((encoding.CodePage != 0xfde9) && 
+                    (encoding.CodePage != 0x4b0))) 
+                && (encoding.CodePage != 0x2ee0))) {
+                encoding = Encoding.Default;
             }
             QTUtility2.log("Final :" + encoding.EncodingName + " " + encoding.CodePage);
             return encoding.GetString(buffer);
