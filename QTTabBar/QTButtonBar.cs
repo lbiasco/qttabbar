@@ -42,7 +42,7 @@ namespace QTTabBarLib {
         internal const int BII_NAVIGATION_FWRD      =  2;
 		internal const int BII_GROUP				=  3;
 		internal const int BII_RECENTTAB			=  4;
-		internal const int BII_APPLICATIONLAUNCHER	=  5;
+		//internal const int BII_APPLICATIONLAUNCHER	=  5; // Removed
         internal const int BII_NEWWINDOW            =  6;
         internal const int BII_CLONE                =  7;
         internal const int BII_LOCK                 =  8;
@@ -84,7 +84,6 @@ namespace QTTabBarLib {
         private IContainer components;
         private DropDownMenuReorderable ddmrGroupButton;
         private DropDownMenuReorderable ddmrRecentlyClosed;
-        private DropDownMenuReorderable ddmrUserAppButton;
         private DropTargetWrapper dropTargetWrapper;
         private IntPtr ExplorerHandle;
         private bool fRearranging;
@@ -150,20 +149,6 @@ namespace QTTabBarLib {
                     button.DropDownItems.Add(item);
                 }
             }
-        }
-
-        private void AddUserAppItems() {
-            if(ddmrUserAppButton == null) return;
-            while(ddmrUserAppButton.Items.Count > 0) {
-                ddmrUserAppButton.Items[0].Dispose();
-            }
-
-            // todo: the button bar should have its *own* ShellBrowserEx!
-            QTTabBarClass tabBar = InstanceManager.GetThreadTabBar();
-            if(tabBar == null) return;
-            List<ToolStripItem> lstItems = MenuUtility.CreateAppLauncherItems(Handle, tabBar.GetShellBrowser(),
-                    !Config.BBar.LockDropDownButtons, ddmr45_ItemRightClicked, userAppsSubDir_DoubleClicked, false);
-            ddmrUserAppButton.AddItemsRange(lstItems.ToArray(), "u");
         }
 
         private void AsyncComplete(IAsyncResult ar) {
@@ -325,21 +310,6 @@ namespace QTTabBarLib {
                     button.DropDown = ddmrRecentlyClosed;
                     button.Enabled = StaticReg.ClosedTabHistoryList.Count > 0;
                     break;
-
-                case 5:
-                    if(ddmrUserAppButton == null) {
-                        ddmrUserAppButton = new DropDownMenuReorderable(components);
-                        ddmrUserAppButton.ImageList = QTUtility.ImageListGlobal;
-                        ddmrUserAppButton.ReorderEnabled = !Config.BBar.LockDropDownButtons;
-                        ddmrUserAppButton.MessageParent = Handle;
-                        ddmrUserAppButton.ItemRightClicked += ddmr45_ItemRightClicked;
-                        ddmrUserAppButton.ReorderFinished += dropDownButtons_DropDown_ReorderFinished;
-                        ddmrUserAppButton.ItemClicked += dropDownButtons_DropDown_ItemClicked;
-                        ddmrUserAppButton.Closed += dropDownButtons_DropDown_Closed;
-                    }
-                    button.DropDown = ddmrUserAppButton;
-                    button.Enabled = AppsManager.UserApps.Any();
-                    break;
             }
             button.DropDownOpening += dropDownButtons_DropDownOpening;
             return button;
@@ -380,7 +350,6 @@ namespace QTTabBarLib {
 
                     case BII_GROUP:  // 添加到分组
                     case BII_RECENTTAB: // 最近关闭
-                    case BII_APPLICATIONLAUNCHER: // 应用程序
                         item = CreateDropDownButton(index);
                         break;
 
@@ -602,12 +571,6 @@ namespace QTTabBarLib {
                         tabbar.OpenNewTabOrWindow(wrapper);
                     }
                     return;
-
-                case BII_APPLICATIONLAUNCHER:  // 启动应用
-                    if(clickedItem.Target == MenuTarget.File) {
-                        AppsManager.Execute(clickedItem.MenuItemArguments.App, clickedItem.MenuItemArguments.ShellBrowser);
-                    }
-                    return;
             }
         }
 
@@ -616,10 +579,6 @@ namespace QTTabBarLib {
             switch(((int)reorderable.OwnerItem.Tag)) {
                 case 3:
                     GroupsManager.HandleReorder(reorderable.Items.Cast<ToolStripItem>());
-                    break;
-
-                case 5:
-                    AppsManager.HandleReorder(reorderable.Items.Cast<ToolStripItem>());
                     break;
             }
             QTTabBarClass.SyncTaskBarMenu();
@@ -640,10 +599,6 @@ namespace QTTabBarLib {
 
                 case 4:
                     MenuUtility.CreateUndoClosedItems(button);
-                    break;
-
-                case 5:
-                    AddUserAppItems();
                     break;
             }
             button.DropDown.ResumeLayout();
@@ -1476,13 +1431,6 @@ namespace QTTabBarLib {
             }
         }
 
-        private void userAppsSubDir_DoubleClicked(object sender, EventArgs e) {
-            ddmrUserAppButton.Close();
-            using(IDLWrapper wrapper = new IDLWrapper(((QMenuItem)sender).Path)) {
-                InstanceManager.GetThreadTabBar().OpenNewTabOrWindow(wrapper);
-            }
-        }
-
         internal bool FocusSearchBox() {
             if(searchBox != null) {
                 searchBox.TextBox.Focus();
@@ -1500,9 +1448,6 @@ namespace QTTabBarLib {
             }
             if(ddmrRecentlyClosed != null && ddmrRecentlyClosed.Visible) {
                 ddmrRecentlyClosed.Close(ToolStripDropDownCloseReason.AppClicked);
-            }
-            if(ddmrUserAppButton != null && ddmrUserAppButton.Visible) {
-                ddmrUserAppButton.Close(ToolStripDropDownCloseReason.AppClicked);
             }
             QTTabBarClass tabbar = InstanceManager.GetThreadTabBar();
             int index = 0;
@@ -1539,9 +1484,6 @@ namespace QTTabBarLib {
                         break;
                     case BII_GROUP:
                         item.Enabled = GroupsManager.GroupCount > 0;
-                        break;
-                    case BII_APPLICATIONLAUNCHER: // 加载应用
-                        item.Enabled = AppsManager.UserApps.Any();
                         break;
                     case BII_RECENTTAB: // 最近活动标签
                         item.Enabled = StaticReg.ClosedTabHistoryList.Count > 0;
@@ -1598,7 +1540,6 @@ namespace QTTabBarLib {
 
                 case WM.CONTEXTMENU:
                     if(     (ddmrGroupButton == null || !ddmrGroupButton.Visible) &&
-                            (ddmrUserAppButton == null || !ddmrUserAppButton.Visible) && 
                             (ddmrRecentlyClosed == null || !ddmrRecentlyClosed.Visible)) {
                         InstanceManager.GetThreadTabBar().ShowContextMenu(false);
                     }

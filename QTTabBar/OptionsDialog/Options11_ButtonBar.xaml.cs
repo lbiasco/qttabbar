@@ -220,7 +220,6 @@ namespace QTTabBarLib {
                     int p = 0;
                     return p + entry.Index;
                 }).ToArray();
-                WorkingConfig.bbar.ActivePluginIDs = activeIDs.ToArray();
                 // TODO: Validate image strip
 
                 // MessageBox.Show("image:" + WorkingConfig.bbar.ImageStripPath);
@@ -261,28 +260,6 @@ namespace QTTabBarLib {
             if(sel == -1) return;
             ButtonEntry entry = ButtonPool[sel];
             btnAdd(entry, sel);
-			/*
-            if(entry.Order == QTButtonBar.BII_SEPARATOR) {
-                entry = new ButtonEntry(this, 0, QTButtonBar.BII_SEPARATOR);
-            }
-            else {
-                ButtonPool.RemoveAt(sel);
-                if(sel == ButtonPool.Count) --sel;
-                if(sel >= 0) {
-                    lstButtonBarPool.SelectedIndex = sel;
-                    lstButtonBarPool.ScrollIntoView(lstButtonBarPool.SelectedItem);
-                }
-            }
-            if(lstButtonBarCurrent.SelectedIndex == -1) {
-                CurrentButtons.Add(entry);
-                lstButtonBarCurrent.SelectedIndex = CurrentButtons.Count - 1;
-            }
-            else {
-                CurrentButtons.Insert(lstButtonBarCurrent.SelectedIndex + 1, entry);
-                lstButtonBarCurrent.SelectedIndex++;
-            }
-            lstButtonBarCurrent.ScrollIntoView(lstButtonBarCurrent.SelectedItem);
-			*/
         }
 		
 		private void btnAdd(ButtonEntry entry,int sel) {
@@ -313,24 +290,6 @@ namespace QTTabBarLib {
             if(sel == -1) return;
             ButtonEntry entry = CurrentButtons[sel];
 			btnRemove(entry,sel);
-			/*
-            CurrentButtons.RemoveAt(sel);
-            if(sel == CurrentButtons.Count) --sel;
-            if(sel >= 0) {
-                lstButtonBarCurrent.SelectedIndex = sel;
-                lstButtonBarCurrent.ScrollIntoView(lstButtonBarCurrent.SelectedItem);
-            }
-            if(entry.Order != QTButtonBar.BII_SEPARATOR) {
-                int i = 0;
-                while(i < ButtonPool.Count && ButtonPool[i].Order < entry.Order) ++i;
-                ButtonPool.Insert(i, entry);
-                lstButtonBarPool.SelectedIndex = i;
-            }
-            else {
-                lstButtonBarPool.SelectedIndex = 0;
-            }
-            lstButtonBarPool.ScrollIntoView(lstButtonBarPool.SelectedItem);
-			*/
         }
 
         private void btnRemove(ButtonEntry entry, int sel)

@@ -464,51 +464,6 @@ namespace QTTabBarLib {
             }
         }
 
-        protected override void OnKeyUp(KeyEventArgs e) {
-            if((e.KeyCode == Keys.Apps) && (ItemRightClicked != null)) {
-                foreach(ToolStripItem item in Items) {
-                    if(item.Selected) {
-                        if((item is ToolStripMenuItem) && ((ToolStripMenuItem)item).HasDropDownItems) {
-                            ((ToolStripMenuItem)item).DropDown.Close(ToolStripDropDownCloseReason.AppFocusChange);
-                        }
-                        CancelClosingAncestors(true, false);
-                        ItemRightClickedEventArgs args = new ItemRightClickedEventArgs(item, true, PointToScreen(new Point(item.Bounds.X, item.Bounds.Y + item.Height)));
-                        ItemRightClicked(this, args);
-                        CancelClosingAncestors(false, (args.HRESULT != 0xffff) && (args.HRESULT != 0xfffd));
-                        break;
-                    }
-                }
-            }
-            else if((e.KeyCode == Keys.Space) && fSpaceKeyExecute) {
-                foreach(ToolStripItem item2 in base.Items) {
-                    if(item2.Selected) {
-                        OnItemClicked(new ToolStripItemClickedEventArgs(item2));
-                        return;
-                    }
-                }
-            }
-            base.OnKeyUp(e);
-        }
-
-        protected override void OnLayout(LayoutEventArgs e) {
-            base.OnLayout(e);
-            if(fEnableScroll) {
-                try {
-                    if(piScroll == null) {
-                        piScroll = typeof(ToolStripDropDownMenu).GetProperty("RequiresScrollButtons", BindingFlags.ExactBinding | BindingFlags.NonPublic | BindingFlags.Instance);
-                    }
-                    fNowScrollButtonsRequired = (bool)piScroll.GetValue(this, null);
-                    if(fNowScrollButtonsRequired && (upButton == null)) {
-                        GetScrollButtons();
-                    }
-                }
-                catch (Exception exception)
-                {
-                    QTUtility2.MakeErrorLog(exception, "DropDownMeanuDropTarget OnLayout");
-                }
-            }
-        }
-
         protected override void OnMouseDown(MouseEventArgs e) {
             if(fReorderEnabled) {
                 mouseButtons = e.Button;

@@ -194,7 +194,6 @@ namespace QTTabBarLib {
         public bool IsBack;
         public string Path;
         public MenuTarget Target;
-        public UserApp App;
         public ShellBrowserEx ShellBrowser;
 
         public MenuItemArguments(string path, MenuTarget target, MenuGenre genre) {
@@ -207,13 +206,6 @@ namespace QTTabBarLib {
             Path = path;
             IsBack = fback;
             Index = index;
-            Genre = genre;
-        }
-
-        public MenuItemArguments(UserApp app, ShellBrowserEx shellBrowser, MenuGenre genre) {
-            App = app;
-            Path = app.Path;
-            ShellBrowser = shellBrowser;
             Genre = genre;
         }
     }

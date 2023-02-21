@@ -26,7 +26,6 @@ namespace QTTabBarLib {
         public const string Root_Config_Skin= @"Software\QTTabBar\Config\Skin\";
         public const string Config = @"Config\";
         public const string Groups = @"Groups\";
-        public const string Apps = @"UserApps\";
         public const string StaticReg = @"Shared\";
     }
 

@@ -232,15 +232,6 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Create shortcuts to commonly used files or applications.;To assign a Shortcut Key to an application, select it and press the appropriate key gesture.  Press Escape to clear the binding.;Create New Folder;Path:;Arguments:;Working Directory:;Application;Shortcut Key;The following keywords are replaced with double-quoted path strings at runtime.;Selected files.;Selected folders.;Selected files and folders.;Current folder.;Current folder if no selection, otherwise selected folder.;New Folder;Remove this folder  [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        public static string Options_Page10_Apps {
-            get {
-                return ResourceManager.GetString("Options_Page10_Apps", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Customize the Button Bar.;Buttons;Button Bar Options;Large icons;Show labels on buttons;Lock the order of dropdown button menus;Lock the size of the search box;Custom Button Images 的本地化字符串。
         /// </summary>
         public static string Options_Page11_ButtonBar {
@@ -259,7 +250,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 QTTabBar Options;Reset all options on this page to their default values?;Reset all options to their default values?  This will not affect Groups, or Applications.;Confirmation 的本地化字符串。
+        ///   查找类似 QTTabBar Options;Reset all options on this page to their default values?;Reset all options to their default values?  This will not affect Groups.;Confirmation 的本地化字符串。
         /// </summary>
         public static string OptionsDialog {
             get {
@@ -286,7 +277,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Close;Close right;Close left;Close all but this;Add to Group;Create new Group;Lock;Clone this;New window;Copy path;Properties;Tab history;Groups;Undo closed;Last activated;Recently opened files;Browse folder;Close all but current;Close Window;Options;Unlock;Add to Application menu : ;items;Cancel;Branches;Remove this item from menu;O&amp;pen containing folder;Tab label;Tab order;Name;Path;Active;Lock the Toolbars;Merge tabs of other windows;Invert;Open CMD 的本地化字符串。
+        ///   查找类似 Close;Close right;Close left;Close all but this;Add to Group;Create new Group;Lock;Clone this;New window;Copy path;Properties;Tab history;Groups;Undo closed;Last activated;Recently opened files;Browse folder;Close all but current;Close Window;Options;Unlock;items;Cancel;Branches;Remove this item from menu;O&amp;pen containing folder;Tab label;Tab order;Name;Path;Active;Lock the Toolbars;Merge tabs of other windows;Invert;Open CMD 的本地化字符串。
         /// </summary>
         public static string TabBar_Menu {
             get {
@@ -315,7 +306,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;Applications;Button Bar;About 的本地化字符串。
+        ///   查找类似 Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;;Button Bar;About 的本地化字符串。
         /// </summary>
         public static string TabBar_Option_Genre {
             get {
@@ -324,7 +315,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Taskbar;Desktop;Lock items;Draw title background;Menu by one click;Enable application shortcut keys 的本地化字符串。
+        ///   查找类似 Taskbar;Desktop;Lock items;Draw title background;Menu by one click 的本地化字符串。
         /// </summary>
         public static string TaskBar_Menu {
             get {
@@ -333,7 +324,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Groups;Undo closed;Applications;Recently opened files 的本地化字符串。
+        ///   查找类似 Groups;Undo closed;Recently opened files 的本地化字符串。
         /// </summary>
         public static string TaskBar_Titles {
             get {

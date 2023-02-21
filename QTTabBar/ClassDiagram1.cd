@@ -8,20 +8,6 @@
     </TypeIdentifier>
     <Lollipop Orientation="Bottom" Position="0.1" />
   </Class>
-  <Class Name="QTTabBarLib.UserApp" Collapsed="true">
-    <Position X="5" Y="23" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAEAAAQABAAAQAAAAAAAAACEAAA=</HashCode>
-      <FileName>AppsManager.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="QTTabBarLib.AppsManager" Collapsed="true">
-    <Position X="3.25" Y="14" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAQAAAAAAAAAgAQAAEAAAAABgAAAASCAAIBAAAAAAAA=</HashCode>
-      <FileName>AppsManager.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="QTTabBarLib.AutoLoader" BaseTypeListCollapsed="true">
     <Position X="6.75" Y="11.75" Width="1.5" />
     <TypeIdentifier>
@@ -550,22 +536,6 @@
     <TypeIdentifier>
       <HashCode>QAAAACgAAEABAACAAYAAAAAAAABAAACCAAAAAAAAABA=</HashCode>
       <FileName>OptionsDialog\Options09_Groups.xaml.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="QTTabBarLib.Options10_Apps">
-    <Position X="17.75" Y="0.5" Width="1.5" />
-    <NestedTypes>
-      <Class Name="QTTabBarLib.Options10_Apps.AppEntry" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>OptionsDialog\Options10_Apps.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>SAAAACAACEAACAAABAAAAoAgAABAAAQCAEAAAAAEAAA=</HashCode>
-      <FileName>OptionsDialog\Options10_Apps.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

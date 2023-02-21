@@ -146,7 +146,6 @@ namespace QTTabBarLib {
         ShowToolbarMenu,
         ShowTabMenuCurrent,
         ShowGroupMenu,
-        ShowUserAppsMenu,
         ShowRecentTabsMenu,
         ShowRecentFilesMenu,
         NewFile,
@@ -626,7 +625,6 @@ namespace QTTabBarLib {
         [Serializable]
         public class _BBar {
             public int[] ButtonIndexes           { get; set; }
-            public string[] ActivePluginIDs      { get; set; }
             public bool LargeButtons             { get; set; }
             public bool LockSearchBarWidth       { get; set; }
             public bool LockDropDownButtons      { get; set; }
@@ -634,25 +632,7 @@ namespace QTTabBarLib {
             public string ImageStripPath         { get; set; }
             
             public _BBar() {
-                /* // the old 
-                ButtonIndexes = QTUtility.IsXP 
-                        ? new int[] {1, 2, 0, 3, 4, 5, 0, 6, 7, 0, 11, 13, 12, 14, 15, 0, 9, 20} 
-                        : new int[] {3, 4, 5, 0, 6, 7, 0, 11, 13, 12, 14, 15, 0, 9, 20};
-                ActivePluginIDs = new string[0];
-                LockDropDownButtons = false;
-                LargeButtons = true;
-                LockSearchBarWidth = false;
-                ShowButtonLabels = false;
-                ImageStripPath = ""; */
-
-                /* indiff 's default. */
-                ButtonIndexes	=	QTUtility.IsXP
-                        // ? new int[] { 1, 2, 0, 3, 4, 5, 0, 6, 7, 0, 11, 13, 12, 14, 15, 0, 21, 9, 20  }
-                        // : new System.Int32[] { 3, 4, 5, 0, 6, 7, 0, 17, 11, 12, 14, 15, 13, 0, 21, 9, 19, 10 };
-                // 去掉分割线
-                        ? new int[] { 1, 2,  3, 4, 5,  6, 7,  11, 13, 12, 14, 15,  21, 9, 20  }
-                        : new System.Int32[] { 3, 4, 5, 6, 7,  17, 11, 12, 14, 15, 13,  21, 9, 19, 10 };
-                ActivePluginIDs = new string[0];
+                ButtonIndexes	= new System.Int32[] { 3, 4, 6, 7,  17, 11, 12, 14, 15, 13,  21, 9, 19, 10 };
                 LargeButtons	= true;  // 是否显示大按钮
                 LockSearchBarWidth	=	true;  // 锁定搜索框大小
                 LockDropDownButtons	=	true;  // 锁定下拉按钮菜单顺序
@@ -772,7 +752,6 @@ namespace QTTabBarLib {
                     {BindAction.ShowToolbarMenu,    Key.Oemcomma  | Key.Alt},
                     {BindAction.ShowTabMenuCurrent, Key.OemPeriod | Key.Alt},
                     {BindAction.ShowGroupMenu,      Key.G     | Key.Alt},
-                    {BindAction.ShowUserAppsMenu,   Key.H     | Key.Alt},
                     {BindAction.ShowRecentTabsMenu, Key.U     | Key.Alt},
                     {BindAction.ShowRecentFilesMenu,Key.F     | Key.Alt},
                     
@@ -835,7 +814,6 @@ namespace QTTabBarLib {
             public bool IncludeApplication       { get; set; }
             public bool IncludeRecentFile        { get; set; }
             public bool OneClickMenu             { get; set; }
-            public bool EnableAppShortcuts       { get; set; }
             public int Width                     { get; set; }
             public int lstSelectedIndex          { get; set; } /*最后选中的菜单项.*/
             public _Desktop() {
@@ -851,12 +829,10 @@ namespace QTTabBarLib {
                 DesktopDblClickEnabled = true;
                 LockMenu = false;
                 TitleBackground = false;
-                IncludeApplication = true;
                 IncludeRecentTab = true;
                 IncludeApplication = true;
                 IncludeRecentFile = true;
                 OneClickMenu = false;
-                EnableAppShortcuts = true;
                 Width = 80;
 
                 // qwop's default value.
@@ -999,7 +975,6 @@ namespace QTTabBarLib {
                     if(!wrapper.Available) Config.BBar.ImageStripPath = "";
                 }
                 List<int> blist = Config.BBar.ButtonIndexes.ToList();
-                blist.RemoveAll(i => (i.HiWord() - 1) >= Config.BBar.ActivePluginIDs.Length);
                 Config.BBar.ButtonIndexes = blist.ToArray();
                 var keys = Config.Keys.Shortcuts;
                 Array.Resize(ref keys, (int)BindAction.KEYBOARD_ACTION_COUNT);

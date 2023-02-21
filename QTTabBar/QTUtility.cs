@@ -201,8 +201,6 @@ namespace QTTabBarLib {
                 GroupsManager.LoadGroups();
                 QTUtility2.log("QTUtility 加载分组完成");
                 
-                AppsManager.LoadApps();
-                QTUtility2.log("QTUtility 创建全局文件夹图片列表");
                 ValidateTextResources();
 
                 using(RegistryKey key = Registry.CurrentUser.CreateSubKey(RegConst.Root)) {

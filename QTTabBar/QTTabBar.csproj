@@ -113,7 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionDelayer.cs" />
-    <Compile Include="AppsManager.cs" />
     <Compile Include="AutoLoader.cs" />
     <Compile Include="AutomationClasses.cs" />
     <Compile Include="BreadcrumbBar.cs" />
@@ -300,9 +299,6 @@
     </Compile>
     <Compile Include="OptionsDialog\Options09_Groups.xaml.cs">
       <DependentUpon>Options09_Groups.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="OptionsDialog\Options10_Apps.xaml.cs">
-      <DependentUpon>Options10_Apps.xaml</DependentUpon>
     </Compile>
     <Compile Include="OptionsDialog\Options11_ButtonBar.xaml.cs">
       <DependentUpon>Options11_ButtonBar.xaml</DependentUpon>
@@ -550,6 +546,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources_Image.resx">
       <DependentUpon>Resources_Image.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources_String.resx">
       <DependentUpon>Resources_String.cs</DependentUpon>
@@ -603,10 +600,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="OptionsDialog\Options09_Groups.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="OptionsDialog\Options10_Apps.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

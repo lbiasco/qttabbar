@@ -367,39 +367,6 @@ namespace QTTabBarLib {
             }
         }
 
-       
-
-        /**
-         * 如果拖拽多个文件，则进行新增到应用程序菜单的弹出菜单操作
-         */
-        private void AppendUserApps(IList<string> listDroppedPaths) {
-            WindowUtils.BringExplorerToFront(ExplorerHandle);
-            if(contextMenuDropped == null) {
-                ToolStripMenuItem tsmiDropped = new ToolStripMenuItem { Tag = 1 };
-                contextMenuDropped = new ContextMenuStripEx(components, false);
-                contextMenuDropped.SuspendLayout();
-                contextMenuDropped.Items.Add(tsmiDropped);
-                contextMenuDropped.Items.Add(new ToolStripMenuItem());
-                contextMenuDropped.ItemClicked += (sender, e) => {
-                    if(e.ClickedItem.Tag != null)
-                        AppsManager.CreateNewApp((List<string>)contextMenuDropped.Tag);
-                };
-                contextMenuDropped.ResumeLayout(false);
-            }
-
-            string strMenu = QTUtility.ResMain[21];
-            strMenu += listDroppedPaths.Count > 1
-                    ? listDroppedPaths.Count + QTUtility.ResMain[22] // "items"  新增到应用程序菜单
-                    : Path.GetFileName(listDroppedPaths[0]).Enquote();
-
-            contextMenuDropped.SuspendLayout();
-            contextMenuDropped.Items[0].Text = strMenu;
-            contextMenuDropped.Items[1].Text = QTUtility.ResMain[23];			// Cancel
-            contextMenuDropped.Tag = listDroppedPaths;
-            contextMenuDropped.ResumeLayout();
-            contextMenuDropped.Show(MousePosition);
-        }
-
         // TODO: Kill this.
         private void AsyncComplete_FolderTree(IAsyncResult ar) {
             AsyncResult result = (AsyncResult)ar;
@@ -1792,10 +1759,6 @@ namespace QTTabBarLib {
 
                 case BindAction.ShowRecentTabsMenu:
                     TryCallButtonBar(bbar => bbar.ClickItem(QTButtonBar.BII_RECENTTAB));
-                    break;
-
-                case BindAction.ShowUserAppsMenu:
-                    TryCallButtonBar(bbar => bbar.ClickItem(QTButtonBar.BII_APPLICATIONLAUNCHER));
                     break;
 
                 case BindAction.CopySelectedPaths:
@@ -4045,12 +4008,6 @@ namespace QTTabBarLib {
 
             // todo: apps and groups should use hash tables.
             if(!fRepeat) {
-                // Check for app hotkeys
-                foreach(UserApp app in AppsManager.UserApps.Where(a => a.ShortcutKey == mkey)) {
-                    AppsManager.Execute(app, ShellBrowser);
-                    return true;
-                }
-
                 // Check for group hotkey
                 foreach(Group g in GroupsManager.Groups.Where(g => g.ShortcutKey == mkey)) {
                     OpenGroup(g.Name, false);
@@ -5525,15 +5482,6 @@ namespace QTTabBarLib {
                     }
                 }
             }
-            else {
-                // 拖动的如果是文件则判断是否进行添加到程序菜单
-                if(!fOpened && listDroppedPaths.Count > 0) {
-                    List<string> listDroppedPathsFiles = listDroppedPaths.Where(File.Exists).ToList();
-                    if(listDroppedPathsFiles.Count > 0) {
-                        AppendUserApps(listDroppedPathsFiles);
-                    }
-                }
-            }
         }
 
         // todo: CLEANNNNNNNNN
@@ -6843,17 +6791,6 @@ namespace QTTabBarLib {
                             }
                             return 0;
                         }
-                    case Keys.Apps:
-                        if(!flag) {
-                            int index = tabControl1.GetFocusedTabIndex();
-                            if((-1 >= index) || (index >= tabControl1.TabCount)) {
-                                break;
-                            }
-                            ContextMenuedTab = tabControl1.TabPages[index];
-                            Rectangle tabRect = tabControl1.GetTabRect(index, true);
-                            contextMenuTab.Show(PointToScreen(new Point(tabRect.Right + 10, tabRect.Bottom - 10)));
-                        }
-                        return 0;
 
                     case Keys.F6:
                     case Keys.Tab:

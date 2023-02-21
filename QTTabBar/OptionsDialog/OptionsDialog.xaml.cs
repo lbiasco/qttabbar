@@ -179,7 +179,6 @@ namespace QTTabBarLib {
                     new Options07_Mouse         { Index = i++},
                     new Options08_Keys          { Index = i++},
                     new Options09_Groups        { Index = i++}, // can not use dll
-                    new Options10_Apps          { Index = i++},
                     new Options11_ButtonBar     { Index = i++},
                     new Options14_About         { Index = i}
                 };
@@ -565,7 +564,6 @@ namespace QTTabBarLib {
                 case Keys.LWin:
                 case Keys.RWin:
                 case Keys.Delete:
-                case Keys.Apps:
                 case Keys.Tab:
                 case Keys.Left:
                 case Keys.Up:
