@@ -60,61 +60,21 @@
             </StackPanel.Resources>
             <Label x:Name="lblVersion"
                 Height="28"/>
-            <Label x:Name="buildBy"
-                Height="28" Content="{qt:Resx Key=Options_Page14_About, Index=7}" qt:Resx.Param="indiff"/>
-            <StackPanel Margin="10">
-                <Label Content="Language by:" FontWeight="Bold"/>
-                <Label Content="{qt:Resx Key=Author, Index=0}" />
-            </StackPanel>
-            <Label
-                Height="28">
-                <Hyperlink x:Name="hypSite">
-                    <Run x:Name="runSite"/>
-                </Hyperlink>
+            <Label x:Name="liteBy"
+                Height="28" Content="Lite code by lbiasco: https://github.com/lbiasco/qttabbar">
             </Label>
-            <Label
-                Content="{qt:Resx Key=Options_Page14_About, Index=1}"
-                qt:Resx.Param="Quizo"
-                Margin="10"/>
-            <StackPanel Margin="10">
-                <Label Content="{qt:Resx Key=Options_Page14_About, Index=2}" FontWeight="Bold"/>
-                <Label Content="Paul Accisano,Mokuzu Kawano,Jerome Doby,indiff"/>
-            </StackPanel>
-            <!--
-            <StackPanel Margin="10">
-                <Label Content="{qt:Resx Key=Options_Page14_About, Index=3}" FontWeight="Bold"/>
-                <Label Content="Mokuzu Kawano"/>
-                <Label Content="Jerome Doby"/>
-            </StackPanel>   -->
-            <StackPanel Margin="10">
-                <Label Content="{qt:Resx Key=Options_Page14_About, Index=4}" FontWeight="Bold"/>
-                <Label Content="Kemie Guaida,Lili"/>
-            </StackPanel>
-         
-            <StackPanel Margin="10">
-                <Label Content="{qt:Resx Key=Options_Page14_About, Index=5}"/>
-                <Image x:Name="imgPaypal"
-                    MouseUp="imgPaypal_MouseUp"
-                    Cursor="Hand"
-                    HorizontalAlignment="Center"
-                    Margin="10"
-                    Stretch="None"
-                    Source="{Binding Source={x:Static qt:Resources_Image.paypalBtn}, Converter={StaticResource BitmapToImageSourceConverter}}"/>
-            </StackPanel>
-
-			<!-- add by qwop start -->
-            <StackPanel Margin="10">
-                <Label Content="{qt:Resx Key=Options_Page14_About, Index=6}" FontWeight="Bold"/>
-                <Label Content="indiff(indiff@126.com QQ:531299332 交流群:157604022)"/>
-            </StackPanel>
-
-            <Label Height="28">
-                <Hyperlink x:Name="qwopSite"  >
-                    <Run x:Name="runQwopSite"/>
-                </Hyperlink>
+            <Label x:Name="updatedBy"
+                Height="28" Content="Updated code by indiff: https://github.com/indiff/qttabbar">
             </Label>
-			<!-- add by qwop end -->
-            
+            <Label x:Name="originalBy"
+                Height="28" Content="Original code by Quizo: http://qttabbar.wikidot.com/">
+            </Label>
+            <StackPanel Margin="10"/>
+            <StackPanel Margin="10"/>
+
+            <StackPanel Margin="10">
+                <Label Content=""/>
+            </StackPanel>
 
 
         </StackPanel>

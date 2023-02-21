@@ -286,15 +286,6 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 https://github.com/indiff/qttabbar/blob/master/QTTabBar/Resources/wechat_pay.jpg 的本地化字符串。
-        /// </summary>
-        public static string PayPalURL {
-            get {
-                return ResourceManager.GetString("PayPalURL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Go back;Go forward;Go back to start;Go forward to end;Select next tab;Select previous tab;Select first tab;Select last tab;Switch to last activated tab;Open new tab;Open new window;Merge tabs from other windows;Close current tab;Close all but current;Close left;Close right;Close window;Undo close;Clone current tab;Open current folder in new window;Lock / unlock current;Lock / unlock all;Browse folder;Create new group;Open option dialog;Show toolbar menu;Show current tab menu;Show group menu (Button Bar);Sho [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         public static string ShortcutKeys_ActionNames {
@@ -309,15 +300,6 @@ namespace QTTabBarLib {
         public static string ShortcutKeys_Groups {
             get {
                 return ResourceManager.GetString("ShortcutKeys_Groups", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 https://github.com/indiff/qttabbar 的本地化字符串。
-        /// </summary>
-        public static string SiteURL {
-            get {
-                return ResourceManager.GetString("SiteURL", resourceCulture);
             }
         }
         

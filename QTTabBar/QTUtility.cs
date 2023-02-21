@@ -1065,10 +1065,6 @@ namespace QTTabBarLib {
     
         public static void ValidateTextResources(ref Dictionary<string, string[]> dict)
         {
-            // MessageBox.Show("Config.Lang.UseLangFile:" + Config.Lang.UseLangFile + ",dict == null:" + (dict == null));
-            // 需要过滤的掉的 url
-            string[] urlKeys = { "SiteURL", "PayPalURL" };
-            
             // dict 的检测
             if (dict == null)
             {
@@ -1101,7 +1097,6 @@ namespace QTTabBarLib {
                 // 遍历内置语言
                 foreach (var pair in keyValuePairs)
                 {
-                    if (urlKeys.Contains(pair.Key)) continue;
                     // 分号分隔字符串获得数组形式
                     string[] buildinValue = pair.Value.Split(SEPARATOR_CHAR);
                     string[] res;

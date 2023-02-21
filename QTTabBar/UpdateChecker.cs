@@ -54,7 +54,7 @@ namespace QTTabBarLib {
                                 Environment.NewLine + Environment.NewLine + msg + Environment.NewLine + Environment.NewLine +
                                 QTUtility.TextResourcesDic["UpdateCheck"][1],
                                 strMsgCaption,
-                                Resources_String.SiteURL,
+                                "https://github.com/indiff/qttabbar",
                                 MessageBoxIcon.Information,
                                 60000);
                     }
@@ -77,9 +77,7 @@ namespace QTTabBarLib {
 
             msg = null;
             string str = null;
-            // HttpWebRequest req = (HttpWebRequest)WebRequest.Create(Resources_String.SiteURL + "/files/latestversion.txt");
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://raw.githubusercontent.com/indiff/qttabbar/master/latestversion.txt");
-             // HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://gitee.com/qwop/qttabbar/raw/master/latestversion.txt");
             
             req.Timeout = 5000;
 
@@ -211,7 +209,7 @@ namespace QTTabBarLib {
                             MessageBoxButtons.OKCancel,
                             MessageBoxIcon.Information)) {
                         try {
-                            Process.Start(Resources_String.SiteURL);
+                            Process.Start("https://github.com/indiff/qttabbar");
                         }
                         catch {
                         }
