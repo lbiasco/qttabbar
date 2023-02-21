@@ -18,8 +18,6 @@ namespace QTTabBarLib
      */
     public abstract class TabBarBase : BandObject
     {
-        // 添加到分组
-        protected ToolStripMenuItem tsmiAddToGroup;
         protected ToolStripMenuItem tsmiBrowseFolder;
         protected ToolStripMenuItem tsmiCloneThis;
         protected ToolStripMenuItem tsmiClose;
@@ -29,10 +27,8 @@ namespace QTTabBarLib
         protected ToolStripMenuItem tsmiCloseRight;
         protected ToolStripMenuItem tsmiCloseWindow;
         protected ToolStripMenuItem tsmiCopy;
-        protected ToolStripMenuItem tsmiCreateGroup;
         protected ToolStripMenuItem tsmiCreateWindow;
         protected ToolStripMenuItem tsmiExecuted;
-        protected ToolStripMenuItem tsmiGroups;
         protected ToolStripMenuItem tsmiHistory;
         protected ToolStripMenuItem tsmiLastActiv;
         protected ToolStripMenuItem tsmiLockThis;

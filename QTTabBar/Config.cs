@@ -139,13 +139,9 @@ namespace QTTabBarLib {
         LockCurrent,
         LockAll,
         BrowseFolder,
-        CreateNewGroup,
-        /***** add by indiff end *****/
-       // AddToGroup,  // 新增到标签组 ， 添加一个新操作有问题
         ShowOptions,
         ShowToolbarMenu,
         ShowTabMenuCurrent,
-        ShowGroupMenu,
         ShowRecentTabsMenu,
         ShowRecentFilesMenu,
         NewFile,
@@ -751,7 +747,6 @@ namespace QTTabBarLib {
                     {BindAction.ShowOptions,        Key.O     | Key.Alt},
                     {BindAction.ShowToolbarMenu,    Key.Oemcomma  | Key.Alt},
                     {BindAction.ShowTabMenuCurrent, Key.OemPeriod | Key.Alt},
-                    {BindAction.ShowGroupMenu,      Key.G     | Key.Alt},
                     {BindAction.ShowRecentTabsMenu, Key.U     | Key.Alt},
                     {BindAction.ShowRecentFilesMenu,Key.F     | Key.Alt},
                     
@@ -762,11 +757,6 @@ namespace QTTabBarLib {
                     {BindAction.NewFile,            Key.N     | Key.Control | Key.Alt},
                     // {BindAction.NewFolder,          Key.N     | Key.Control | Key.Shift},
                    //  {BindAction.NewFolder,          Key.N     | Key.Shift }, // 系统默认自带
-                   // 创建标签组
-                   {BindAction.CreateNewGroup,     Key.D    | Key.Control},
-                   // 添加到标签组
-                 //  {BindAction.AddToGroup,         Key.D    | Key.Control  },
-                   // {BindAction.AddToGroup,         Key.G    | Key.Control | Key.Alt },
                 };
                 // 修复数组越界问题 by indiff
                 var keyboardActionCount = (int)BindAction.KEYBOARD_ACTION_COUNT;

@@ -81,13 +81,6 @@
       <FileName>Constants.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="QTTabBarLib.CreateNewGroupForm" Collapsed="true">
-    <Position X="6.75" Y="15" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAABAASAAABAEAIEAEAAAEAAAA=</HashCode>
-      <FileName>CreateNewGroupForm.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="QTTabBarLib.DataGridViewEx" Collapsed="true">
     <Position X="8.5" Y="15" Width="1.5" />
     <TypeIdentifier>
@@ -274,20 +267,6 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAggBAAAAAQAACAACAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>FolderBrowserDialogEx.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="QTTabBarLib.Group" Collapsed="true">
-    <Position X="12" Y="16" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAEAAAQAAAAAIAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GroupsManager.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="QTTabBarLib.GroupsManager" Collapsed="true">
-    <Position X="13.75" Y="16" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>QAAAQEAAAAAAAAAgAEAAAAAAAAAgAQAEAAIAAABAAAA=</HashCode>
-      <FileName>GroupsManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QTTabBarLib.HookLibManager" Collapsed="true">
@@ -514,28 +493,6 @@
     <TypeIdentifier>
       <HashCode>QABAACAAAEAAAAAAAAAAAAAAAABAABACAAAAAAIAAAA=</HashCode>
       <FileName>OptionsDialog\Options08_Keys.xaml.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="QTTabBarLib.Options09_Groups">
-    <Position X="16.25" Y="0.5" Width="1.5" />
-    <NestedTypes>
-      <Class Name="QTTabBarLib.Options09_Groups.FolderEntry" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>OptionsDialog\Options09_Groups.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-      <Class Name="QTTabBarLib.Options09_Groups.GroupEntry" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>OptionsDialog\Options09_Groups.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>QAAAACgAAEABAACAAYAAAAAAAABAAACCAAAAAAAAABA=</HashCode>
-      <FileName>OptionsDialog\Options09_Groups.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

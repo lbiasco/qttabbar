@@ -107,8 +107,6 @@ namespace QTTabBarLib
         internal QTabItem tabDragSourceInTheWindow;
         // public IList<ItemIDList> PendingFoldersDefault;
         public bool PendingFoldersDefaultProcessed;
-        public IList<string> PendingGroupsDefault;
-        public IList<string> PendingGroupsExtraView;
         // public IList<ItemIDList> PendingFoldersExtraView;
         // public CommandInfo PendingCommandExtraView;
         public QTabItem PendingTabExtraView;

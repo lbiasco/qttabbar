@@ -7,11 +7,6 @@ using Microsoft.Win32;
 
 namespace QTTabBarLib {
     internal static class StaticReg {
-        internal static string CreateWindowGroup {
-            get { return (string)ReadProp("CreateWindowGroup") ?? ""; }
-            set { WriteProp("CreateWindowGroup", value); }
-        }
-
         internal static bool SkipNextCapture {
             get { return (int)(ReadProp("SkipNextCapture") ?? 0) != 0; }
             set { WriteProp("SkipNextCapture", value ? 1 : 0); }

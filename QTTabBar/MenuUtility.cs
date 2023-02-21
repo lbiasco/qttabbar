@@ -87,37 +87,6 @@ namespace QTTabBarLib {
             }
         }
 
-        public static List<ToolStripItem> CreateGroupItems(ToolStripDropDownItem dropDownItem) {
-            List<ToolStripItem> ret = new List<ToolStripItem>();
-            DropDownMenuReorderable dropDown = null;
-            if(dropDownItem != null) {
-                dropDown = (DropDownMenuReorderable)dropDownItem.DropDown;
-                while(dropDown.Items.Count > 0) {
-                    dropDown.Items[0].Dispose();
-                }
-                dropDown.ItemsClear();
-            }
-            const string key = "groups";
-            foreach(Group group in GroupsManager.Groups) {
-                if(group.Paths.Count == 0 || !QTUtility2.PathExists(group.Paths[0])) continue;
-                QMenuItem item = new QMenuItem(group.Name, MenuGenre.Group);
-                item.SetImageReservationKey(group.Paths[0], null);
-                if(dropDown != null) {
-                    dropDown.AddItem(item, key);
-                }
-                ret.Add(item);
-                if(!group.Startup) continue;
-                if(StartUpTabFont == null) {
-                    StartUpTabFont = new Font(item.Font, FontStyle.Underline);
-                }
-                item.Font = StartUpTabFont;
-            }
-            if(dropDownItem != null) {
-                dropDownItem.Enabled = dropDown.Items.Count > 0;
-            }
-            return ret;
-        }
-
         public static QMenuItem CreateMenuItem(MenuItemArguments mia) {
             QMenuItem item = new QMenuItem(QTUtility2.MakePathDisplayText(mia.Path, false), mia);
             if(((mia.Genre == MenuGenre.Navigation) && mia.IsBack) && (mia.Index == 0)) {
@@ -186,28 +155,6 @@ namespace QTTabBarLib {
             return ret;
         }
 
-        public static void GroupMenu_ItemRightClicked(object sender, ItemRightClickedEventArgs e) {
-            DropDownMenuReorderable reorderable = (DropDownMenuReorderable)sender;
-            string path = TrackGroupContextMenu(e.ClickedItem.Text, e.IsKey ? e.Point : Control.MousePosition, reorderable.Handle);
-            if(!string.IsNullOrEmpty(path)) {
-                Action<QTTabBarClass> open = tabBar => {
-                    using(IDLWrapper idlw = new IDLWrapper(path)) {
-                        tabBar.OpenNewTabOrWindow(idlw);
-                    }
-                };
-                QTTabBarClass threadBar = InstanceManager.GetThreadTabBar();
-                if(threadBar != null) {
-                    open(threadBar);
-                }
-                else {
-                    InstanceManager.InvokeMain(open);
-                }
-            }
-            else {
-                e.HRESULT = 0xfffd;
-            }
-        }
-
         private static void qmi_File_MouseMove(object sender, MouseEventArgs e) {
             QMenuItem item = (QMenuItem)sender;
             if(item.ToolTipText != null || string.IsNullOrEmpty(item.Path)) return;
@@ -266,78 +213,6 @@ namespace QTTabBarLib {
                     parentItem.DropDown.ResumeLayout();
                 }
             }
-        }
-
-        // TODO: what does this do?!
-        // TODO: whatever it does, it should be returning an idl, not a path.
-        public static string TrackGroupContextMenu(string groupName, Point pnt, IntPtr pDropDownHandle) {
-            string name = string.Empty;
-            Group g = GroupsManager.GetGroup(groupName);
-            if(g == null) return name;
-            ContextMenu menu = new ContextMenu();
-            if(!QTUtility.IsXP) {
-                foreach(string str2 in g.Paths) {
-                    string text;
-                    if(str2.StartsWith(@"\\")) {
-                        text = str2;
-                    }
-                    else {
-                        text = ShellMethods.GetDisplayName(str2);
-                    }
-                    MenuItem item = new MenuItem(text);
-                    item.Name = str2;
-                    menu.MenuItems.Add(item);
-                }
-            }
-            else {
-                // 添加分组的的路径列表
-                foreach(string path in g.Paths) {
-                    string displayName;
-                    if(path.StartsWith(@"\\")) {
-                        displayName = path;
-                    }
-                    else {
-                        displayName = ShellMethods.GetDisplayName(path);
-                    }
-                    MenuItemEx ex = new MenuItemEx(displayName);
-                    ex.Name = path;
-                    ex.Image = QTUtility.ImageListGlobal.Images[QTUtility.GetImageKey(path, null)];
-                    menu.MenuItems.Add(ex);
-                }
-            }
-            List<IntPtr> list = new List<IntPtr>();
-            if(!QTUtility.IsXP) {
-                for(int k = 0; k < g.Paths.Count; k++) {
-                    string imageKey = QTUtility.GetImageKey(g.Paths[k], null);
-                    IntPtr hbitmap = ((Bitmap)QTUtility.ImageListGlobal.Images[imageKey]).GetHbitmap(Color.Black);
-                    if(hbitmap != IntPtr.Zero) {
-                        list.Add(hbitmap);
-                        PInvoke.SetMenuItemBitmaps(menu.Handle, k, 0x400, hbitmap, IntPtr.Zero);
-                    }
-                }
-            }
-            uint maxValue = uint.MaxValue;
-            if(menu.MenuItems.Count > 0) {
-                maxValue = PInvoke.TrackPopupMenu(menu.Handle, 0x180, pnt.X, pnt.Y, 0, pDropDownHandle, IntPtr.Zero);
-                if(maxValue != 0) {
-                    for(int m = 0; m < menu.MenuItems.Count; m++) {
-                        if(maxValue == PInvoke.GetMenuItemID(menu.Handle, m)) {
-                            name = menu.MenuItems[m].Name;
-                            break;
-                        }
-                    }
-                }
-            }
-            menu.Dispose();
-            if(!QTUtility.IsXP) {
-                foreach(IntPtr ptr2 in list) {
-                    PInvoke.DeleteObject(ptr2);
-                }
-            }
-            if(maxValue != 0) {
-                return name;
-            }
-            return null;
         }
     }
 

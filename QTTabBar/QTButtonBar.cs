@@ -40,7 +40,7 @@ namespace QTTabBarLib {
 		internal const int BII_SEPARATOR			=  0;
         internal const int BII_NAVIGATION_BACK      =  1;
         internal const int BII_NAVIGATION_FWRD      =  2;
-		internal const int BII_GROUP				=  3;
+		//internal const int BII_GROUP				=  3; //Removed
 		internal const int BII_RECENTTAB			=  4;
 		//internal const int BII_APPLICATIONLAUNCHER	=  5; // Removed
         internal const int BII_NEWWINDOW            =  6;
@@ -82,7 +82,6 @@ namespace QTTabBarLib {
         private const int BARHEIGHT_LARGE_LARGE = 48;
         private const int BARHEIGHT_LARGE_SMALL = 36;
         private IContainer components;
-        private DropDownMenuReorderable ddmrGroupButton;
         private DropDownMenuReorderable ddmrRecentlyClosed;
         private DropTargetWrapper dropTargetWrapper;
         private IntPtr ExplorerHandle;
@@ -282,21 +281,6 @@ namespace QTTabBarLib {
                     button.AutoToolTip = false;
                     break;
 
-                case 3:
-                    if(ddmrGroupButton == null) {
-                        ddmrGroupButton = new DropDownMenuReorderable(components, true, false);
-                        ddmrGroupButton.ImageList = QTUtility.ImageListGlobal;
-                        ddmrGroupButton.ReorderEnabled = !Config.BBar.LockDropDownButtons;
-                        ddmrGroupButton.ItemRightClicked += MenuUtility.GroupMenu_ItemRightClicked;
-                        ddmrGroupButton.ItemMiddleClicked += ddmrGroupButton_ItemMiddleClicked;
-                        ddmrGroupButton.ReorderFinished += dropDownButtons_DropDown_ReorderFinished;
-                        ddmrGroupButton.ItemClicked += dropDownButtons_DropDown_ItemClicked;
-                        ddmrGroupButton.Closed += dropDownButtons_DropDown_Closed;
-                    }
-                    button.DropDown = ddmrGroupButton;
-                    button.Enabled = GroupsManager.GroupCount > 0;
-                    break;
-
                 case 4:
                     if(ddmrRecentlyClosed == null) {
                         ddmrRecentlyClosed = new DropDownMenuReorderable(components, true, false);
@@ -348,7 +332,6 @@ namespace QTTabBarLib {
                         toolStrip.Items.Add(new ToolStripSeparator {Tag = 0});
                         continue;
 
-                    case BII_GROUP:  // 添加到分组
                     case BII_RECENTTAB: // 最近关闭
                         item = CreateDropDownButton(index);
                         break;
@@ -503,10 +486,6 @@ namespace QTTabBarLib {
             }
         }
 
-        private static void ddmrGroupButton_ItemMiddleClicked(object sender, ItemRightClickedEventArgs e) {
-            InstanceManager.GetThreadTabBar().ReplaceByGroup(e.ClickedItem.Text);
-        }
-
         protected override void Dispose(bool disposing) {
             if(disposing && (components != null)) {
                 components.Dispose();
@@ -554,34 +533,12 @@ namespace QTTabBarLib {
                     }
                     return;
 
-                case BII_GROUP:
-                    ddmrGroupButton.Close();
-                    if(ModifierKeys == (Keys.Control | Keys.Shift)) {
-                        Group g = GroupsManager.GetGroup(e.ClickedItem.Text);
-                        g.Startup = !g.Startup;
-                        GroupsManager.SaveGroups();
-                    }
-                    else {
-                        tabbar.OpenGroup(e.ClickedItem.Text, modifierKeys == Keys.Control);
-                    }
-                    return;
-
                 case BII_RECENTTAB: // 最近标签
                     using(IDLWrapper wrapper = new IDLWrapper(clickedItem.Path)) {
                         tabbar.OpenNewTabOrWindow(wrapper);
                     }
                     return;
             }
-        }
-
-        private void dropDownButtons_DropDown_ReorderFinished(object sender, ToolStripItemClickedEventArgs e) {
-            DropDownMenuReorderable reorderable = (DropDownMenuReorderable)sender;
-            switch(((int)reorderable.OwnerItem.Tag)) {
-                case 3:
-                    GroupsManager.HandleReorder(reorderable.Items.Cast<ToolStripItem>());
-                    break;
-            }
-            QTTabBarClass.SyncTaskBarMenu();
         }
 
         private void dropDownButtons_DropDownOpening(object sender, EventArgs e) {
@@ -591,10 +548,6 @@ namespace QTTabBarLib {
             switch(((int)button.Tag)) {
                 case -1:
                     AddHistoryItems(button);
-                    break;
-
-                case 3:
-                    MenuUtility.CreateGroupItems(button);
                     break;
 
                 case 4:
@@ -1443,9 +1396,6 @@ namespace QTTabBarLib {
             if(NavDropDown != null && NavDropDown.Visible) {
                 NavDropDown.Close(ToolStripDropDownCloseReason.AppClicked);
             }
-            if(ddmrGroupButton != null && ddmrGroupButton.Visible) {
-                ddmrGroupButton.Close(ToolStripDropDownCloseReason.AppClicked);
-            }
             if(ddmrRecentlyClosed != null && ddmrRecentlyClosed.Visible) {
                 ddmrRecentlyClosed.Close(ToolStripDropDownCloseReason.AppClicked);
             }
@@ -1481,9 +1431,6 @@ namespace QTTabBarLib {
                     case BII_CLOSE_ALLBUTCURRENT:
                     case BII_CLOSE_CURRENT:
                         item.Enabled = count > 1;
-                        break;
-                    case BII_GROUP:
-                        item.Enabled = GroupsManager.GroupCount > 0;
                         break;
                     case BII_RECENTTAB: // 最近活动标签
                         item.Enabled = StaticReg.ClosedTabHistoryList.Count > 0;
@@ -1539,8 +1486,7 @@ namespace QTTabBarLib {
                     return;
 
                 case WM.CONTEXTMENU:
-                    if(     (ddmrGroupButton == null || !ddmrGroupButton.Visible) &&
-                            (ddmrRecentlyClosed == null || !ddmrRecentlyClosed.Visible)) {
+                    if (ddmrRecentlyClosed == null || !ddmrRecentlyClosed.Visible) {
                         InstanceManager.GetThreadTabBar().ShowContextMenu(false);
                     }
                     return;

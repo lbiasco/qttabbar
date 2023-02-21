@@ -297,9 +297,6 @@
     <Compile Include="OptionsDialog\Options08_Keys.xaml.cs">
       <DependentUpon>Options08_Keys.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsDialog\Options09_Groups.xaml.cs">
-      <DependentUpon>Options09_Groups.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OptionsDialog\Options11_ButtonBar.xaml.cs">
       <DependentUpon>Options11_ButtonBar.xaml</DependentUpon>
     </Compile>
@@ -337,7 +334,6 @@
     <Compile Include="FolderBrowserDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GroupsManager.cs" />
     <Compile Include="HookLibManager.cs" />
     <Compile Include="Interop\BROWSEINFO.cs" />
     <Compile Include="Interop\ShellConstants.cs" />
@@ -368,9 +364,6 @@
     <Compile Include="Interop\IFolderViewOptions.cs" />
     <Compile Include="Interop\IUIAutomationGridPattern.cs" />
     <Compile Include="ShellBrowserEx.cs" />
-    <Compile Include="CreateNewGroupForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="DataGridViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -596,10 +589,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="OptionsDialog\Options08_Keys.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="OptionsDialog\Options09_Groups.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

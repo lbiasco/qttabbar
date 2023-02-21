@@ -121,8 +121,7 @@ namespace QTTabBarLib {
         
         
         private TreeViewWrapper treeViewWrapper;
-        /*// 添加到分组
-        private ToolStripMenuItem tsmiAddToGroup;
+        /*
         private ToolStripMenuItem tsmiBrowseFolder;
         private ToolStripMenuItem tsmiCloneThis;
         private ToolStripMenuItem tsmiClose;
@@ -132,10 +131,8 @@ namespace QTTabBarLib {
         private ToolStripMenuItem tsmiCloseRight;
         private ToolStripMenuItem tsmiCloseWindow;
         private ToolStripMenuItem tsmiCopy;
-        private ToolStripMenuItem tsmiCreateGroup;
         private ToolStripMenuItem tsmiCreateWindow;
         private ToolStripMenuItem tsmiExecuted;
-        private ToolStripMenuItem tsmiGroups;
         private ToolStripMenuItem tsmiHistory;
         private ToolStripMenuItem tsmiLastActiv;
         private ToolStripMenuItem tsmiLockThis;
@@ -340,25 +337,6 @@ namespace QTTabBarLib {
         private void AddStartUpTabs(string openingGRP, string openingPath) {
             QTUtility2.log(  "QTTabBarClass AddStartUpTabs openingGRP "  + openingGRP + " openingPath " + openingPath);
             if(ModifierKeys == Keys.Shift || InstanceManager.GetTotalInstanceCount() != 0) return;
-            foreach(string path in GroupsManager.Groups.Where(g => g.Startup && openingGRP != g.Name).SelectMany(g => g.Paths)) {
-                if(Config.Tabs.NeverOpenSame) {
-                    if(path.PathEquals(openingPath)) {
-                        tabControl1.TabPages.Relocate(0, tabControl1.TabCount - 1);
-                        continue;
-                    }
-                    if(tabControl1.TabPages.Any(item => path.PathEquals(item.CurrentPath))) {
-                        continue;
-                    }
-                }
-                using(IDLWrapper wrapper = new IDLWrapper(path)) {
-                    if(!wrapper.Available) continue;
-                    QTabItem tabPage = new QTabItem(QTUtility2.MakePathDisplayText(path, false), path, tabControl1);
-                    tabPage.NavigatedTo(path, wrapper.IDL, -1, false);
-                    tabPage.ToolTipText = QTUtility2.MakePathDisplayText(path, true);
-                    tabPage.Underline = true;
-                    tabControl1.TabPages.Add(tabPage);
-                }
-            }
             if(Config.Window.RestoreOnlyLocked) {
                 RestoreTabsOnInitialize(1, openingPath);
             }
@@ -1164,10 +1142,8 @@ namespace QTTabBarLib {
             InitializeSysMenu(false);
             // 临时挂起控件布局
             contextMenuSys.SuspendLayout();
-            tsmiGroups.DropDown.SuspendLayout();
             tsmiUndoClose.DropDown.SuspendLayout();
 
-            MenuUtility.CreateGroupItems(tsmiGroups);
             MenuUtility.CreateUndoClosedItems(tsmiUndoClose);
             if((lstActivatedTabs.Count > 1) && tabControl1.TabPages.Contains(lstActivatedTabs[lstActivatedTabs.Count - 2])) {
                 tsmiLastActiv.ToolTipText = lstActivatedTabs[lstActivatedTabs.Count - 2].CurrentPath;
@@ -1196,7 +1172,6 @@ namespace QTTabBarLib {
                 lstPluginMenuItems_Sys = null;
             }
             tsmiUndoClose.DropDown.ResumeLayout();
-            tsmiGroups.DropDown.ResumeLayout();
             contextMenuSys.ResumeLayout();
         }
 
@@ -1240,9 +1215,6 @@ namespace QTTabBarLib {
                     if(num2 >= 0) {
                         CloseLeftRight(false, num2);
                     }
-                }
-                else if(e.ClickedItem == tsmiCreateGroup) {
-                    CreateGroup(ContextMenuedTab);
                 }
                 else if(e.ClickedItem == tsmiLockThis) {
                     ContextMenuedTab.TabLocked = !ContextMenuedTab.TabLocked;
@@ -1319,22 +1291,6 @@ namespace QTTabBarLib {
                     }
                     tsmiClose.Enabled = !ContextMenuedTab.TabLocked;
                     tsmiLockThis.Text = ContextMenuedTab.TabLocked ? QTUtility.ResMain[20] : QTUtility.ResMain[6];
-                    if(GroupsManager.GroupCount > 0) {
-                        tsmiAddToGroup.DropDown.SuspendLayout();
-                        tsmiAddToGroup.Enabled = true;
-                        while(tsmiAddToGroup.DropDownItems.Count > 0) {
-                            tsmiAddToGroup.DropDownItems[0].Dispose();
-                        }
-                        foreach(Group g in GroupsManager.Groups.Where(g => g.Paths.Count > 0)) {
-                            tsmiAddToGroup.DropDownItems.Add(new ToolStripMenuItem(g.Name) {
-                                ImageKey = QTUtility.GetImageKey(g.Paths[0], null)
-                            });
-                        }
-                        tsmiAddToGroup.DropDown.ResumeLayout();
-                    }
-                    else {
-                        tsmiAddToGroup.Enabled = false;
-                    }
                     tsmiHistory.DropDown.SuspendLayout();
                     while(tsmiHistory.DropDownItems.Count > 0) {
                         tsmiHistory.DropDownItems[0].Dispose();
@@ -1448,39 +1404,6 @@ namespace QTTabBarLib {
             return cursor;
         }
 
-        // 创建标签组
-        private void CreateGroup(QTabItem contextMenuedTab) {
-            NowModalDialogShown = true;
-            using(CreateNewGroupForm form = new CreateNewGroupForm(contextMenuedTab.CurrentPath, tabControl1.TabPages)) {
-                // Application.EnableVisualStyles();
-                //  Application.SetCompatibleTextRenderingDefault(false);
-                // Application.Run(form);
-               form.TopMost = true;
-               form.ShowDialog();
-            }
-            NowModalDialogShown = false;
-        }
-
-
-        // 添加到标签组功能
-        private void Add2Group(QTabItem contextMenuedTab)
-        {
-            NowModalDialogShown = true;
-            if (contextMenuedTab != null)
-            {
-                string groupName = contextMenuedTab.Text;
-                string currentPath = contextMenuedTab.CurrentPath;
-                Group g = GroupsManager.GetGroup(groupName);
-                if (g == null) return;
-                if ( !g.Paths.Any(p => p.PathEquals(currentPath)))
-                {
-                    g.Paths.Add(currentPath);
-                    GroupsManager.SaveGroups();
-                }
-            }
-            NowModalDialogShown = false;
-        }
-
         internal List<QMenuItem> CreateNavBtnMenuItems(bool fCurrent) {
             QTabItem item = fCurrent ? CurrentTab : ContextMenuedTab;
             List<QMenuItem> list = new List<QMenuItem>();
@@ -1582,10 +1505,6 @@ namespace QTTabBarLib {
                     e.ClickedItem.Dispose();
                 }
             }
-        }
-
-        private void ddrmrGroups_ItemMiddleClicked(object sender, ItemRightClickedEventArgs e) {
-            ReplaceByGroup(e.ClickedItem.Text);
         }
 
         protected override void Dispose(bool disposing) {
@@ -1723,14 +1642,6 @@ namespace QTTabBarLib {
                     ChooseNewDirectory();
                     break;
 
-                case BindAction.CreateNewGroup: // 创建新分组
-                    CreateGroup(tab);
-                    break;
-                
-                // case BindAction.AddToGroup: // 新增到标签组
-                //     Add2Group(tab);
-                //     break;
-
                 case BindAction.ShowOptions: // 显示选项
                     OptionsDialog.Open();
                     break;
@@ -1751,10 +1662,6 @@ namespace QTTabBarLib {
                 case BindAction.ShowTabMenu:
                     ContextMenuedTab = tab;
                     contextMenuTab.Show(MousePosition);
-                    break;
-
-                case BindAction.ShowGroupMenu:
-                    TryCallButtonBar(bbar => bbar.ClickItem(QTButtonBar.BII_GROUP));
                     break;
 
                 case BindAction.ShowRecentTabsMenu:
@@ -2283,16 +2190,6 @@ namespace QTTabBarLib {
                 }
                 QTUtility2.InitializeTemporaryPaths();
                 AddStartUpTabs(string.Empty, path);
-                InitializeOpenedWindow();
-            }
-            else if(StaticReg.CreateWindowGroup.Length != 0) {
-                QTUtility2.log("DoFirstNavigation StaticReg.CreateWindowGroup.Length " + StaticReg.CreateWindowGroup.Length);
-                string createWindowTMPGroup = StaticReg.CreateWindowGroup;
-                StaticReg.CreateWindowGroup = string.Empty;
-                CurrentTab.CurrentPath = path;
-                NowOpenedByGroupOpener = true;
-                OpenGroup(createWindowTMPGroup, false);
-                AddStartUpTabs(createWindowTMPGroup, path);
                 InitializeOpenedWindow();
             }
             else if(!Config.Window.CaptureNewWindows || StaticReg.SkipNextCapture)
@@ -4006,15 +3903,6 @@ namespace QTTabBarLib {
                 }
             }
 
-            // todo: apps and groups should use hash tables.
-            if(!fRepeat) {
-                // Check for group hotkey
-                foreach(Group g in GroupsManager.Groups.Where(g => g.ShortcutKey == mkey)) {
-                    OpenGroup(g.Name, false);
-                    return true;
-                }
-            }
-
             // This is important I guess?  Not sure
             if(mkey == (Keys.Control | Keys.W)) return true;
 
@@ -4488,11 +4376,8 @@ namespace QTTabBarLib {
 
         private void InitializeSysMenu(bool fText) {
             bool flag = false;
-            if(tsmiGroups == null) {
+            if(tsmiUndoClose == null) {
                 flag = true;
-                // 初始化系统工具栏
-                // 标签组
-                tsmiGroups = new ToolStripMenuItem(QTUtility.ResMain[12]);
                 // 最近关闭
                 tsmiUndoClose = new ToolStripMenuItem(QTUtility.ResMain[13]);
                 // 最近关闭
@@ -4512,17 +4397,12 @@ namespace QTTabBarLib {
                     contextMenuSys.Items[0].Dispose();
                     contextMenuSys.Items.AddRange(new ToolStripItem[]
                     {
-                        tsmiGroups, tsmiUndoClose, tsmiLastActiv, tsmiExecuted, tssep_Sys1, tsmiBrowseFolder, tsmiCloseAllButCurrent, tsmiCloseWindow, tsmiMergeWindows, tsmiLockToolbar, tssep_Sys2, tsmiOption
+                        tsmiUndoClose, tsmiLastActiv, tsmiExecuted, tssep_Sys1, tsmiBrowseFolder, tsmiCloseAllButCurrent, tsmiCloseWindow, tsmiMergeWindows, tsmiLockToolbar, tssep_Sys2, tsmiOption
                     });
                 }
 
                 DropDownMenuReorderable reorderable = new DropDownMenuReorderable(components, true, false);
-                reorderable.ReorderFinished += menuitemGroups_ReorderFinished;
-                reorderable.ItemRightClicked += MenuUtility.GroupMenu_ItemRightClicked;
-                reorderable.ItemMiddleClicked += ddrmrGroups_ItemMiddleClicked;
                 reorderable.ImageList = QTUtility.ImageListGlobal;
-                tsmiGroups.DropDown = reorderable;
-                tsmiGroups.DropDownItemClicked += menuitemGroups_DropDownItemClicked;
                 DropDownMenuReorderable reorderable2 = new DropDownMenuReorderable(components);
                 reorderable2.ReorderEnabled = false;
                 reorderable2.MessageParent = Handle;
@@ -4544,7 +4424,6 @@ namespace QTTabBarLib {
                 }
             }
             if(!flag && fText) {
-                tsmiGroups.Text = QTUtility.ResMain[12];
                 tsmiUndoClose.Text = QTUtility.ResMain[13];
                 tsmiLastActiv.Text = QTUtility.ResMain[14];
                 tsmiExecuted.Text = QTUtility.ResMain[15];
@@ -4570,8 +4449,6 @@ namespace QTTabBarLib {
                     tsmiCloseRight = new ToolStripMenuItem(QTUtility.ResMain[1]);
                     tsmiCloseLeft = new ToolStripMenuItem(QTUtility.ResMain[2]);
                     tsmiCloseAllButThis = new ToolStripMenuItem(QTUtility.ResMain[3]);
-                    tsmiAddToGroup = new ToolStripMenuItem(QTUtility.ResMain[4]);
-                    tsmiCreateGroup = new ToolStripMenuItem(QTUtility.ResMain[5] + "...");
                     tsmiLockThis = new ToolStripMenuItem(QTUtility.ResMain[6]);
                     tsmiCloneThis = new ToolStripMenuItem(QTUtility.ResMain[7]);
                     tsmiCreateWindow = new ToolStripMenuItem(QTUtility.ResMain[8]);
@@ -4595,26 +4472,13 @@ namespace QTTabBarLib {
                     contextMenuTab.Items[0].Dispose();
                     contextMenuTab.Items.AddRange(new ToolStripItem[] { 
                         tsmiClose, tsmiCloseRight, tsmiCloseLeft, tsmiCloseAllButThis, 
-                        tssep_Tab1, tsmiAddToGroup, tsmiCreateGroup, tssep_Tab2, tsmiLockThis, 
+                        tssep_Tab1, tssep_Tab2, tsmiLockThis, 
                         tsmiCloneThis, tsmiCreateWindow, tsmiCopy, tsmiTabOrder, tssep_Tab3, tsmiProp,
                         tsmiHistory,
                         tsmiOpenCmd,
                         // enableApiHook
                     });
 
-                    // 设置标签组的拖动事件 by indiff group drag
-                    tsmiAddToGroup.DragDrop += (sender, e) =>
-                    {
-                        NowTabDragging = true;
-                        var dataObject = e.Data;
-                        QTUtility2.log("e.Data: " + dataObject);
-
-                        NowTabDragging = false;
-                    };
-
-                    // 设置标签组的点击事件 comment by indiff
-                    tsmiAddToGroup.DropDownItemClicked += menuitemAddToGroup_DropDownItemClicked;
-                    (tsmiAddToGroup.DropDown).ImageList = QTUtility.ImageListGlobal;
                     tsmiHistory.DropDown = new DropDownMenuBase(components, true, true, true);
                     tsmiHistory.DropDownItemClicked += menuitemHistory_DropDownItemClicked;
                     (tsmiHistory.DropDown).ImageList = QTUtility.ImageListGlobal;
@@ -4634,8 +4498,6 @@ namespace QTTabBarLib {
                     tsmiCloseRight.Text = QTUtility.ResMain[1];
                     tsmiCloseLeft.Text = QTUtility.ResMain[2];
                     tsmiCloseAllButThis.Text = QTUtility.ResMain[3];
-                    tsmiAddToGroup.Text = QTUtility.ResMain[4];
-                    tsmiCreateGroup.Text = QTUtility.ResMain[5] + "...";
                     tsmiLockThis.Text = QTUtility.ResMain[6];
                     tsmiCloneThis.Text = QTUtility.ResMain[7];
                     tsmiCreateWindow.Text = QTUtility.ResMain[8];
@@ -4945,21 +4807,6 @@ namespace QTTabBarLib {
             }
             return path;
         }
-        /**
-         * 新增到标签组事件
-         */
-        private void menuitemAddToGroup_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-            // TODO we should be using tags I think
-            string groupName = e.ClickedItem.Text;
-            string currentPath = ContextMenuedTab.CurrentPath;
-            bool addSame = ModifierKeys == Keys.Control;
-            Group g = GroupsManager.GetGroup(groupName);
-            if(g == null) return;
-            if(addSame || !g.Paths.Any(p => p.PathEquals(currentPath))) {
-                g.Paths.Add(currentPath);
-                GroupsManager.SaveGroups();
-            }
-        }
 
         private void menuitemExecuted_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             try {
@@ -4984,24 +4831,6 @@ namespace QTTabBarLib {
                 StaticReg.ExecutedPathsList.Remove(e.ClickedItem.ToolTipText);
                 e.ClickedItem.Dispose();
             }
-        }
-
-        private void menuitemGroups_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-            Keys modifierKeys = ModifierKeys;
-            string groupName = e.ClickedItem.Text;
-            if(modifierKeys == (Keys.Control | Keys.Shift)) {
-                Group g = GroupsManager.GetGroup(groupName);
-                g.Startup = !g.Startup;
-                GroupsManager.SaveGroups();
-            }
-            else {
-                OpenGroup(groupName, modifierKeys == Keys.Control);
-            }
-        }
-
-        private void menuitemGroups_ReorderFinished(object sender, ToolStripItemClickedEventArgs e) {
-            GroupsManager.HandleReorder(tsmiGroups.DropDownItems.Cast<ToolStripItem>());
-            SyncTaskBarMenu();
         }
 
         private void menuitemHistory_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
@@ -5484,101 +5313,6 @@ namespace QTTabBarLib {
             }
         }
 
-        // todo: CLEANNNNNNNNN
-        public void OpenGroup(string groupName, bool fForceNewWindow, bool fDisableOverrides = false) {
-            Group g;
-            if (fForceNewWindow) {
-                g = GroupsManager.GetGroup(groupName);
-                if (g == null || g.Paths.Count <= 0) { return; }
-
-                StaticReg.CreateWindowGroup = groupName;
-                using (IDLWrapper wrapper = new IDLWrapper(g.Paths[0])) {
-                    if (wrapper.Available) {
-                        OpenNewWindow(wrapper);
-                        return;
-                    }
-                }
-                StaticReg.CreateWindowGroup = string.Empty;
-                return;
-            }
-
-            NowTabsAddingRemoving = true;
-            bool flag = false;
-            string str4 = null;
-            int num = 0;
-            QTabItem tabPage = null;
-            Keys modifierKeys = ModifierKeys;
-            bool flag3 = Config.Tabs.NeverOpenSame == (modifierKeys != Keys.Shift);
-            bool flag4 = Config.Tabs.ActivateNewTab == (modifierKeys != Keys.Control);
-            bool flag5 = false;
-
-            //# Disable group hotkeys clashing with modifierKeys
-            if (fDisableOverrides) {
-                flag3 = Config.Tabs.NeverOpenSame;
-                flag4 = Config.Tabs.ActivateNewTab;
-            }
-            if (NowOpenedByGroupOpener) {
-                flag3 = true;
-                NowOpenedByGroupOpener = false;
-            }
-            g = GroupsManager.GetGroup(groupName);
-            if (g != null && g.Paths.Count != 0) {
-                try {
-                    tabControl1.SetRedraw(false);
-                    var gpaths =
-                        from gpath in g.Paths
-                        where QTUtility2.PathExists(gpath) || gpath.Contains("???")
-                        select gpath;
-
-                    foreach (var gpath in gpaths) {
-                        if (str4 == null) { str4 = gpath; }
-
-                        var list =
-                            from item in tabControl1.TabPages
-                            select item.CurrentPath.ToLower();
-
-                        if (!flag3 || !list.Contains(gpath.ToLower())) {
-                            num++;
-                            using (var wrapper2 = new IDLWrapper(gpath)) {
-                                if (wrapper2.Available) {
-                                    if (tabPage == null) {
-                                        tabPage = CreateNewTab(wrapper2);
-                                    } else {
-                                        CreateNewTab(wrapper2);
-                                    }
-                                }
-                            }
-                            flag = true;
-                        } else if (tabPage == null) {
-                            tabPage = (
-                                from item in tabControl1.TabPages
-                                where item.CurrentPath.PathEquals(gpath)
-                                select item
-                            ).FirstOrDefault();
-                        }
-                    }
-
-                    NowTabsAddingRemoving = false;
-                    bool condition =
-                        str4 != null &&
-                        (flag4 || (tabControl1.SelectedIndex == -1)) &&
-                        tabPage != null;
-                    if (condition) {
-                        if (flag) {
-                            NowTabCreated = true;
-                        }
-                        flag5 = tabPage != CurrentTab;
-                        tabControl1.SelectTab(tabPage);
-                    }
-                } finally {
-                    tabControl1.SetRedraw(true);
-                }
-                TryCallButtonBar(bbar => bbar.RefreshButtons());
-                if (flag5) QTabItem.CheckSubTexts(tabControl1);
-                NowTabsAddingRemoving = false;
-            }
-        }
-
         private bool OpenNewTab(string path, bool blockSelecting = false, bool fForceNew = false) {
             using(IDLWrapper wrapper = new IDLWrapper(path)) {
                 if(wrapper.Available) {
@@ -5751,7 +5485,6 @@ namespace QTTabBarLib {
                 if(ShellBrowser.Navigate(idlw, wFlags) != 0) {
                     QTUtility2.MakeErrorLog(null, string.Format("Failed navigation: {0}", idlw.Path));
                     MessageBox.Show(string.Format(QTUtility.TextResourcesDic["TabBar_Message"][0], idlw.Path));
-                    StaticReg.CreateWindowGroup = string.Empty;
                     StaticReg.SkipNextCapture = false;
                 }
                 QTUtility.fRestoreFolderTree = false;
@@ -5984,21 +5717,6 @@ namespace QTTabBarLib {
                 tabControl1.SetRedraw(true);
             }
             TryCallButtonBar(bbar => bbar.RefreshButtons());
-        }
-
-        internal void ReplaceByGroup(string groupName) {
-            // TODO: figure this out
-            /*
-            byte num = QTUtility.ConfigValues[0];
-            if(Config.CloseWhenGroup) {
-                QTUtility.ConfigValues[0] = (byte)(QTUtility.ConfigValues[0] & 0xdf);
-            }
-            else {
-                QTUtility.ConfigValues[0] = (byte)(QTUtility.ConfigValues[0] | 0x20);
-            }
-            */
-            OpenGroup(groupName, false);
-            //QTUtility.ConfigValues[0] = num;
         }
 
         private void RestoreLastClosed() {

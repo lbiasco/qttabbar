@@ -196,10 +196,6 @@ namespace QTTabBarLib {
                 ImageListGlobal = new ImageList { ColorDepth = ColorDepth.Depth32Bit };
                 ImageListGlobal.Images.Add("folder", GetIcon(string.Empty, false));
                 QTUtility2.log("QTUtility 创建全局文件夹图片列表");
-
-                // Load groups/apps
-                GroupsManager.LoadGroups();
-                QTUtility2.log("QTUtility 加载分组完成");
                 
                 ValidateTextResources();
 
