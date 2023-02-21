@@ -259,15 +259,6 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Change the language.;Main language;Use built-in language:;Use language file:;Plugin language files;Language File Editor;Show Language Editor...;Original;Translated;Reset all entries to their original value?;Error saving file.;简体中文;English;German 的本地化字符串。
-        /// </summary>
-        public static string Options_Page13_Language {
-            get {
-                return ResourceManager.GetString("Options_Page13_Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 View credits and version information.;Original code by {0};Lead Developer:;Other Developers:;Icons and graphics:;If you find QTTabBar useful, please consider making a small donation.;汉化修改：;Build by: {0} 的本地化字符串。
         /// </summary>
         public static string Options_Page14_About {
@@ -333,7 +324,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;Applications;Button Bar;Plugins;Language;About 的本地化字符串。
+        ///   查找类似 Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;Groups;Applications;Button Bar;Plugins;About 的本地化字符串。
         /// </summary>
         public static string TabBar_Option_Genre {
             get {

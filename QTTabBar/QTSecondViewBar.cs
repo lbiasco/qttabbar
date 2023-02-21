@@ -1710,8 +1710,8 @@ namespace QTTabBarLib
         private static void Register(Type t)
         {
             string name = t.GUID.ToString("B");
-            string str = QTUtility.IsChinese ? "左侧视图" : (QTUtility.IsJapanese ? "エクストラ ビュー (左)" : "Extra View (left)");
-            string helpStr = QTUtility.IsChinese ? "左侧扩展视图" : (QTUtility.IsJapanese ? "左にさらにビューを追加します。" : "Extra View (left)");
+            string str =  "Extra View (left)";
+            string helpStr = "Extra View (left)";
             using (RegistryKey subKey = Registry.ClassesRoot.CreateSubKey(@"CLSID\" + name))
             {
                 subKey.SetValue(null, "");
@@ -1722,12 +1722,6 @@ namespace QTTabBarLib
                 subKey.CreateSubKey("Implemented Categories\\{00021493-0000-0000-C000-000000000046}"); 
                 // subKey.CreateSubKey(@"Implemented Categories\{00021494-0000-0000-C000-000000000046}"); 
             }
-
-            /*using (RegistryKey subKey =
-                   Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Internet Explorer\\Toolbar"))
-            {
-                subKey.SetValue(name, (object)"QTSecondViewBar");
-            }*/
         }
 
         [ComUnregisterFunction]

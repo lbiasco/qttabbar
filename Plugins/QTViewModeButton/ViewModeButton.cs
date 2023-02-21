@@ -44,16 +44,7 @@ namespace QuizoPlugins {
 
             if(!this.pluginServer.TryGetLocalizedStrings(this, 7, out ResStrs)) {
                 // if localized strings not found, falls back to default strings in assembly resource of this dll.
-
-                // this plugin has 2 language resources in assemly, but usually there's no need to do like this.
-                // it only has to have a resource of your own language.
-
-                if (CultureInfo.CurrentCulture.Parent.Name == "ja")
-                    ResStrs = Resource.viewModes_Ja.Split(new char[] { ';' });
-                else if (CultureInfo.CurrentCulture.Parent.Name == "zh-CHS")
-                    ResStrs = Resource.viewModes_zh.Split(new char[] { ';' });
-                else
-                    ResStrs = Resource.viewModes.Split(new char[] { ';' });
+                ResStrs = Resource.viewModes.Split(new char[] { ';' });
             }
 
             this.pluginServer.NavigationComplete += pluginServer_NavigationComplete;

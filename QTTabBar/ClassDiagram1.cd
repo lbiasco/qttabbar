@@ -599,26 +599,6 @@
       <FileName>OptionsDialog\Options12_Plugins.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="QTTabBarLib.Options13_Language">
-    <Position X="9.5" Y="3" Width="1.5" />
-    <NestedTypes>
-      <Class Name="QTTabBarLib.Options13_Language.RefInt" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>OptionsDialog\Options13_Language.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="QTTabBarLib.Options13_Language.LangEntry" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>OptionsDialog\Options13_Language.xaml.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>DAgBACAAAEAAAAAIAAAAAAAAAAAAIhgCAAAAAAAACAA=</HashCode>
-      <FileName>OptionsDialog\Options13_Language.xaml.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="QTTabBarLib.Options14_About" Collapsed="true">
     <Position X="21.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>

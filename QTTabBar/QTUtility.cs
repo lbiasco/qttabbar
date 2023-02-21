@@ -203,10 +203,6 @@ namespace QTTabBarLib {
                 
                 AppsManager.LoadApps();
                 QTUtility2.log("QTUtility 创建全局文件夹图片列表");
-
-                if(Config.Lang.UseLangFile && File.Exists(Config.Lang.LangFile)) {
-                    TextResourcesDic = ReadLanguageFile(Config.Lang.LangFile);
-                }
                 ValidateTextResources();
 
                 using(RegistryKey key = Registry.CurrentUser.CreateSubKey(RegConst.Root)) {
@@ -236,47 +232,6 @@ namespace QTTabBarLib {
                     }
                 }
 
-               
-
-                // 配置不捕获控制面板
-                /*QTUtility2.log("QTUtility 加载忽略的路径 控制面板 网络连接");
-                string[] theNoCaptures = { "::{26EE0668-A00A-44D7-9371-BEB064C98683}",
-                                           "::{26EE0668-A00A-44D7-9371-BEB064C98683}\0",
-                                           "::{7007ACC7-3202-11D1-AAD2-00805FC1270E}" };
-                foreach (var item in theNoCaptures)
-                {
-                    if (!NoCapturePathsList.Contains(item))
-                    {
-                        NoCapturePathsList.Add(item);
-                    } 
-                }*/
-                
-                // default add ::{20D04FE0-3AEA-1069-A2D8-08002B30309D};::{26EE0668-A00A-44D7-9371-BEB064C98683}
-                /*
-                NoCapturePathsList.Add("::{26EE0668-A00A-44D7-9371-BEB064C98683}");
-                NoCapturePathsList.Add("::{26EE0668-A00A-44D7-9371-BEB064C98683}\0");
-
-                NoCapturePathsList.Add("::{7007ACC7-3202-11D1-AAD2-00805FC1270E}");// 网络连接
-                */
-
-                // 控制面板 ::{26EE0668-A00A-44D7-9371-BEB064C98683} ::{26EE0668-A00A-44D7-9371-BEB064C98683}\0
-              
-               // NoCapturePathsList.Add("::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"); // 我的电脑
-              //  NoCapturePathsList.Add("::{21EC2020-3AEA-1069-A2DD-08002B30309D}"); // 所有控制面板
-               // NoCapturePathsList.Add("::{26EE0668-A00A-44D7-9371-BEB064C98683}\\0\\::{ED834ED6-4B5A-4BFE-8F11-A626DCB6A921}");
-                
-                // 回收站      NoCapturePathsList.Add("::{645FF040-5081-101B-9F08-00AA002F954E}");
-                /*
-                                               回收站 – {645FF040-5081-101B-9F08-00AA002F954E}
-                               控制面板 – {21EC2020-3AEA-1069-A2DD-08002B30309D}
-                               运行 – {2559A1F3-21D7-11D4-BDAF-00C04F60B9F0}
-                               搜索 – {2559A1F0-21D7-11D4-BDAF-00C04F60B9F0}
-                               Internet Explorer – {871C5380-42A0-1069-A2EA-08002B30309D}
-                               管理工具 – {D20EA4E1-3957-11D2-A40B-0C5020524153}
-                               网络连接 – {7007ACC7-3202-11D1-AAD2-00805FC1270E}
-                               打印机和传真 – {2227A280-3AEA-1069-A2DE-08002B30309D}
-                                               */
-                // 配置不捕获控制面板
                 GetShellClickMode();
                 QTUtility2.log("QTUtility Get Shell Click Mode");
 
@@ -759,87 +714,13 @@ namespace QTTabBarLib {
             }
         }
 
-        public static bool IsJapanese
-        {
-            get { return CultureInfo.CurrentUICulture.Name == "ja-JP"; }
-        }
-
-        public static bool IsChinese
-        {
-            get { return CultureInfo.CurrentUICulture.Name == "zh-CN"; }
-        }
-
         public static string DefaultFontName
         {
             get
             {
-                return IsJapanese && IsWindows10AndLater ? "Yu Gothic UI" : "Arial";
+                return "Arial";
             }
         }
-
-        public static Dictionary<string, string[]> ReadLanguageFile(string path) {
-          //  const string linebreak = "\r\n";
-          //  const string linebreakLiteral = @"\r\n";
-
-            //We have to remove the first linebreak in the XML element's value, before we can split 
-            //on the linebreak. It's there in the XML, when the XML is created using the editor.
-            //Other linebreaks should be left in place, even if the line is empty, in order to preserve
-            //the relative places of the other substrings.
-            //The simplest way to do this is with a regular expression.
-
-            try {
-               /* var dictionary = XElement.Load(path).Elements().ToDictionary(
-                    element => element.Name.ToString(),
-                    element => {
-                        string[] substrings =
-                            ((string)element)
-                            .Replace(singleLinebreakAtStart, "")
-                            .Split(new[] { linebreak }, StringSplitOptions.None)
-                            .Select(
-                                s => s.Replace(linebreakLiteral, linebreak)
-                            )
-                            .ToArray();
-                        return substrings;
-                    }
-                );*/
-                const string newValue = "\r\n";
-                const string oldValue = @"\r\n";
-                Dictionary<string, string[]> dictionary = new Dictionary<string, string[]>();
-
-                using (XmlTextReader reader = new XmlTextReader(path))
-                {
-                    while (reader.Read())
-                    {
-                        if (reader.NodeType != XmlNodeType.Element || reader.Name == "root") continue;
-                        string[] str = reader.ReadString().Split(new string[] { newValue }, StringSplitOptions.RemoveEmptyEntries);
-                        for (int i = 0; i < str.Length; i++)
-                        {
-                            str[i] = str[i].Replace(oldValue, newValue);
-                        }
-                        dictionary[reader.Name] = str;
-                    }
-                    reader.Close();
-                }
-                return dictionary;
-            } catch (XmlException xmlException) {
-                string msg = String.Join("\r\n", new[] {
-                    "Invalid language file.",
-                    "",
-                    xmlException.SourceUri,
-                    "Line: " + xmlException.LineNumber,
-                    "Position: " + xmlException.LinePosition,
-                    "Detail: " + xmlException.Message
-                });
-                MessageBox.Show(msg);
-                return null;
-            } catch (Exception exception) {
-                QTUtility2.MakeErrorLog(exception);
-                return null;
-            }
-        }
-       // private string QTTabBar = @"Software\QTTabBar\Config\Misc";
-     
-
         
         public static void AsteriskPlay()
         {
@@ -1072,11 +953,7 @@ namespace QTTabBarLib {
             }
 
             // 加载内置语言,在此可添加内置语言
-            IEnumerable<KeyValuePair<string, string>> keyValuePairs = null;
-            switch (Config.Lang.BuiltInLangSelectedIndex)
-            {
-                case 0: keyValuePairs = Resources_String.ResourceManager.GetResourceStrings(); break;
-            }
+            IEnumerable<KeyValuePair<string, string>> keyValuePairs = Resources_String.ResourceManager.GetResourceStrings();
 
             // 如果加载为空， 则读取默认的应用语言
             if (null == keyValuePairs)
@@ -1084,35 +961,9 @@ namespace QTTabBarLib {
                 keyValuePairs = Resources_String.ResourceManager.GetResourceStrings();
             }
 
-            // 判断是否未使用内置语言,如果是的话，则直接遍历 内置语言
-            if ( !Config.Lang.UseLangFile )
+            foreach (var pair in keyValuePairs)
             {
-                foreach (var pair in keyValuePairs)
-                {
-                    dict[pair.Key] = pair.Value.Split(SEPARATOR_CHAR);
-                }
-            }
-            else // 加载外部语言文件
-            {
-                // 遍历内置语言
-                foreach (var pair in keyValuePairs)
-                {
-                    // 分号分隔字符串获得数组形式
-                    string[] buildinValue = pair.Value.Split(SEPARATOR_CHAR);
-                    string[] res;
-                    dict.TryGetValue(pair.Key, out res);
-                    if (res == null) // 如果从 dict 中未获取到对应的 值， 则从 内置语言覆盖掉.
-                    {
-                        dict[pair.Key] = buildinValue;
-                    }
-                    else if (res.Length < buildinValue.Length)// 如果获取到，但是于内置语言的数目不一致
-                    {
-                        int len = res.Length;
-                        Array.Resize(ref res, buildinValue.Length);
-                        Array.Copy(buildinValue, len, res, len, buildinValue.Length - len);
-                        dict[pair.Key] = res;
-                    }
-                }
+                dict[pair.Key] = pair.Value.Split(SEPARATOR_CHAR);
             }
         }
 

@@ -233,7 +233,6 @@ namespace QTTabBarLib {
         public static _Mouse Mouse      { get { return ConfigManager.LoadedConfig.mouse; } }	/*鼠标操作*/
         public static _Keys Keys        { get { return ConfigManager.LoadedConfig.keys; } }		/*快捷操作*/
         public static _Plugin Plugin    { get { return ConfigManager.LoadedConfig.plugin; } }	/*插件管理*/
-        public static _Lang Lang        { get { return ConfigManager.LoadedConfig.lang; } }		/*语言配置*/
         public static _Desktop Desktop { get { return ConfigManager.LoadedConfig.desktop; } }   /*关于信息*/
 
         public _Window window   { get; set; }
@@ -246,7 +245,6 @@ namespace QTTabBarLib {
         public _Mouse mouse     { get; set; }
         public _Keys keys       { get; set; }
         public _Plugin plugin   { get; set; }
-        public _Lang lang       { get; set; }
         public _Desktop desktop { get; set; }
 
         public Config() {
@@ -260,7 +258,6 @@ namespace QTTabBarLib {
             mouse = new _Mouse();
             keys = new _Keys();
             plugin = new _Plugin();
-            lang = new _Lang();
             desktop = new _Desktop();
         }
 
@@ -823,34 +820,6 @@ namespace QTTabBarLib {
         }
 
         [Serializable]
-        public class _Lang {
-            public string[] PluginLangFiles      { get; set; }
-            public bool UseLangFile              { get; set; }
-            public string LangFile { get; set; }
-            public string BuiltInLang { get; set; }
-            public int BuiltInLangSelectedIndex { get; set; }
-            public _Lang() {
-                UseLangFile = false;
-                LangFile = "";
-                PluginLangFiles = new string[0];
-                // WorkingConfig.lang.BuiltInLangSelectedIndex;
-                // modify by qwop  at http://q.cnblogs.com/q/14857/  // en-US
-                var uiCulture = System.Globalization.CultureInfo.InstalledUICulture.Name;
-                var lUiCulture = uiCulture.ToLower();
-                if (uiCulture.Equals("zh-CN") || lUiCulture.Equals("zh") || lUiCulture.Equals("cn"))
-                {
-                    BuiltInLangSelectedIndex = 1;
-                    BuiltInLang = "简体中文";
-                }
-                else {
-                    BuiltInLangSelectedIndex = 0;
-                    BuiltInLang = "English";
-                }
-              //  BuiltInLangSelectedIndex = 0;// English version
-            }
-        }
-
-        [Serializable]
         public class _Desktop {
             public int FirstItem                 { get; set; }
             public int SecondItem                { get; set; }
@@ -913,9 +882,7 @@ namespace QTTabBarLib {
         }
 
         public static void UpdateConfig(bool fBroadcast = true) {
-            QTUtility.TextResourcesDic = Config.Lang.UseLangFile && File.Exists(Config.Lang.LangFile)
-                    ? QTUtility.ReadLanguageFile(Config.Lang.LangFile)
-                    : null;
+            QTUtility.TextResourcesDic = null;
             QTUtility.ValidateTextResources();
             StaticReg.ClosedTabHistoryList.MaxCapacity = Config.Misc.TabHistoryCount;
             StaticReg.ExecutedPathsList.MaxCapacity = Config.Misc.FileHistoryCount;

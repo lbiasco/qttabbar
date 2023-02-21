@@ -18,8 +18,6 @@
 namespace QTPlugin {
     public enum TabBar_Options_String {
         BarDoubleClickedPath = 0x20001,
-        LanguageFilePath = 0x20000,
-        PluginLanguageFilePath = 0x20004,
         TabFontFamilyName = 0x20003,
         TabSkinPath = 0x20002
     }

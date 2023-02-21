@@ -57,14 +57,6 @@ namespace QTTabBarLib {
                 this.tabBar = tabBar;
                 shellBrowser = (QTPlugin.Interop.IShellBrowser)this.tabBar.ShellBrowser.GetIShellBrowser();
                 dicLocalizingStrings = new Dictionary<string, string[]>();
-                foreach(string file in Config.Lang.PluginLangFiles) {
-                    if(file.Length <= 0 || !File.Exists(file)) continue;
-                    var dict = QTUtility.ReadLanguageFile(file);
-                    if(dict == null) continue;
-                    foreach(var pair in dict) {
-                        dicLocalizingStrings[pair.Key] = pair.Value;
-                    }
-                }
                 LoadStartupPlugins();
             }
 
@@ -872,11 +864,6 @@ namespace QTTabBarLib {
                     }
                 }
             }
-        }
-
-        public static Dictionary<String,String[]> testQTUtilityReadLanguageFile(string path )
-        {
-            return QTUtility.ReadLanguageFile( path );
         }
 
         protected override bool IsTabSubFolderMenuVisible
