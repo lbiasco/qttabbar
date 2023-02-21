@@ -67,15 +67,9 @@ namespace QTTabBarLib {
         {
             ///////////// add default plugin by qwop 2012-07-10////////////////
             // the program data 's default plugin.
-            // string defaultQtConfigPath = Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTQuick.dll";
-            // string turnOffRepeatPath = Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\TurnOffRepeat.dll";
             string[] plugins = new string[] { 
                 Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTQuick.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\TurnOffRepeat.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\CreateNewItem.dll", 
                 Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\FolderTreeButton.dll",
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTFileTools.dll", 
-                Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\QTViewModeButton.dll", 
                // Environment.GetEnvironmentVariable("ProgramData") + @"\QTTabBar\SampleSplitButton.dll",
             };
 
@@ -86,28 +80,6 @@ namespace QTTabBarLib {
                     lists.Add(plugin);
                 }
             }
-             /* Config.BBar.ActivePluginIDs = new string[] { "QTConfig1.0.0.0(9CD80883)+Qwop.QTConfigPluginButton" };
-                Config.BBar.ButtonIndexes = QTUtility.IsXP
-                     ? new int[] { 1, 2, 0, 3, 4, 5, 0, 6, 7, 0, 11, 13, 12, 14, 15, 0, 65536, 9, 20 }
-                     : new System.Int32[] { 3, 4, 5, 0, 6, 7, 0, 17, 11, 12, 14, 15, 13, 0, 65536, 9, 19, 10 };
-				*/
-
-            /*
-            if (File.Exists(defaultQtConfigPath))
-            {
-                // plugin.
-               
-               
-              //  List<string> lists = new string[] { defaultQtConfigPath }.ToList();
-                lists.Add(defaultQtConfigPath);
-            }
-
-
-            if (File.Exists(turnOffRepeatPath))
-            {
-                lists.Add(turnOffRepeatPath);
-            }
-             */
 
             if (lists.Count > 0) {
                 PluginManager.SavePluginAssemblyPaths(lists);

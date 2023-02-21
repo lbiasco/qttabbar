@@ -88,23 +88,9 @@
                   <Component Id="QTQuick" Win64="yes" Guid="27af1a85-9a08-4c07-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
                     <File Id="f7" Name="QTQuick.dll" Source="..\Plugins\QTQuick\bin\Release\QTQuick.dll" KeyPath="yes" />
                   </Component>
-                  <Component Id="TurnOffRepeat" Win64="yes" Guid="27af1a85-9a08-4c08-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f8" Name="TurnOffRepeat.dll" Source="..\Plugins\TurnOffRepeat\bin\Release\TurnOffRepeat.dll" KeyPath="yes" />
-                  </Component>
-                  <Component Id="CreateNewItem" Win64="yes" Guid="27af1a85-9a08-4c09-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f9" Name="CreateNewItem.dll" Source="..\Plugins\CreateNewItem\bin\Release\CreateNewItem.dll" KeyPath="yes" />
-                  </Component>
-                  
-                  <Component Id="QTFileTools" Win64="yes" Guid="27af1a85-9a08-4c14-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f14" Name="QTFileTools.dll" Source="..\Plugins\QTFileTools\bin\Release\QTFileTools.dll" KeyPath="yes" />
-                  </Component>
 
                   <Component Id="FolderTreeButton" Win64="yes" Guid="27af1a85-9a08-4c15-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
                     <File Id="f15" Name="FolderTreeButton.dll" Source="..\Plugins\QTFolderButton\bin\Release\FolderTreeButton.dll" KeyPath="yes" />
-                  </Component>
-
-                  <Component Id="QTViewModeButton" Win64="yes" Guid="27af1a85-9a08-4c16-bdeb-d73fd4bd9574" DisableRegistryReflection="yes">
-                    <File Id="f16" Name="QTViewModeButton.dll" Source="..\Plugins\QTViewModeButton\bin\Release\QTViewModeButton.dll" KeyPath="yes" />
                   </Component>
 
                   <Component Id="config" Win64="yes" Guid="27af1a85-9a08-4c18-bdeb-d73fd4bd9572" DisableRegistryReflection="yes">
@@ -249,11 +235,7 @@
             <ComponentRef Id="HookLibrary64" />
             <!-- add by qwop -->
             <ComponentRef Id="QTQuick" />
-            <ComponentRef Id="TurnOffRepeat" />
-            <ComponentRef Id="CreateNewItem" />
-            <ComponentRef Id="QTFileTools" />
             <ComponentRef Id="FolderTreeButton" />
-            <ComponentRef Id="QTViewModeButton" />
           <!--<ComponentRef Id="SampleSplitButton" /> -->
             <ComponentRef Id="config" />
 
