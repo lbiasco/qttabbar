@@ -6,7 +6,6 @@
   <String Id="COMPILE_IMG">Compiling native images</String>
   <String Id="GPL_FILE">GPL3.rtf</String>
   <String Id="STANDARD_BUTTONS">QTTab Standard Buttons</String>
-  <String Id="DESKTOP_TOOL">QTTab Desktop Tool</String>
 
   <String Id="QTTABBAR_ATUOLOADER">QTTabBar AutoLoader</String>
 

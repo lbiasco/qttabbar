@@ -252,14 +252,6 @@ namespace QTTabBarLib {
 
         public QTTabBarClass() {
             QTUtility.Initialize();
-            // QTUtility2.AllocDebugConsole();
-            // Application.SetCompatibleTextRenderingDefault(false);
-            // Application.DoEvents();
-            /*try
-            {
-                ConfigurationManager.AppSettings.Set("EnableWindowsFormsHighDpiAutoResizing", "true");
-            }
-            catch (Exception) { /* Ignora l'eccezione #1# }*/
 
             try {
                 

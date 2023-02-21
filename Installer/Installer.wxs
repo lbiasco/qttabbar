@@ -155,38 +155,26 @@
                             </RegistryKey>
                         </Component>
 
-                        <?foreach compName in QTTabBarClass;QTButtonBar;QTCoTaskBarClass;AutoLoader ?>
+                        <?foreach compName in QTTabBarClass;QTButtonBar;AutoLoader ?>
                             <?if $(var.compName) = QTTabBarClass?>
                                 <?define compGUID = {D2BF470E-ED1C-487F-A333-2BD8835EB6CE}?>
                                 <?define compDesc = QTTabBar?>
                             <?elseif $(var.compName) = QTButtonBar?>
                                 <?define compGUID = {D2BF470E-ED1C-487F-A666-2BD8835EB6CE}?>
                                 <?define compDesc = !(loc.STANDARD_BUTTONS)?>
-                            <?elseif $(var.compName) = QTCoTaskBarClass?>
-                                <?define compGUID = {D2BF470E-ED1C-487F-A555-2BD8835EB6CE}?>
-                                <?define compDesc = !(loc.DESKTOP_TOOL)?>
                             <?elseif $(var.compName) = AutoLoader?>
                                 <?define compGUID = {D2BF470E-ED1C-487F-A777-2BD8835EB6CE}?>
                                 <?define compDesc = !(loc.QTTABBAR_ATUOLOADER)?>
                             <?endif?>
                             <Component Id="$(var.compName)_$(var.arch)" Win64="$(var.win64)" DisableRegistryReflection="$(var.win64)">
-                                <?if $(var.compName) = QTCoTaskBarClass?>
-                                    <?if $(var.arch) = x64?>
-                                        <Condition><![CDATA[VersionNT<>601 AND VersionNT64]]></Condition>
-                                    <?else?>
-                                        <Condition><![CDATA[VersionNT<>601]]></Condition>
-                                    <?endif?>
-                                <?elseif $(var.arch) = x64?>
+                                <?if $(var.arch) = x64?>
                                     <Condition>VersionNT64</Condition>
                                 <?endif?>
 
                                 <Class Id="$(var.compGUID)" Context="InprocServer32" Description="$(var.compDesc)" ThreadingModel="both" ForeignServer="mscoree.dll" >
                                     <ProgId Id="QTTabBarLib.$(var.compName)" Description="QTTabBarLib.$(var.compName)" />
                                 </Class>
-                                <RegistryKey Root="HKCR" Key="CLSID\$(var.compGUID)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                                    <?if $(var.compName) = QTCoTaskBarClass?>
-                                        <RegistryKey Key="Implemented Categories\{00021492-0000-0000-C000-000000000046}" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes" />
-                                    <?endif?>                                        
+                                <RegistryKey Root="HKCR" Key="CLSID\$(var.compGUID)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">                                      
                                     <RegistryKey Key="Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes" />
                                     <RegistryValue Name="MenuText" Value="$(var.compDesc)" Type="string" Action="write" />
                                     <RegistryValue Name="HelpText" Value="$(var.compDesc)" Type="string" Action="write" />
@@ -238,7 +226,6 @@
 
           <!-- COM Objects -->
                 <ComponentRef Id="QTTabBarClass_$(var.arch)" />
-                <ComponentRef Id="QTCoTaskBarClass_$(var.arch)" />
                 <ComponentRef Id="QTButtonBar_$(var.arch)" />
                 <ComponentRef Id="AutoLoader_$(var.arch)" />
             <?endforeach?>
