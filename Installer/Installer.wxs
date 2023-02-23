@@ -129,15 +129,7 @@
                                 <RegistryValue Name="{d2bf470e-ed1c-487f-a333-2bd8835eb6ce}" Value="QTTabBar" Type="string" Action="write" KeyPath="yes" />
                             </RegistryKey>
                         </Component>
-                  
-                        <Component Id="QTButtonBarReg_$(var.arch)" Win64="$(var.win64)" DisableRegistryReflection="$(var.win64)">
-                            <?if $(var.arch) = x64?>
-                                <Condition>VersionNT64</Condition>
-                            <?endif?>
-                            <RegistryKey Root="HKLM" Key="Software\Microsoft\Internet Explorer\Toolbar"   ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-                                <RegistryValue Name="{d2bf470e-ed1c-487f-a666-2bd8835eb6ce}" Value="QTButtonBar" Type="string" Action="write" KeyPath="yes"/>
-                            </RegistryKey>
-                        </Component>
+                        
                         <Component Id="AutoLoaderReg_$(var.arch)" Win64="$(var.win64)" DisableRegistryReflection="$(var.win64)">
                             <?if $(var.arch) = x64?>
                                 <Condition>VersionNT64</Condition>
@@ -155,13 +147,10 @@
                             </RegistryKey>
                         </Component>
 
-                        <?foreach compName in QTTabBarClass;QTButtonBar;AutoLoader ?>
+                        <?foreach compName in QTTabBarClass;AutoLoader ?>
                             <?if $(var.compName) = QTTabBarClass?>
                                 <?define compGUID = {D2BF470E-ED1C-487F-A333-2BD8835EB6CE}?>
                                 <?define compDesc = QTTabBar?>
-                            <?elseif $(var.compName) = QTButtonBar?>
-                                <?define compGUID = {D2BF470E-ED1C-487F-A666-2BD8835EB6CE}?>
-                                <?define compDesc = !(loc.STANDARD_BUTTONS)?>
                             <?elseif $(var.compName) = AutoLoader?>
                                 <?define compGUID = {D2BF470E-ED1C-487F-A777-2BD8835EB6CE}?>
                                 <?define compDesc = !(loc.QTTABBAR_ATUOLOADER)?>
@@ -219,14 +208,12 @@
             <?foreach arch in x86;x64 ?>
                 <!-- RegKeys -->
                 <ComponentRef Id="QTTabBarReg_$(var.arch)" />
-                <ComponentRef Id="QTButtonBarReg_$(var.arch)" />
                 <ComponentRef Id="AutoLoaderReg_$(var.arch)" />
                 <ComponentRef Id="InstallDate_$(var.arch)" />
                 <!--<ComponentRef Id="NoCaptureAt_$(var.arch)" />-->
 
           <!-- COM Objects -->
                 <ComponentRef Id="QTTabBarClass_$(var.arch)" />
-                <ComponentRef Id="QTButtonBar_$(var.arch)" />
                 <ComponentRef Id="AutoLoader_$(var.arch)" />
             <?endforeach?>
         </Feature>

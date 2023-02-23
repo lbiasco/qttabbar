@@ -75,18 +75,6 @@ namespace QTTabBarLib {
                     return HandleCustomDraw(ref msg);
 
                 case LVN.ITEMCHANGED: {
-                        // There are two things happening here.
-                        // 1. Notify plugins of selection changing: Handled through 
-                        //    undocumented WM_USER+163 message
-                        // 2. Redraw for Full Row Select: Not happening
-                    /*
-                        // TODO
-                     
-                        IntPtr ptr;
-                        if(InstanceManager.TryGetButtonBarHandle(this.hwndExplorer, out ptr)) {
-                            QTUtility2.SendCOPYDATASTRUCT(ptr, (IntPtr)13, null, (IntPtr)GetItemCount());
-                        }
-                     */
                         QTUtility2.log("LVN.ITEMCHANGED");
                         bool flag = !QTUtility.IsXP && Config.Tweaks.ToggleFullRowSelect;
                         NMLISTVIEW nmlistview2 = (NMLISTVIEW)Marshal.PtrToStructure(msg.LParam, typeof(NMLISTVIEW));

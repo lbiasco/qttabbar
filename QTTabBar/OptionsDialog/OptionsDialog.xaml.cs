@@ -178,7 +178,6 @@ namespace QTTabBarLib {
                     new Options06_Appearance    { Index = i++},
                     new Options07_Mouse         { Index = i++},
                     new Options08_Keys          { Index = i++},
-                    new Options11_ButtonBar     { Index = i++},
                     new Options14_About         { Index = i}
                 };
 

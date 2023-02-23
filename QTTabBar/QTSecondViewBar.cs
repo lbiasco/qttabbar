@@ -1211,7 +1211,6 @@ namespace QTTabBarLib
             }
             else
             {
-                // TryCallButtonBar(bbar => bbar.RefreshButtons());
                 QTabItem.CheckSubTexts(tabControl1);
             }
             if (tabControl1.TabCount > 0)
@@ -1245,7 +1244,6 @@ namespace QTTabBarLib
             {
                 if (!fSkipSync)
                 {
-                    // TryCallButtonBar(bbar => bbar.RefreshButtons());
                     QTabItem.CheckSubTexts(tabControl1);
                 }
                 return true;
@@ -1294,10 +1292,6 @@ namespace QTTabBarLib
             else
             {
                 tabControl1.SelectTab(0);
-            }
-            if (!fSkipSync)
-            {
-                // TryCallButtonBar(bbar => bbar.RefreshButtons());
             }
             return true;
         }
@@ -1803,18 +1797,8 @@ namespace QTTabBarLib
                     currentPath = currentPath + "???" + closingTab.GetLogHash(true, 0);
                 }
                 StaticReg.ClosedTabHistoryList.Add(currentPath);
-                InstanceManager.ButtonBarBroadcast(bbar => bbar.RefreshButtons(), true);
             }
         }
-
-        private static bool TryCallButtonBar(Action<QTButtonBar> action)
-        {
-            QTButtonBar bbar = InstanceManager.GetThreadButtonBar();
-            if (bbar == null) return false;
-            action(bbar);
-            return true;
-        }
-
      
         // TODO: Optional params
         protected bool CloseTab(QTabItem closingTab)
@@ -2030,7 +2014,6 @@ namespace QTTabBarLib
                     buttonForward.Enabled = (navBtnsFlag & 2) != 0;
                     buttonNavHistoryMenu.Enabled = navBtnsFlag != 0;
                 }
-                TryCallButtonBar(bbar => bbar.RefreshButtons());
                 QTabItem.CheckSubTexts(tabControl1);
                 SyncToolbarTravelButton();
             }
@@ -2302,7 +2285,6 @@ System.NullReferenceException: 未将对象引用设置到对象的实例。
                             {
                                 tabControl1.SelectTab(tabPage);
                             }
-                            TryCallButtonBar(bbar => bbar.RefreshButtons());
                             return false;
                         }
                     }
@@ -2338,7 +2320,6 @@ System.NullReferenceException: 未将对象引用设置到对象的实例。
                                                     else
                                                     {
                                                         CreateNewTab(wrapper2);
-                                                        TryCallButtonBar(bbar => bbar.RefreshButtons());
                                                         QTabItem.CheckSubTexts(tabControl1);
                                                     }
                                                     return true;
@@ -2371,7 +2352,6 @@ System.NullReferenceException: 未将对象引用设置到对象的实例。
                     else
                     {
                         CreateNewTab(idlw);
-                        TryCallButtonBar(bbar => bbar.RefreshButtons());
                         QTabItem.CheckSubTexts(tabControl1);
                     }
                 }

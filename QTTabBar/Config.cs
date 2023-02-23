@@ -156,7 +156,6 @@ namespace QTTabBarLib {
         TransparencyMinus,
         FocusFileList,
         FocusSearchBarReal,
-        FocusSearchBarBBar,
         ShowSDTSelected,
         SendToTray,
         FocusTabBar,
@@ -224,7 +223,6 @@ namespace QTTabBarLib {
         public static _Tips Tips        { get { return ConfigManager.LoadedConfig.tips; } }		/*预览提示*/
         public static _Misc Misc        { get { return ConfigManager.LoadedConfig.misc; } }		/*常规选项*/
         public static _Skin Skin        { get { return ConfigManager.LoadedConfig.skin; } }		/*标签外观*/
-        public static _BBar BBar        { get { return ConfigManager.LoadedConfig.bbar; } }		/*按钮选项*/
         public static _Mouse Mouse      { get { return ConfigManager.LoadedConfig.mouse; } }	/*鼠标操作*/
         public static _Keys Keys        { get { return ConfigManager.LoadedConfig.keys; } }		/*快捷操作*/
         public static _Plugin Plugin    { get { return ConfigManager.LoadedConfig.plugin; } }	/*插件管理*/
@@ -236,7 +234,6 @@ namespace QTTabBarLib {
         public _Tips tips       { get; set; }
         public _Misc misc       { get; set; }
         public _Skin skin       { get; set; }
-        public _BBar bbar       { get; set; }
         public _Mouse mouse     { get; set; }
         public _Keys keys       { get; set; }
         public _Plugin plugin   { get; set; }
@@ -249,7 +246,6 @@ namespace QTTabBarLib {
             tips = new _Tips();
             misc = new _Misc();
             skin = new _Skin();
-            bbar = new _BBar();
             mouse = new _Mouse();
             keys = new _Keys();
             plugin = new _Plugin();
@@ -619,25 +615,6 @@ namespace QTTabBarLib {
         }
 
         [Serializable]
-        public class _BBar {
-            public int[] ButtonIndexes           { get; set; }
-            public bool LargeButtons             { get; set; }
-            public bool LockSearchBarWidth       { get; set; }
-            public bool LockDropDownButtons      { get; set; }
-            public bool ShowButtonLabels         { get; set; }
-            public string ImageStripPath         { get; set; }
-            
-            public _BBar() {
-                ButtonIndexes	= new System.Int32[] { 3, 4, 6, 7,  17, 11, 12, 14, 15, 13,  21, 9, 19, 10 };
-                LargeButtons	= true;  // 是否显示大按钮
-                LockSearchBarWidth	=	true;  // 锁定搜索框大小
-                LockDropDownButtons	=	true;  // 锁定下拉按钮菜单顺序
-                ShowButtonLabels	=	true; // 是否显示按钮标签
-                ImageStripPath	=	"";  // 自定义图片路径
-            }
-        }
-
-        [Serializable]
         public class _Mouse {
             public bool MouseScrollsHotWnd       { get; set; }
             public Dictionary<MouseChord, BindAction> GlobalMouseActions { get; set; }
@@ -960,12 +937,6 @@ namespace QTTabBarLib {
                 using(IDLWrapper wrapper = new IDLWrapper(Config.Skin.RebarImageFile)) {
                     if(!wrapper.Available) Config.Skin.RebarImageFile = "";
                 }
-                using(IDLWrapper wrapper = new IDLWrapper(Config.BBar.ImageStripPath)) {
-                    // todo: check dimensions
-                    if(!wrapper.Available) Config.BBar.ImageStripPath = "";
-                }
-                List<int> blist = Config.BBar.ButtonIndexes.ToList();
-                Config.BBar.ButtonIndexes = blist.ToArray();
                 var keys = Config.Keys.Shortcuts;
                 Array.Resize(ref keys, (int)BindAction.KEYBOARD_ACTION_COUNT);
                 Config.Keys.Shortcuts = keys;

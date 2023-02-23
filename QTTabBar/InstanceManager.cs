@@ -27,7 +27,6 @@ namespace QTTabBarLib {
     internal static class InstanceManager {
         private static Dictionary<string, List<string>> selectDict = new Dictionary<string, List<string>>();
         private static Dictionary<Thread, QTTabBarClass> dictTabInstances = new Dictionary<Thread, QTTabBarClass>();
-        private static Dictionary<Thread, QTButtonBar> dictBBarInstances = new Dictionary<Thread, QTButtonBar>();
         private static StackDictionary<IntPtr, QTTabBarClass> sdTabHandles = new StackDictionary<IntPtr, QTTabBarClass>();
         private static ReaderWriterLock rwLockBtnBar = new ReaderWriterLock();
         private static ReaderWriterLock rwLockTabBar = new ReaderWriterLock();
@@ -417,25 +416,6 @@ namespace QTTabBarLib {
             }
         }
 
-        public static void ButtonBarBroadcast(Action<QTButtonBar> action, bool includeCurrent) {
-            LocalBBarBroadcast(action, Thread.CurrentThread);
-            if(includeCurrent) {
-                var bbar = GetThreadButtonBar();
-                if(bbar != null) action(bbar);
-            }
-            StaticBroadcast(() => LocalBBarBroadcast(action));
-        }
-
-        public static void LocalBBarBroadcast(Action<QTButtonBar> action, Thread skip = null) {
-            using(new Keychain(rwLockBtnBar, false)) {
-                foreach(var pair in dictBBarInstances) {
-                    if(pair.Key != skip) {
-                        pair.Value.BeginInvoke(action, pair.Value);
-                    }
-                }
-            }
-        }
-
         private static void ExecuteOnMainProcess(Action action, bool doAsync) {
             ICommService service = GetChannel();
             if(service == null || service.ExecuteOnMainProcess(DelToByte(action), doAsync)) {
@@ -477,14 +457,6 @@ namespace QTTabBarLib {
             }
         }
 
-        public static void RegisterButtonBar(QTButtonBar bbar) {
-            using(new Keychain(rwLockBtnBar, true)) {
-                dictBBarInstances[Thread.CurrentThread] = bbar;
-            }
-        }
-
-        
-
         public static void PushTabBarInstance(QTTabBarClass tabbar) {
             IntPtr handle = tabbar.Handle;
             using(new Keychain(rwLockTabBar, true)) {
@@ -493,12 +465,6 @@ namespace QTTabBarLib {
             }
             ICommService service = GetChannel();
             if(service != null) service.PushInstance(handle);
-        }
-
-        public static void UnregisterButtonBar() {
-            using(new Keychain(rwLockBtnBar, true)) {
-                dictBBarInstances.Remove(Thread.CurrentThread);
-            }
         }
 
         public static bool UnregisterTabBar() {
@@ -614,24 +580,6 @@ namespace QTTabBarLib {
                 QTTabBarClass tab;
                 return dictTabInstances.TryGetValue(Thread.CurrentThread, out tab) ? tab : null;
             }
-        }
-
-        public static QTButtonBar GetThreadButtonBar() {
-            using(new Keychain(rwLockBtnBar, false)) {
-                QTButtonBar bbar;
-                return dictBBarInstances.TryGetValue(Thread.CurrentThread, out bbar) ? bbar : null;
-            }
-        }
-
-        public static bool TryGetButtonBarHandle(IntPtr explorerHandle, out IntPtr ptr) {
-            // todo
-            QTButtonBar bbar;
-            if(dictBBarInstances.TryGetValue(Thread.CurrentThread, out bbar)) {
-                ptr = bbar.Handle;
-                return true;
-            }
-            ptr = IntPtr.Zero;
-            return false;
         }
 
         public static void ExecuteOnServerProcess(Action action, bool doAsync) {

@@ -297,9 +297,6 @@
     <Compile Include="OptionsDialog\Options08_Keys.xaml.cs">
       <DependentUpon>Options08_Keys.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsDialog\Options11_ButtonBar.xaml.cs">
-      <DependentUpon>Options11_ButtonBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OptionsDialog\Options14_About.xaml.cs">
       <DependentUpon>Options14_About.xaml</DependentUpon>
     </Compile>
@@ -484,9 +481,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="QTabItem.cs" />
-    <Compile Include="QTButtonBar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="QTTabBarClass.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -592,10 +586,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="OptionsDialog\Options11_ButtonBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="OptionsDialog\Options14_About.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -634,7 +624,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="ExplorerBrowser\ExplorerBrowserDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Resources\ButtonStrip24.png" />

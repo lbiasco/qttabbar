@@ -52,24 +52,12 @@ namespace QTTabBarLib {
         }
 
         public int SetSite(object site) {
-            // SetProcessDPIAware是Vista以上才有的函数，这样直接调用会使得程序不兼容XP
-            // PInvoke.SetProcessDPIAware();
-            // QTUtility2.log("QTUtility AutoLoader SetSite SetProcessDPIAware 不兼容XP");
             QTUtility2.log("SetSite");
             explorer = site as IWebBrowser2;
-            // QTUtility2.flog("QTTabBar AutoLoader SetSite ");
-            /*if(explorer == null || Process.GetCurrentProcess().ProcessName == "iexplore") {
-                QTUtility2.log("QTTabBar AutoLoader SetSite Throw Exception ");
-                // QTUtility2.flog("QTTabBar AutoLoader SetSite Throw Exception ");
-                // 基于指定的 IErrorInfo 接口，用特定失败 HRESULT 引发异常
-                Marshal.ThrowExceptionForHR(E_FAIL);
-            }
-            else {*/
 
             if (explorer != null && Process.GetCurrentProcess().ProcessName.ToLower() != "iexplore")
             {
                 QTUtility2.log("QTTabBar AutoLoader SetSite ActivateIt ");
-                // QTUtility2.flog("QTTabBar AutoLoader SetSite ActivateIt ");
                 ActivateIt();
             }
 
@@ -95,7 +83,6 @@ namespace QTTabBarLib {
 
                 object secViewBar = new Guid("{d2bf470e-ed1c-487f-a333-2bd8835eb6ce}").ToString("B");
                 object pvaTabBar = new Guid("{d2bf470e-ed1c-487f-a333-2bd8835eb6ce}").ToString("B");
-                object pvaButtonBar = new Guid("{d2bf470e-ed1c-487f-a666-2bd8835eb6ce}").ToString("B");
                 object pvarShow = true;
                 object pvarSize = null;
                 try {
@@ -103,9 +90,6 @@ namespace QTTabBarLib {
 
                     explorer.ShowBrowserBar(pvaTabBar, pvarShow, pvarSize);
                     QTUtility2.log("QTTabBar AutoLoader 显示标签");
-                    
-                    explorer.ShowBrowserBar(pvaButtonBar, pvarShow, pvarSize);
-                    QTUtility2.log("QTTabBar AutoLoader 显示工具栏");
 
                     explorer.ShowBrowserBar(secViewBar, pvarShow, pvarSize);
                     QTUtility2.log("QTTabBar AutoLoader 显示标签");

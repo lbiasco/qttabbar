@@ -1312,18 +1312,18 @@ namespace QTTabBarLib {
                             menuTextBoxTabAlias.ForeColor = SystemColors.WindowText;
                         }
                         else {
-                            menuTextBoxTabAlias.Text = QTUtility.ResMain[0x1b];
+                            menuTextBoxTabAlias.Text = QTUtility.ResMain[26];
                             menuTextBoxTabAlias.ForeColor = SystemColors.GrayText;
                         }
                         menuTextBoxTabAlias.Enabled = !tabControl1.AutoSubText;
                     }
                     if(tsmiTabOrder.DropDownItems.Count == 0) {
                         ((ToolStripDropDownMenu)tsmiTabOrder.DropDown).ShowImageMargin = false;
-                        ToolStripMenuItem item2 = new ToolStripMenuItem(QTUtility.ResMain[0x1d]);
-                        ToolStripMenuItem item3 = new ToolStripMenuItem(QTUtility.ResMain[30]);
-                        ToolStripMenuItem item4 = new ToolStripMenuItem(QTUtility.ResMain[0x1f]);
+                        ToolStripMenuItem item2 = new ToolStripMenuItem(QTUtility.ResMain[28]);
+                        ToolStripMenuItem item3 = new ToolStripMenuItem(QTUtility.ResMain[29]);
+                        ToolStripMenuItem item4 = new ToolStripMenuItem(QTUtility.ResMain[30]);
                         ToolStripSeparator separator = new ToolStripSeparator();
-                        ToolStripMenuItem item5 = new ToolStripMenuItem(QTUtility.ResMain[0x22]);
+                        ToolStripMenuItem item5 = new ToolStripMenuItem(QTUtility.ResMain[33]);
                         item2.Name = "Name";
                         item3.Name = "Drive";
                         item4.Name = "Active";
@@ -1357,7 +1357,7 @@ namespace QTTabBarLib {
             List<ToolStripItem> list = new List<ToolStripItem>();
             List<LogData> branches = item.Branches;
             if(branches.Count > 0) {
-                ToolStripMenuItem item2 = new ToolStripMenuItem(QTUtility.ResMain[0x18]);
+                ToolStripMenuItem item2 = new ToolStripMenuItem(QTUtility.ResMain[23]);
                 item2.Tag = item;
                 item2.DropDown = new DropDownMenuBase(container, true, true);
                 item2.DropDown.ImageList = QTUtility.ImageListGlobal;
@@ -1665,7 +1665,6 @@ namespace QTTabBarLib {
                     break;
 
                 case BindAction.ShowRecentTabsMenu:
-                    TryCallButtonBar(bbar => bbar.ClickItem(QTButtonBar.BII_RECENTTAB));
                     break;
 
                 case BindAction.CopySelectedPaths:
@@ -1696,7 +1695,6 @@ namespace QTTabBarLib {
 
                 case BindAction.ToggleTopMost:
                     ToggleTopMost(); // todo: move v to < ?
-                    TryCallButtonBar(bbar => bbar.RefreshButtons());
                     break;
 
                 case BindAction.TransparencyPlus:
@@ -1729,10 +1727,6 @@ namespace QTTabBarLib {
                                 num11 = (byte)(num11 - 12);
                             }
                             PInvoke.SetLayeredWindowAttributes(ExplorerHandle, 0, num11, 2);
-                            // IM!
-                            //if(InstanceManager.TryGetButtonBarHandle(ExplorerHandle, out ptr3)) {
-                            //    QTUtility2.SendCOPYDATASTRUCT(ptr3, (IntPtr)7, "track", (IntPtr)num11);
-                            //}
                             if(num11 == 0xff) {
                                 PInvoke.SetWindowLongPtr(ExplorerHandle, -20, PInvoke.Ptr_OP_AND(PInvoke.GetWindowLongPtr(ExplorerHandle, -20), 0xfff7ffff));
                             }
@@ -1748,10 +1742,6 @@ namespace QTTabBarLib {
                     if(QTUtility.IsXP) return false;
                     // todo, I don't think this works
                     PInvoke.SetFocus(GetSearchBand_Edit());
-                    break;
-
-                case BindAction.FocusSearchBarBBar:
-                    TryCallButtonBar(bbar => { return bbar.FocusSearchBox(); });
                     break;
 
                 case BindAction.ShowSDTSelected:
@@ -2889,42 +2879,6 @@ namespace QTTabBarLib {
 
         // 消息捕获
         private bool explorerController_MessageCaptured(ref Message msg) {
-            /* DebugUtil.WriteLine(
-                 "QTTabBarClass explorerController_MessageCaptured:"
-                 + ((msg.Msg == WM_BROWSEOBJECT) ? ("WM_BROWSEOBJECT") : (" "))
-                 + ((msg.Msg == WM.CLOSE) ? ("CLOSE") : (" "))
-                 + ((msg.Msg == WM_HEADERINALLVIEWS) ? ("WM_HEADERINALLVIEWS") : (" "))
-                 + ((msg.Msg == WM_SHOWHIDEBARS) ? ("WM_SHOWHIDEBARS") : (" "))
-                 + ((msg.Msg == WM_CHECKPULSE) ? ("WM_CHECKPULSE") : (" "))
-                 + ((msg.Msg == WM.SETTINGCHANGE) ? ("CLOSE") : (" "))
-                 + ((msg.Msg == WM.NCLBUTTONDOWN) ? ("WM.NCLBUTTONDOWN") : (" "))
-                 + ((msg.Msg == WM.NCRBUTTONDOWN) ? ("WM.NCRBUTTONDOWN") : (" "))
-                 + ((msg.Msg == WM.MOVE) ? ("WM.MOVE") : (" "))
-                 + ((msg.Msg == WM.SIZE) ? ("WM.SIZE") : (" "))
-                 + ((msg.Msg == WM.ACTIVATE) ? ("WM.ACTIVATE") : (" "))
-                 + ((msg.Msg == WM.NCMBUTTONDOWN) ? ("WM.NCMBUTTONDOWN") : (" "))
-                 + ((msg.Msg == WM.NCXBUTTONDOWN) ? ("WM.NCXBUTTONDOWN") : (" "))
-                 +  ((msg.Msg == WM.SYSCOMMAND) ? ("WM.SYSCOMMAND") : (" "))
-                 +  ((msg.Msg == WM.POWERBROADCAST) ? ("WM.POWERBROADCAST") : (" "))
-                 +  ((msg.Msg == WM.DEVICECHANGE) ? ("WM.DEVICECHANGE") : (" "))
-                 +  ((msg.Msg == WM.PARENTNOTIFY) ? ("WM.PARENTNOTIFY") : (" "))
-                 );
-             
-            if (msg.Msg == 793)
-            {
-                // 鼠标中键的操作
-                QTUtility2.log("explorerController_MessageCaptured WM.APPCOMMAND msg: " + msg.Msg +
-                               " msg.HWnd: " + msg.HWnd +
-                               " msg.Result: " + msg.Result +
-                               " msg.lParam: " + msg.LParam +
-                               " msg.WParam: " + msg.WParam);
-            }
-            QTUtility2.log("explorerController_MessageCaptured WM.APPCOMMAND msg: " + msg.Msg +
-                           " msg.HWnd: " + msg.HWnd +
-                           " msg.Result: " + msg.Result +
-                           " msg.lParam: " + msg.LParam +
-                           " msg.WParam: " + msg.WParam);
-             */
             if (msg.Msg != WM.CLOSE) {
                 iSequential_WM_CLOSE = 0;
             }
@@ -2964,15 +2918,13 @@ namespace QTTabBarLib {
             else if(msg.Msg == WM_SHOWHIDEBARS) {
                 // Todo: hardcoding = bad
                 object pvaTabBar = new Guid("{d2bf470e-ed1c-487f-a333-2bd8835eb6ce}").ToString("B");
-                object pvaButtonBar = new Guid("{d2bf470e-ed1c-487f-a666-2bd8835eb6ce}").ToString("B");
                 object pvarShow = (msg.WParam != IntPtr.Zero);
                 object pvarSize = null;
                 try {
                     Explorer.ShowBrowserBar(pvaTabBar, pvarShow, pvarSize);
-                    Explorer.ShowBrowserBar(pvaButtonBar, pvarShow, pvarSize);
                     msg.Result = (IntPtr)1;
 
-                    QTUtility2.flog("QTTabBarClass WM_SHOWHIDEBARS ShowBrowserBar tabBar buttonBar");
+                    QTUtility2.flog("QTTabBarClass WM_SHOWHIDEBARS ShowBrowsserBar tabBar buttonBar");
                 }
                 catch(COMException e) {
                     QTUtility2.MakeErrorLog(e, "WM_SHOWHIDEBARS ShowBrowserBar");
@@ -3783,7 +3735,6 @@ namespace QTTabBarLib {
         }
 
         private static void HandleF5() {
-            TryCallButtonBar(bbar => { return bbar.RefreshSearchBox(false); });
         }
 
         private void HandleFileDrop(IntPtr hDrop) {
@@ -3952,9 +3903,6 @@ namespace QTTabBarLib {
                     return true;
                 }
                 flag = (control == tabControl1) || (handle == Handle);
-                if(!flag && InstanceManager.TryGetButtonBarHandle(ExplorerHandle, out ptr2)) {
-                    flag = (handle == ptr2) || (handle == listView.Handle); // TODO make sure this didn't break
-                }
             }
             if(!flag) {
                 Keys modifierKeys = ModifierKeys;
@@ -4331,19 +4279,6 @@ namespace QTTabBarLib {
             QTUtility2.log("QTTabBarClass InitializeOpenedWindow  InstallHooks");
             InstallHooks();
             
-            // 创建工具栏
-            QTUtility2.log("QTTabBarClass TryCallButtonBar ");
-            if (!TryCallButtonBar(bbar => { return bbar.CreateItems(); }))
-            {
-                // Try again in 2 seconds
-                Timer timer = new Timer { Interval = 2000 };
-                timer.Tick += (sender, args) => {
-                    QTUtility2.log("QTTabBarClass timer.Tick TryCallButtonBar ");
-                    TryCallButtonBar(bbar => {return bbar.CreateItems();});
-                    timer.Stop();
-                };
-                timer.Start();
-            }
             if(QTUtility.WindowAlpha < 0xff) {
                 QTUtility2.log("QTTabBarClass SetWindowLongPtr SetLayeredWindowAttributes");
                 PInvoke.SetWindowLongPtr(ExplorerHandle, -20, PInvoke.Ptr_OP_OR(PInvoke.GetWindowLongPtr(ExplorerHandle, -20), 0x80000));
@@ -4383,12 +4318,12 @@ namespace QTTabBarLib {
                 // 最近关闭
                 tsmiLastActiv = new ToolStripMenuItem(QTUtility.ResMain[14]);
                 tsmiExecuted = new ToolStripMenuItem(QTUtility.ResMain[15]);
-                tsmiBrowseFolder = new ToolStripMenuItem(QTUtility.ResMain[0x10] + "...");
-                tsmiCloseAllButCurrent = new ToolStripMenuItem(QTUtility.ResMain[0x11]);
-                tsmiCloseWindow = new ToolStripMenuItem(QTUtility.ResMain[0x12]);
-                tsmiOption = new ToolStripMenuItem(QTUtility.ResMain[0x13]);
-                tsmiLockToolbar = new ToolStripMenuItem(QTUtility.ResMain[0x20]);
-                tsmiMergeWindows = new ToolStripMenuItem(QTUtility.ResMain[0x21]);
+                tsmiBrowseFolder = new ToolStripMenuItem(QTUtility.ResMain[16] + "...");
+                tsmiCloseAllButCurrent = new ToolStripMenuItem(QTUtility.ResMain[17]);
+                tsmiCloseWindow = new ToolStripMenuItem(QTUtility.ResMain[18]);
+                tsmiOption = new ToolStripMenuItem(QTUtility.ResMain[19]);
+                tsmiLockToolbar = new ToolStripMenuItem(QTUtility.ResMain[31]);
+                tsmiMergeWindows = new ToolStripMenuItem(QTUtility.ResMain[32]);
                 tssep_Sys1 = new ToolStripSeparator();
                 tssep_Sys2 = new ToolStripSeparator();
                 if (contextMenuSys != null)
@@ -4427,12 +4362,12 @@ namespace QTTabBarLib {
                 tsmiUndoClose.Text = QTUtility.ResMain[13];
                 tsmiLastActiv.Text = QTUtility.ResMain[14];
                 tsmiExecuted.Text = QTUtility.ResMain[15];
-                tsmiBrowseFolder.Text = QTUtility.ResMain[0x10] + "...";
-                tsmiCloseAllButCurrent.Text = QTUtility.ResMain[0x11];
-                tsmiCloseWindow.Text = QTUtility.ResMain[0x12];
-                tsmiOption.Text = QTUtility.ResMain[0x13];
-                tsmiLockToolbar.Text = QTUtility.ResMain[0x20];
-                tsmiMergeWindows.Text = QTUtility.ResMain[0x21];
+                tsmiBrowseFolder.Text = QTUtility.ResMain[16] + "...";
+                tsmiCloseAllButCurrent.Text = QTUtility.ResMain[17];
+                tsmiCloseWindow.Text = QTUtility.ResMain[18];
+                tsmiOption.Text = QTUtility.ResMain[19];
+                tsmiLockToolbar.Text = QTUtility.ResMain[31];
+                tsmiMergeWindows.Text = QTUtility.ResMain[32];
             }
         }
 
@@ -4455,7 +4390,7 @@ namespace QTTabBarLib {
                     tsmiCopy = new ToolStripMenuItem(QTUtility.ResMain[9]);
                     tsmiProp = new ToolStripMenuItem(QTUtility.ResMain[10]);
                     tsmiHistory = new ToolStripMenuItem(QTUtility.ResMain[11]);
-                    tsmiTabOrder = new ToolStripMenuItem(QTUtility.ResMain[0x1c]);
+                    tsmiTabOrder = new ToolStripMenuItem(QTUtility.ResMain[27]);
 
                     /** add by qwop 2012-07-13.*/
                     int len = QTUtility.ResMain.Length;
@@ -4482,7 +4417,7 @@ namespace QTTabBarLib {
                     tsmiHistory.DropDown = new DropDownMenuBase(components, true, true, true);
                     tsmiHistory.DropDownItemClicked += menuitemHistory_DropDownItemClicked;
                     (tsmiHistory.DropDown).ImageList = QTUtility.ImageListGlobal;
-                    menuTextBoxTabAlias.Text = menuTextBoxTabAlias.ToolTipText = QTUtility.ResMain[0x1b];
+                    menuTextBoxTabAlias.Text = menuTextBoxTabAlias.ToolTipText = QTUtility.ResMain[26];
                     menuTextBoxTabAlias.GotFocus += menuTextBoxTabAlias_GotFocus;
                     menuTextBoxTabAlias.LostFocus += menuTextBoxTabAlias_LostFocus;
                     menuTextBoxTabAlias.KeyPress += menuTextBoxTabAlias_KeyPress;
@@ -4504,8 +4439,8 @@ namespace QTTabBarLib {
                     tsmiCopy.Text = QTUtility.ResMain[9];
                     tsmiProp.Text = QTUtility.ResMain[10];
                     tsmiHistory.Text = QTUtility.ResMain[11];
-                    tsmiTabOrder.Text = QTUtility.ResMain[0x1c];
-                    menuTextBoxTabAlias.Text = menuTextBoxTabAlias.ToolTipText = QTUtility.ResMain[0x1b];
+                    tsmiTabOrder.Text = QTUtility.ResMain[27];
+                    menuTextBoxTabAlias.Text = menuTextBoxTabAlias.ToolTipText = QTUtility.ResMain[26];
                 }
             }
             catch (Exception e) {
@@ -4544,10 +4479,6 @@ namespace QTTabBarLib {
 
 
         
-
-        private void ListView_ItemCountChanged(int count) {
-            TryCallButtonBar(bbar => { return bbar.RefreshStatusText(); });
-        }
 
         private bool ListView_SelectionActivated(Keys modKeys) {
             QTUtility2.log("ListView_SelectionActivated");
@@ -4769,7 +4700,7 @@ namespace QTTabBarLib {
                 ExtendedListViewCommon elvc = listView as ExtendedListViewCommon;
                 if (elvc != null)
                 {
-                    elvc.ItemCountChanged += ListView_ItemCountChanged;
+                    //elvc.ItemCountChanged += ListView_ItemCountChanged;
                     elvc.SelectionActivated += ListView_SelectionActivated;
                     elvc.SelectionChanged += ListView_SelectionChanged;
                     elvc.MiddleClick += ListView_MiddleClick;
@@ -4889,7 +4820,7 @@ namespace QTTabBarLib {
             if(menuTextBoxTabAlias.TextBox.ImeMode != ImeMode.On) {
                 menuTextBoxTabAlias.TextBox.ImeMode = ImeMode.On;
             }
-            if(menuTextBoxTabAlias.Text == QTUtility.ResMain[0x1b]) {
+            if(menuTextBoxTabAlias.Text == QTUtility.ResMain[26]) {
                 menuTextBoxTabAlias.Text = string.Empty;
             }
         }
@@ -4904,9 +4835,9 @@ namespace QTTabBarLib {
         private void menuTextBoxTabAlias_LostFocus(object sender, EventArgs e) {
             string text = menuTextBoxTabAlias.Text;
             if(text.Length == 0) {
-                menuTextBoxTabAlias.Text = QTUtility.ResMain[0x1b];
+                menuTextBoxTabAlias.Text = QTUtility.ResMain[26];
             }
-            if((text != QTUtility.ResMain[0x1b]) && (ContextMenuedTab != null)) {
+            if((text != QTUtility.ResMain[26]) && (ContextMenuedTab != null)) {
                 ContextMenuedTab.Comment = text;
                 ContextMenuedTab.RefreshRectangle();
                 tabControl1.Refresh();
@@ -4927,7 +4858,6 @@ namespace QTTabBarLib {
                             // todo: make it less dumb.
                         }
                         QTabItem.CheckSubTexts(main.tabControl1);
-                        TryCallButtonBar(bbar => bbar.RefreshButtons());
                     }
                     finally {
                         main.tabControl1.SetRedraw(true);
@@ -5351,7 +5281,6 @@ namespace QTTabBarLib {
                             if(Config.Tabs.ActivateNewTab) {
                                 tabControl1.SelectTab(tabPage);
                             }
-                            TryCallButtonBar(bbar => bbar.RefreshButtons());
                             return false;
                         }
                     }
@@ -5377,7 +5306,6 @@ namespace QTTabBarLib {
                                                     }
                                                     else {
                                                         CreateNewTab(wrapper2);
-                                                        TryCallButtonBar(bbar => bbar.RefreshButtons());
                                                         QTabItem.CheckSubTexts(tabControl1);
                                                     }
                                                     return true;
@@ -5405,7 +5333,6 @@ namespace QTTabBarLib {
                     }
                     else {
                         CreateNewTab(idlw);
-                        TryCallButtonBar(bbar => bbar.RefreshButtons());
                         QTabItem.CheckSubTexts(tabControl1);
                     }
                 }
@@ -5491,105 +5418,6 @@ namespace QTTabBarLib {
             }
         }
 
-        private void pluginitems_Click(object sender, EventArgs e) {
-            ToolStripMenuItem item = (ToolStripMenuItem)sender;
-            string name = item.Name;
-            MenuType tag = (MenuType)item.Tag;
-        }
-
-        // I don't like this.  It seems wrong to have this here instead of in the button bar class.
-        // todo: consider moving all this to the button bar and just making the necessary methods internal.
-        internal void ProcessButtonBarClick(int buttonID) {
-            switch(buttonID) {
-                case QTButtonBar.BII_NAVIGATION_BACK: // 导航后退
-                    NavigateCurrentTab(true);
-                    break;
-
-                case QTButtonBar.BII_NAVIGATION_FWRD: // 导航前进
-                    NavigateCurrentTab(true);
-                    break;
-
-                case QTButtonBar.BII_NEWWINDOW:// 新窗口
-                    using(IDLWrapper wrapper4 = new IDLWrapper(CurrentTab.CurrentIDL)) {
-                        OpenNewWindow(wrapper4);
-                    }
-                    break;
-
-                case QTButtonBar.BII_CLONE:// 复制标签
-                    QTUtility2.log("QTTabBarLib.QTTabBarClass.CloneCurrentTab 复制标签");
-                    CloneCurrentTab();
-                    break;
-
-                case QTButtonBar.BII_LOCK: // 锁定按钮
-                    CurrentTab.TabLocked = !CurrentTab.TabLocked;
-                    // CurrentTab.CurrentPath
-                    if (CurrentTab.TabLocked)
-                    {
-                        StaticReg.LockedTabsToRestoreList.Add(CurrentTab.CurrentPath);
-                    }
-                    break;
-                case QTButtonBar.BII_TOPMOST: // 置顶
-                    ToggleTopMost();
-                    break;
-
-                case QTButtonBar.BII_CLOSE_CURRENT:// 关闭当前
-                    if(Config.Window.CloseBtnClosesSingleTab) {
-                        CloseTab(CurrentTab);
-                        return;
-                    }
-                    CloseTab(CurrentTab, false);
-                    if(tabControl1.TabCount == 0) {
-                        WindowUtils.CloseExplorer(ExplorerHandle, 2);
-                    }
-                    break;
-
-                case QTButtonBar.BII_CLOSE_ALLBUTCURRENT: // 关闭其他
-                    if(tabControl1.TabCount > 1) {
-                        CloseAllTabsExcept(CurrentTab);
-                    }
-                    break;
-
-                case QTButtonBar.BII_CLOSE_WINDOW: // 关窗口
-                    using (RegistryKey key = Registry.CurrentUser.CreateSubKey(RegConst.Root))
-                    {
-                        string[] list = (from QTabItem item2 in tabControl1.TabPages
-                                         where item2.TabLocked
-                                         select item2.CurrentPath).ToArray();
-
-                        // MessageBox.Show(String.Join(",", list));
-                        QTUtility2.WriteRegBinary(list, "TabsLocked", key);
-                    }
-                    WindowUtils.CloseExplorer(ExplorerHandle, 1);
-                    break;
-
-                case QTButtonBar.BII_CLOSE_LEFT: // 关闭左侧
-                    CloseLeftRight(true, -1);
-                    break;
-
-                case QTButtonBar.BII_CLOSE_RIGHT: // 关闭右侧
-                    CloseLeftRight(false, -1);
-                    break;
-
-                case QTButtonBar.BII_GOUPONELEVEL: // 跳转上一级
-                    QTUtility2.log("QTButtonBar.BII_GOUPONELEVEL UpOneLevel");
-                    UpOneLevel();
-                    break;
-
-                case QTButtonBar.BII_REFRESH_SHELLBROWSER: // 刷新
-                    Explorer.Refresh();
-                    break;
-
-                case QTButtonBar.BII_SHELLSEARCH: // 显示搜索栏
-                    ShowSearchBar(true);
-                    break;
-                
-                // add by qwop.
-                case QTButtonBar.BII_OPTION:
-                    OptionsDialog.Open();
-                    break;
-            }
-        }
-
         private void QTTabBarClass_MouseDoubleClick(object sender, MouseEventArgs e) {
             MouseChord chord = QTUtility.MakeMouseChord(MouseChord.Double, ModifierKeys);
             BindAction action;
@@ -5654,7 +5482,6 @@ namespace QTTabBarLib {
             ShellBrowser.SetUsingListView(Config.Tweaks.ForceSysListView);
             tabControl1.ResumeLayout();
             ResumeLayout(true);
-            TryCallButtonBar(bbar => { return bbar.CreateItems(); });
         }
 
         [ComRegisterFunction]
@@ -5716,7 +5543,6 @@ namespace QTTabBarLib {
             finally {
                 tabControl1.SetRedraw(true);
             }
-            TryCallButtonBar(bbar => bbar.RefreshButtons());
         }
 
         private void RestoreLastClosed() {
@@ -6230,7 +6056,6 @@ namespace QTTabBarLib {
                 NowTabDragging = false;
                 DraggingTab = null;
                 DraggingDestRect = Rectangle.Empty;
-                TryCallButtonBar(bbar => bbar.RefreshButtons());
                 e.Cancel = true;
             }
             else if(!Explorer.Busy) {
@@ -6348,7 +6173,6 @@ namespace QTTabBarLib {
                                         Point p = new Point(rectangle3.X + (rectangle3.Width / 2), rectangle3.Y + (Config.Skin.TabHeight / 2));
                                         Cursor.Position = tabControl1.PointToScreen(p);
                                     }
-                                    TryCallButtonBar(bbar => bbar.RefreshButtons());
                                 }
                             }
                             else if((curTabCloning != null) && (Cursor == curTabCloning)) {
@@ -6382,12 +6206,6 @@ namespace QTTabBarLib {
                         else {
                             RECT rect2;
                             IntPtr ptr;
-                            if(InstanceManager.TryGetButtonBarHandle(ExplorerHandle, out ptr) && PInvoke.IsWindowVisible(ptr)) {
-                                PInvoke.GetWindowRect(ptr, out rect2);
-                                if(PInvoke.PtInRect(ref rect2, pt)) {
-                                    cloning = true;
-                                }
-                            }
                             PInvoke.GetWindowRect(Handle, out rect2);
                             if(PInvoke.PtInRect(ref rect2, pt)) {
                                 cloning = true;
@@ -6409,7 +6227,6 @@ namespace QTTabBarLib {
                 NowTabDragging = false;
                 DraggingTab = null;
                 DraggingDestRect = Rectangle.Empty;
-                TryCallButtonBar(bbar => bbar.RefreshButtons());
             }
             else if(e.Button == MouseButtons.Middle && !Explorer.Busy && tabMouseOn != null) {
                 DraggingTab = null;
@@ -6670,11 +6487,6 @@ namespace QTTabBarLib {
             }
         }
 
-        public static bool TryCallButtonBar(Func<QTButtonBar, bool> func) {
-            QTButtonBar bbar = InstanceManager.GetThreadButtonBar();
-            return bbar != null && func(bbar);
-        }
-
         internal bool TryGetSelection(out Address[] adSelectedItems, out string pathFocused, bool fDisplayName) {
             return ShellBrowser.TryGetSelection(out adSelectedItems, out pathFocused, fDisplayName);
         }
@@ -6904,16 +6716,7 @@ namespace QTTabBarLib {
                     currentPath = currentPath + "???" + closingTab.GetLogHash(true, 0);
                 }
                 StaticReg.ClosedTabHistoryList.Add(currentPath);
-                InstanceManager.ButtonBarBroadcast(bbar => bbar.RefreshButtons(), true);
             }
-        }
-
-        private static bool TryCallButtonBar(Action<QTButtonBar> action)
-        {
-            QTButtonBar bbar = InstanceManager.GetThreadButtonBar();
-            if (bbar == null) return false;
-            action(bbar);
-            return true;
         }
 
         // 关闭标签， 如果锁定则不关闭
@@ -6940,7 +6743,6 @@ namespace QTTabBarLib {
             {
                 if (!fSkipSync)
                 {
-                    TryCallButtonBar(bbar => bbar.RefreshButtons());
                     QTabItem.CheckSubTexts(tabControl1);
                 }
                 return true;
@@ -6990,10 +6792,6 @@ namespace QTTabBarLib {
             {
                 tabControl1.SelectTab(0);
             }
-            if (!fSkipSync)
-            {
-                TryCallButtonBar(bbar => bbar.RefreshButtons());
-            }
             return true;
         }
 
@@ -7014,7 +6812,6 @@ namespace QTTabBarLib {
             }
             else
             {
-                TryCallButtonBar(bbar => bbar.RefreshButtons());
                 QTabItem.CheckSubTexts(tabControl1);
             }
             if (tabControl1.TabCount > 0)
@@ -7226,7 +7023,6 @@ namespace QTTabBarLib {
                     buttonForward.Enabled = (navBtnsFlag & 2) != 0;
                     buttonNavHistoryMenu.Enabled = navBtnsFlag != 0;
                 }
-                TryCallButtonBar(bbar => bbar.RefreshButtons());
                 QTabItem.CheckSubTexts(tabControl1);
                 SyncToolbarTravelButton();
             }

@@ -8,8 +8,6 @@ namespace QTTabBarLib
     internal enum Toolbar
     {
         TabBar = 0,
-        [Obsolete]
-        ButtonBar = 1,
         CommandBar1 = 1,
         CommandBar2 = 2,
         [Obsolete]

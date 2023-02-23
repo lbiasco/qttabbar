@@ -79,7 +79,7 @@ namespace QTTabBarLib {
                                 if(fCanRemove) {
                                     // "Remove this item from menu"
                                     PInvoke.AppendMenu(contextMenu.Handle, MF_SEPARATOR, IntPtr.Zero, null);
-                                    PInvoke.AppendMenu(contextMenu.Handle, MF_STRING, new IntPtr(COMMANDID_REMOVEITEM), QTUtility.ResMain[25]);
+                                    PInvoke.AppendMenu(contextMenu.Handle, MF_STRING, new IntPtr(COMMANDID_REMOVEITEM), QTUtility.ResMain[24]);
                                 }
                                 if(idlw.HasPath && idlw.Path.Length > 3 && idlw.IsFileSystem /*&& ( idlw.IsFileSystemFolder || idlw.IsFileSystemFile )*/ ) {
                                     // "Open containing folder"
@@ -87,7 +87,7 @@ namespace QTTabBarLib {
                                         // separator
                                         PInvoke.AppendMenu(contextMenu.Handle, MF_SEPARATOR, IntPtr.Zero, null);
                                     }
-                                    PInvoke.AppendMenu(contextMenu.Handle, MF_STRING, new IntPtr(COMMANDID_OPENPARENT), QTUtility.ResMain[26]);
+                                    PInvoke.AppendMenu(contextMenu.Handle, MF_STRING, new IntPtr(COMMANDID_OPENPARENT), QTUtility.ResMain[25]);
                                 }
 
                                 uint commandID = PInvoke.TrackPopupMenu(contextMenu.Handle, TPM_RETURNCMD, pntShow.X, pntShow.Y, 0, hwndParent, IntPtr.Zero);
@@ -147,7 +147,7 @@ namespace QTTabBarLib {
                 // if failed to create shell context menu, show 'remove this' menu instead
                 if(fCanRemove) {
                     using(ContextMenu contextMenu = new ContextMenu()) {
-                        PInvoke.AppendMenu(contextMenu.Handle, MF_STRING, new IntPtr(COMMANDID_REMOVEITEM), QTUtility.ResMain[25]);
+                        PInvoke.AppendMenu(contextMenu.Handle, MF_STRING, new IntPtr(COMMANDID_REMOVEITEM), QTUtility.ResMain[24]);
 
                         if(COMMANDID_REMOVEITEM == PInvoke.TrackPopupMenu(contextMenu.Handle, TPM_RETURNCMD, pntShow.X, pntShow.Y, 0, hwndParent, IntPtr.Zero)) {
                             return COMMANDID_REMOVEITEM;
