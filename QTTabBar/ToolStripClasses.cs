@@ -377,22 +377,6 @@ namespace QTTabBarLib {
             }
         }
 
-        protected override void OnRenderItemCheck(ToolStripItemImageRenderEventArgs e) {
-            ToolStripDropDownMenu toolStrip = e.ToolStrip as ToolStripDropDownMenu;
-            if(toolStrip != null) {
-                if(!toolStrip.ShowImageMargin) {
-                    e.Graphics.DrawImage(bmpCheck, new Rectangle(3, 0, 0x16, Math.Min(0x16, e.Item.Size.Height)));
-                }
-                else {
-                    Rectangle rect = new Rectangle(7, 2, 0x12, 0x12);
-                    using(SolidBrush brush = new SolidBrush(Color.FromArgb(0x80, SystemColors.Highlight))) {
-                        e.Graphics.FillRectangle(brush, rect);
-                        e.Graphics.DrawRectangle(SystemPens.Highlight, rect);
-                    }
-                }
-            }
-        }
-
         protected override void OnRenderItemImage(ToolStripItemImageRenderEventArgs e) {
             QMenuItem item = e.Item as QMenuItem;
             if(((item != null) && item.IsCut) && ((e.ImageRectangle != Rectangle.Empty) && (e.Image != null))) {

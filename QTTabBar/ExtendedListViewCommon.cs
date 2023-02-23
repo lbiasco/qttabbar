@@ -304,24 +304,6 @@ namespace QTTabBarLib {
                     QTUtility2.log("SetWaterMarkImage " + dToutiaoX1080IntellijIdea3Png);
                     SetWaterMarkImage(bmp);
                 }
-                /*switch (this.ViewPerceivedType)
-                {
-                    case PerceivedType.Unknown:
-                        bmp = ExplorerManager.GetWatermarkImage(BmpCacheKey.Watermark_General);
-                        break;
-                    case PerceivedType.Image:
-                        bmp = ExplorerManager.GetWatermarkImage(BmpCacheKey.Watermark_Picture);
-                        break;
-                    case PerceivedType.Audio:
-                        bmp = ExplorerManager.GetWatermarkImage(BmpCacheKey.Watermark_Music);
-                        break;
-                    case PerceivedType.Video:
-                        bmp = ExplorerManager.GetWatermarkImage(BmpCacheKey.Watermark_Movie);
-                        break;
-                    case PerceivedType.Document:
-                        bmp = ExplorerManager.GetWatermarkImage(BmpCacheKey.Watermark_Document);
-                        break;
-                }*/
             }
             else
             {

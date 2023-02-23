@@ -636,14 +636,6 @@ namespace QTTabBarLib {
         public static void SyncToolbarColorThreads()
         {
             IntPtr lParam = MCR.MAKELPARAM(1, 0);
-            /*foreach (IntPtr explorerManager in (IEnumerable<IntPtr>)InstanceManager.ExplorerManagers())
-            {
-                if (PInvoke.IsWindow(explorerManager))
-                {
-                    PInvoke.PostMessage(explorerManager, 47616, (IntPtr)9, lParam);
-                    lParam = IntPtr.Zero;
-                }
-            }*/
             foreach(var pair in dictTabInstances) {
 
                 if (PInvoke.IsWindow(pair.Value.Handle))
