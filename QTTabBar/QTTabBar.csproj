@@ -278,9 +278,6 @@
     <Compile Include="Multilang\_RemotableHandle.cs" />
     <Compile Include="Multilang\_ULARGE_INTEGER.cs" />
     <Compile Include="Multilang\__MIDL_IWinTypes_0009.cs" />
-    <Compile Include="OptionsDialog\Options03_Tweaks.xaml.cs">
-      <DependentUpon>Options03_Tweaks.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OptionsDialog\Options04_Tooltips.xaml.cs">
       <DependentUpon>Options04_Tooltips.xaml</DependentUpon>
     </Compile>
@@ -551,10 +548,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ExplorerBrowser\ExplorerBrowser.WPF.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="OptionsDialog\Options03_Tweaks.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -76,7 +76,7 @@ namespace QTTabBarLib {
 
                 case LVN.ITEMCHANGED: {
                         QTUtility2.log("LVN.ITEMCHANGED");
-                        bool flag = !QTUtility.IsXP && Config.Tweaks.ToggleFullRowSelect;
+                        bool flag = false;
                         NMLISTVIEW nmlistview2 = (NMLISTVIEW)Marshal.PtrToStructure(msg.LParam, typeof(NMLISTVIEW));
                         if(nmlistview2.uChanged == 8 /*LVIF_STATE*/) {
                             uint newSelected = nmlistview2.uNewState & LVIS.SELECTED;
@@ -110,9 +110,6 @@ namespace QTTabBarLib {
                     if(Config.Tips.ShowSubDirTips) {
                         HideSubDirTip(1);
                     }
-                    if(Config.Tweaks.AlternateRowColors && (ShellBrowser.ViewMode == FVM.DETAILS)) {
-                        PInvoke.InvalidateRect(nmhdr.hwndFrom, IntPtr.Zero, true);
-                    }
                     ShellViewController.DefWndProc(ref msg);
                     OnItemCountChanged();
                     return true;
@@ -137,13 +134,6 @@ namespace QTTabBarLib {
                 }
 
                 case LVN.ODSTATECHANGED:
-                    // FullRowSelect doesn't look possible anyway, so whatever.
-                    if(!QTUtility.IsXP && Config.Tweaks.ToggleFullRowSelect) {
-                        NMLVODSTATECHANGE nmlvodstatechange = (NMLVODSTATECHANGE)Marshal.PtrToStructure(msg.LParam, typeof(NMLVODSTATECHANGE));
-                        if(((nmlvodstatechange.uNewState & 2) == 2) && (ShellBrowser.ViewMode == FVM.DETAILS)) {
-                            PInvoke.SendMessage(nmlvodstatechange.hdr.hwndFrom, LVM.REDRAWITEMS, (IntPtr)nmlvodstatechange.iFrom, (IntPtr)nmlvodstatechange.iTo);
-                        }
-                    }
                     break;
 
                 case LVN.HOTTRACK:
@@ -180,14 +170,6 @@ namespace QTTabBarLib {
                     // This is just for file renaming, which there's no need to
                     // mess with in Windows 7.
                     ShellViewController.DefWndProc(ref msg);
-                    if(QTUtility.IsXP && Config.Tweaks.KillExtWhileRenaming) {
-                        NMLVDISPINFO nmlvdispinfo = (NMLVDISPINFO)Marshal.PtrToStructure(msg.LParam, typeof(NMLVDISPINFO));
-                        if(nmlvdispinfo.item.lParam != IntPtr.Zero) {
-                            using(IDLWrapper idl = ShellBrowser.ILAppend(nmlvdispinfo.item.lParam)) {
-                                OnFileRename(idl);
-                            }
-                        }
-                    }
                     break;
 
                 case LVN.ENDLABELEDIT: {
@@ -205,18 +187,8 @@ namespace QTTabBarLib {
             if (ShellBrowser == null) return;  // qt desktop tool 启用空指针问题 https://www.yuque.com/indiff/lc0r1g/kqgkr0
             if(ShellBrowser.ViewMode != FVM.DETAILS) return;
             uint flags = 0;
-            if(Config.Tweaks.DetailsGridLines) {
-                flags |= LVS_EX.GRIDLINES;
-            }
-            else {
-                flags &= ~LVS_EX.GRIDLINES;
-            }
-            if(Config.Tweaks.ToggleFullRowSelect ^ !QTUtility.IsXP) {
-                flags |= LVS_EX.FULLROWSELECT;
-            }
-            else {
-                flags &= ~LVS_EX.FULLROWSELECT;
-            }
+            flags &= ~LVS_EX.GRIDLINES;
+            flags &= ~LVS_EX.FULLROWSELECT;
             const uint mask = LVS_EX.GRIDLINES | LVS_EX.FULLROWSELECT;
             PInvoke.SendMessage(Handle, LVM.SETEXTENDEDLISTVIEWSTYLE, (IntPtr)mask, (IntPtr)flags);
         }
@@ -441,217 +413,6 @@ namespace QTTabBarLib {
 
         // 处理自定义绘制
         private bool HandleCustomDraw(ref Message msg) {
-            // TODO this needs to be cleaned
-            if(Config.Tweaks.AlternateRowColors && (ShellBrowser.ViewMode == FVM.DETAILS)) {
-                NMLVCUSTOMDRAW structure = (NMLVCUSTOMDRAW)Marshal.PtrToStructure(msg.LParam, typeof(NMLVCUSTOMDRAW));
-                int dwItemSpec = 0;
-                if((ulong)structure.nmcd.dwItemSpec < Int32.MaxValue) {
-                    dwItemSpec = (int)structure.nmcd.dwItemSpec;
-                }
-                switch(structure.nmcd.dwDrawStage) {
-                    case CDDS.SUBITEM | CDDS.ITEMPREPAINT:
-                        iListViewItemState = (int)PInvoke.SendMessage(
-                                ListViewController.Handle, 
-                                LVM.GETITEMSTATE, 
-                                structure.nmcd.dwItemSpec,
-                                (IntPtr)(LVIS.FOCUSED | LVIS.SELECTED | LVIS.DROPHILITED));
-
-                        if(!QTUtility.IsXP) {
-                            int num4 = lstColumnFMT[structure.iSubItem];
-                            structure.clrTextBk = QTUtility2.MakeCOLORREF(Config.Tweaks.AltRowBackgroundColor);
-                            structure.clrText = QTUtility2.MakeCOLORREF(Config.Tweaks.AltRowForegroundColor);
-                            Marshal.StructureToPtr(structure, msg.LParam, false);
-                            bool drawingHotItem = (dwItemSpec == GetHotItem());
-                            bool fullRowSel = !Config.Tweaks.ToggleFullRowSelect;
-
-                            msg.Result = (IntPtr)(CDRF.NEWFONT);
-                            if(structure.iSubItem == 0 && !drawingHotItem) {
-                                if(iListViewItemState == 0 && (num4 & 0x600) != 0) {
-                                    msg.Result = (IntPtr)(CDRF.NEWFONT | CDRF.NOTIFYPOSTPAINT);
-                                }
-                                else if(iListViewItemState == LVIS.FOCUSED && !fullRowSel) {
-                                    msg.Result = (IntPtr)(CDRF.NEWFONT | CDRF.NOTIFYPOSTPAINT);
-                                }
-                            }
-
-                            if(structure.iSubItem > 0 && (!fullRowSel || !drawingHotItem)) {
-                                if(!fullRowSel || (iListViewItemState & (LVIS.SELECTED | LVIS.DROPHILITED)) == 0) {
-                                    using(Graphics graphics = Graphics.FromHdc(structure.nmcd.hdc)) {
-                                        if(sbAlternate == null ||
-                                           sbAlternate.Color != Config.Tweaks.AltRowBackgroundColor) {
-                                            sbAlternate = new SolidBrush(Config.Tweaks.AltRowBackgroundColor);
-                                        }
-                                        graphics.FillRectangle(sbAlternate, structure.nmcd.rc.ToRectangle());
-                                    }
-                                }
-                            }
-                        }
-                        else {
-                            msg.Result = (IntPtr)(CDRF.NOTIFYPOSTPAINT);
-                        }
-                        return true;
-
-                    case CDDS.SUBITEM | CDDS.ITEMPOSTPAINT: {
-                            RECT rc = structure.nmcd.rc;
-                            if(QTUtility.IsXP) {
-                                rc = PInvoke.ListView_GetItemRect(ListViewController.Handle, dwItemSpec, structure.iSubItem, 2);
-                            }
-                            else {
-                                rc.left += 0x10;
-                            }
-                            bool flag3 = false;
-                            bool flag4 = false;
-                            bool flag5 = Config.Tweaks.DetailsGridLines;
-                            bool flag6 = Config.Tweaks.ToggleFullRowSelect ^ !QTUtility.IsXP;
-                            bool flag7 = false;
-                            if(QTUtility.IsXP && QTUtility.fSingleClick) {
-                                flag7 = (dwItemSpec == GetHotItem());
-                            }
-                            LVITEM lvitem = new LVITEM();
-                            lvitem.pszText = Marshal.AllocHGlobal(520);
-                            lvitem.cchTextMax = 260;
-                            lvitem.iSubItem = structure.iSubItem;
-                            lvitem.iItem = dwItemSpec;
-                            lvitem.mask = 1;
-                            IntPtr ptr3 = Marshal.AllocHGlobal(Marshal.SizeOf(lvitem));
-                            Marshal.StructureToPtr(lvitem, ptr3, false);
-                            PInvoke.SendMessage(ListViewController.Handle, LVM.GETITEM, IntPtr.Zero, ptr3);
-                            if(sbAlternate == null) {
-                                sbAlternate = new SolidBrush(Config.Tweaks.AltRowBackgroundColor);
-                            }
-                            using(Graphics graphics2 = Graphics.FromHdc(structure.nmcd.hdc)) {
-                                Rectangle rect = rc.ToRectangle();
-                                if(flag5) {
-                                    rect = new Rectangle(rc.left + 1, rc.top, rc.Width - 1, rc.Height - 1);
-                                }
-                                graphics2.FillRectangle(sbAlternate, rect);
-                                if(QTUtility.IsXP && ((structure.iSubItem == 0) || flag6)) {
-                                    flag4 = (iListViewItemState & 8) == 8;
-                                    if((iListViewItemState != 0) && (((iListViewItemState == 1) && fListViewHasFocus) || (iListViewItemState != 1))) {
-                                        int width;
-                                        if(flag6) {
-                                            width = rc.Width;
-                                        }
-                                        else {
-                                            width = 8 + ((int)PInvoke.SendMessage(ListViewController.Handle, LVM.GETSTRINGWIDTH, IntPtr.Zero, lvitem.pszText));
-                                            if(width > rc.Width) {
-                                                width = rc.Width;
-                                            }
-                                        }
-                                        Rectangle rectangle2 = new Rectangle(rc.left, rc.top, width, flag5 ? (rc.Height - 1) : rc.Height);
-                                        if(((iListViewItemState & 2) == 2) || flag4) {
-                                            if(flag4) {
-                                                graphics2.FillRectangle(SystemBrushes.Highlight, rectangle2);
-                                            }
-                                            else if(QTUtility.fSingleClick && flag7) {
-                                                graphics2.FillRectangle(fListViewHasFocus ? SystemBrushes.HotTrack : SystemBrushes.Control, rectangle2);
-                                            }
-                                            else {
-                                                graphics2.FillRectangle(fListViewHasFocus ? SystemBrushes.Highlight : SystemBrushes.Control, rectangle2);
-                                            }
-                                            flag3 = true;
-                                        }
-                                        if((fListViewHasFocus && ((iListViewItemState & 1) == 1)) && !flag6) {
-                                            ControlPaint.DrawFocusRectangle(graphics2, rectangle2);
-                                        }
-                                    }
-                                }
-                                if(!QTUtility.IsXP && ((iListViewItemState & 1) == 1)) {
-                                    int num6 = rc.Width;
-                                    if(!flag6) {
-                                        num6 = 4 + ((int)PInvoke.SendMessage(ListViewController.Handle, LVM.GETSTRINGWIDTH, IntPtr.Zero, lvitem.pszText));
-                                        if(num6 > rc.Width) {
-                                            num6 = rc.Width;
-                                        }
-                                    }
-                                    Rectangle rectangle = new Rectangle(rc.left + 1, rc.top + 1, num6, flag5 ? (rc.Height - 2) : (rc.Height - 1));
-                                    ControlPaint.DrawFocusRectangle(graphics2, rectangle);
-                                }
-                            }
-                            IntPtr zero = IntPtr.Zero;
-                            IntPtr hgdiobj = IntPtr.Zero;
-                            if(QTUtility.IsXP && QTUtility.fSingleClick) {
-                                LOGFONT logfont;
-                                zero = PInvoke.GetCurrentObject(structure.nmcd.hdc, 6);
-                                PInvoke.GetObject(zero, Marshal.SizeOf(typeof(LOGFONT)), out logfont);
-                                if((structure.iSubItem == 0) || flag6) {
-                                    logfont.lfUnderline = ((QTUtility.iIconUnderLineVal == 3) || flag7) ? ((byte)1) : ((byte)0);
-                                }
-                                else {
-                                    logfont.lfUnderline = 0;
-                                }
-                                hgdiobj = PInvoke.CreateFontIndirect(ref logfont);
-                                PInvoke.SelectObject(structure.nmcd.hdc, hgdiobj);
-                            }
-                            PInvoke.SetBkMode(structure.nmcd.hdc, 1);
-                            int dwDTFormat = 0x8824;
-                            if(QTUtility.IsRTL ? ((lstColumnFMT[structure.iSubItem] & 1) == 0) : ((lstColumnFMT[structure.iSubItem] & 1) == 1)) {
-                                if(QTUtility.IsRTL) {
-                                    dwDTFormat &= -3;
-                                }
-                                else {
-                                    dwDTFormat |= 2;
-                                }
-                                rc.right -= 6;
-                            }
-                            else if(structure.iSubItem == 0) {
-                                rc.left += 2;
-                                rc.right -= 2;
-                            }
-                            else {
-                                rc.left += 6;
-                            }
-                            if(flag3) {
-                                PInvoke.SetTextColor(structure.nmcd.hdc, QTUtility2.MakeCOLORREF((fListViewHasFocus || flag4) ? SystemColors.HighlightText : SystemColors.WindowText));
-                            }
-                            else {
-                                PInvoke.SetTextColor(structure.nmcd.hdc, QTUtility2.MakeCOLORREF(Config.Tweaks.AltRowForegroundColor));
-                            }
-                            PInvoke.DrawTextExW(structure.nmcd.hdc, lvitem.pszText, -1, ref rc, dwDTFormat, IntPtr.Zero);
-                            Marshal.FreeHGlobal(lvitem.pszText);
-                            Marshal.FreeHGlobal(ptr3);
-                            msg.Result = IntPtr.Zero;
-                            if(zero != IntPtr.Zero) {
-                                PInvoke.SelectObject(structure.nmcd.hdc, zero);
-                            }
-                            if(hgdiobj != IntPtr.Zero) {
-                                PInvoke.DeleteObject(hgdiobj);
-                            }
-                            return true;
-                        }
-                    case CDDS.ITEMPREPAINT:
-                        if((dwItemSpec % 2) == 0) {
-                            msg.Result = (IntPtr)0x20;
-                            return true;
-                        }
-                        msg.Result = IntPtr.Zero;
-                        return false;
-
-                    case CDDS.PREPAINT: {
-                            HDITEM hditem = new HDITEM();
-                            hditem.mask = 4;
-                            IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf(hditem));
-                            Marshal.StructureToPtr(hditem, ptr, false);
-                            IntPtr hWnd = PInvoke.SendMessage(ListViewController.Handle, LVM.GETHEADER, IntPtr.Zero, IntPtr.Zero);
-                            int num2 = (int)PInvoke.SendMessage(hWnd, 0x1200, IntPtr.Zero, IntPtr.Zero);
-                            if(lstColumnFMT == null) {
-                                lstColumnFMT = new List<int>();
-                            }
-                            else {
-                                lstColumnFMT.Clear();
-                            }
-                            for(int i = 0; i < num2; i++) {
-                                PInvoke.SendMessage(hWnd, 0x120b, (IntPtr)i, ptr);
-                                hditem = (HDITEM)Marshal.PtrToStructure(ptr, typeof(HDITEM));
-                                lstColumnFMT.Add(hditem.fmt);
-                            }
-                            Marshal.FreeHGlobal(ptr);
-                            fListViewHasFocus = ListViewController.Handle == PInvoke.GetFocus();
-                            msg.Result = (IntPtr)0x20;
-                            return true;
-                        }
-                }
-            }
             return false;
         }
 

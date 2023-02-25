@@ -2457,7 +2457,7 @@ namespace QTTabBarLib {
                 return true;
             }
             else if(msg.Msg == WM_HEADERINALLVIEWS) {
-                msg.Result = (IntPtr)(Config.Tweaks.AlwaysShowHeaders ? 1 : 0);
+                msg.Result = (IntPtr)(0);
                 return true;
             }
             else if(msg.Msg == WM_SHOWHIDEBARS) {
@@ -3312,13 +3312,7 @@ namespace QTTabBarLib {
                     if(!QTUtility.IsXP) {
                         if(listView.HasFocus()) {
                             if(!fRepeat) {
-                                if(Config.Tweaks.BackspaceUpLevel) {
-                                    QTUtility2.log("QTTabBarClass BackspaceUpLevel UpOneLevel");
-                                    UpOneLevel();
-                                }
-                                else {
-                                    NavigateCurrentTab(true);
-                                }
+                                NavigateCurrentTab(true);
                             }
                             return true;
                         }
@@ -3348,9 +3342,7 @@ namespace QTTabBarLib {
                     return true;
 
                 case Keys.F2:
-                    if(!Config.Tweaks.F2Selection) {
-                        listView.HandleF2();
-                    }
+                    listView.HandleF2();
                     return false;
 
             }
@@ -3435,8 +3427,7 @@ namespace QTTabBarLib {
             }
             if(!flag) {
                 Keys modifierKeys = ModifierKeys;
-                if((QTUtility.IsXP && modifierKeys == Keys.Control) ||
-                        (Config.Tweaks.HorizontalScroll && modifierKeys == Keys.Shift)) {
+                if((QTUtility.IsXP && modifierKeys == Keys.Control)) {
                     if(listView.MouseIsOverListView()) {
                         switch(modifierKeys) {
                             case Keys.Shift:
@@ -4494,9 +4485,6 @@ namespace QTTabBarLib {
                 bandObjectSite.QueryService(ExplorerGUIDs.IID_IShellBrowser, ExplorerGUIDs.IID_IUnknown, out obj2);
                 ShellBrowser = new ShellBrowserEx((IShellBrowser)obj2);
                 HookLibManager.InitShellBrowserHook(ShellBrowser.GetIShellBrowser());
-                if(Config.Tweaks.ForceSysListView) {
-                    ShellBrowser.SetUsingListView(true);
-                }
                 bandObjectSite.QueryService(ExplorerGUIDs.IID_ITravelLogStg, ExplorerGUIDs.IID_ITravelLogStg, out obj3);
                 TravelLog = (ITravelLogStg)obj3;
             }
@@ -4823,7 +4811,7 @@ namespace QTTabBarLib {
             foreach(QTabItem item in tabControl1.TabPages) {
                 item.RefreshRectangle();
             }
-            ShellBrowser.SetUsingListView(Config.Tweaks.ForceSysListView);
+            //ShellBrowser.SetUsingListView(false);
             tabControl1.ResumeLayout();
             ResumeLayout(true);
         }

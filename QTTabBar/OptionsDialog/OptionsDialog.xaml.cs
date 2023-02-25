@@ -172,7 +172,6 @@ namespace QTTabBarLib {
                 tabbedPanel.ItemsSource = new OptionsDialogTab[] {
                     new Options01_Window        { Index = i++},
                     new Options02_Tabs          { Index = i++},
-                    new Options03_Tweaks        { Index = i++},
                     new Options04_Tooltips      { Index = i++},
                     new Options05_General       { Index = i++},
                     new Options06_Appearance    { Index = i++},

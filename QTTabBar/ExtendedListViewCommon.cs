@@ -960,12 +960,6 @@ namespace QTTabBarLib {
                     HideSubDirTip(3);
                 }
             }
-
-            if(Config.Tweaks.WrapArrowKeySelection && Control.ModifierKeys == Keys.None) {
-                if(key == Keys.Left || key == Keys.Right || key == Keys.Up || key == Keys.Down) {
-                    return HandleCursorLoop(key);
-                }
-            }
             
             return false;
         }

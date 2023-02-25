@@ -111,7 +111,7 @@ namespace QTTabBarLib {
 
     /* 
     * @描述: 绑定动作
-    */  
+    */
     // WARNING
     // reordering these will break existing settings.
     public enum BindAction
@@ -139,9 +139,12 @@ namespace QTTabBarLib {
         LockCurrent,
         LockAll,
         BrowseFolder,
+        CreateNewGroup,
         ShowOptions,
         ShowToolbarMenu,
         ShowTabMenuCurrent,
+        ShowGroupMenu,
+        ShowUserAppsMenu,
         ShowRecentTabsMenu,
         ShowRecentFilesMenu,
         NewFile,
@@ -152,8 +155,11 @@ namespace QTTabBarLib {
         CopyCurrentFolderName,
         ChecksumSelected,
         ToggleTopMost,
+        TransparencyPlus,
+        TransparencyMinus,
         FocusFileList,
         FocusSearchBarReal,
+        FocusSearchBarBBar,
         ShowSDTSelected,
         SendToTray,
         FocusTabBar,
@@ -197,19 +203,10 @@ namespace QTTabBarLib {
         ShowTabSubfolderMenu,
         CloseAllButThis,
 
-        /******* add by indiff start *****/
-        // add by indiff 2012 08 10
-        OpenCmd
-        ,
-        ItemsOpenInNewTabNoSel //add bool indiff 2012 08 12
-            /***** add by indiff end *****/
-
-          /******* add by indiff start *****/
-            // add by indiff 2019 12 16 19:27
-        , SortTab 
-        , TurnOffRepeat
-        //add bool indiff 2019 12 16 19:27
-        , KEYBOARD_ACTION_COUNT2
+        OpenCmd, 
+        ItemsOpenInNewTabNoSel, 
+        SortTab, 
+        TurnOffRepeat
     }
 
     [Serializable]
@@ -217,7 +214,6 @@ namespace QTTabBarLib {
 		// Shortcuts to the loaded config, for convenience.
         public static _Window Window    { get { return ConfigManager.LoadedConfig.window; } }	/*窗口行为*/
         public static _Tabs Tabs        { get { return ConfigManager.LoadedConfig.tabs; } }		/*标签行为*/
-        public static _Tweaks Tweaks    { get { return ConfigManager.LoadedConfig.tweaks; } }	/*调整工具*/
         public static _Tips Tips        { get { return ConfigManager.LoadedConfig.tips; } }		/*预览提示*/
         public static _Misc Misc        { get { return ConfigManager.LoadedConfig.misc; } }		/*常规选项*/
         public static _Skin Skin        { get { return ConfigManager.LoadedConfig.skin; } }		/*标签外观*/
@@ -228,7 +224,6 @@ namespace QTTabBarLib {
 
         public _Window window   { get; set; }
         public _Tabs tabs       { get; set; }
-        public _Tweaks tweaks   { get; set; }
         public _Tips tips       { get; set; }
         public _Misc misc       { get; set; }
         public _Skin skin       { get; set; }
@@ -240,7 +235,6 @@ namespace QTTabBarLib {
         public Config() {
             window = new _Window();
             tabs = new _Tabs();
-            tweaks = new _Tweaks();
             tips = new _Tips();
             misc = new _Misc();
             skin = new _Skin();
@@ -311,61 +305,6 @@ namespace QTTabBarLib {
                 MultipleTabRows = true; // 允许多行标签
                 ActiveTabOnBottomRow = true; // 始终将活动标签置于底部行
                 NeedPlusButton = true; // 是否蓝色新增标签按钮
-            }
-        }
-
-        [Serializable]
-        public class _Tweaks {
-            public bool AlwaysShowHeaders        { get; set; }
-            public bool KillExtWhileRenaming     { get; set; }
-            public bool RedirectLibraryFolders   { get; set; }
-            public bool F2Selection              { get; set; }
-            public bool WrapArrowKeySelection    { get; set; }
-            public bool BackspaceUpLevel         { get; set; }
-            public bool HorizontalScroll         { get; set; }
-            public bool ForceSysListView         { get; set; }
-            public bool ToggleFullRowSelect      { get; set; }
-            public bool DetailsGridLines         { get; set; }
-            public bool AlternateRowColors       { get; set; }
-            public Color AltRowBackgroundColor   { get; set; }
-            public Color AltRowForegroundColor   { get; set; }
-
-            public _Tweaks() {
-               /* AlwaysShowHeaders = !QTUtility.IsXP && !QTUtility.IsWin7;
-                KillExtWhileRenaming = true;
-                RedirectLibraryFolders = false;
-                F2Selection = true;
-                WrapArrowKeySelection = false;
-                BackspaceUpLevel = QTUtility.IsXP;
-                HorizontalScroll = true;
-                ForceSysListView = false;
-                ToggleFullRowSelect = false;
-                DetailsGridLines = false;
-                AlternateRowColors = false;
-                AltRowForegroundColor = SystemColors.WindowText;
-                AltRowBackgroundColor = QTUtility2.MakeColor(0xfaf5f1); */
-
-                /* qwop's default value.*/
-                if (QTUtility.IsWin7)
-                {
-                    AlwaysShowHeaders = true;  // 显示列标题
-                }
-                else {
-                    AlwaysShowHeaders = false;  // 显示列标题
-                }
-                
-                RedirectLibraryFolders = false; // 使用库文件夹
-                KillExtWhileRenaming = true;  // 重命名时候，不使用扩展名
-                F2Selection = false; // 禁用F2重命名周期选择
-                WrapArrowKeySelection = true; // 使用箭头键时候环绕选择文件夹
-                BackspaceUpLevel = true;  // backupspace 键回到上一级目录
-                HorizontalScroll = true;  // 同时按住shift滚轮水平滚动
-                ForceSysListView = false; // 启用旧版列表视图控件
-                ToggleFullRowSelect = QTUtility.IsXP; // 详细视图选中整行
-                DetailsGridLines = false;  // 网格线
-                AlternateRowColors = false;// 交替行颜色
-                AltRowForegroundColor = SystemColors.WindowText;
-                AltRowBackgroundColor = QTUtility2.MakeColor(0xfaf5f1);
             }
         }
 
@@ -870,11 +809,6 @@ namespace QTTabBarLib {
                 var keys = Config.Keys.Shortcuts;
                 Array.Resize(ref keys, (int)BindAction.KEYBOARD_ACTION_COUNT);
                 Config.Keys.Shortcuts = keys;
-                if(QTUtility.IsXP) Config.Tweaks.AlwaysShowHeaders = false;
-                if(!QTUtility.IsWin7) Config.Tweaks.RedirectLibraryFolders = false;
-                if(!QTUtility.IsXP) Config.Tweaks.KillExtWhileRenaming = true;
-                if(QTUtility.IsXP) Config.Tweaks.BackspaceUpLevel = true;
-                if(!QTUtility.IsWin7) Config.Tweaks.ForceSysListView = true;
             } catch (Exception e)
             {
                 QTUtility2.MakeErrorLog(e, "ReadConfig foreach category");

@@ -149,16 +149,7 @@ namespace QTTabBarLib {
                 return ResourceManager.GetString("Options_Page02_Tabs", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   查找类似 Enable or disable tweaks to Explorer&apos;s List View.;Tweaks that can be used with either List View;Display column headers in all view modes (Windows Vista/7);Use the standard filesystem view for Library folders (Windows 7);Deselect file extension when renaming files (Windows XP);Cycle selection with F2 while renaming;Wrap around when moving the selection with the arrow keys;Backspace goes up one level (Windows Vista/7);Scrolling with mouse wheel while holding shift scrolls horizontally;Tweaks that can only be  [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        public static string Options_Page03_Tweaks {
-            get {
-                return ResourceManager.GetString("Options_Page03_Tweaks", resourceCulture);
-            }
-        }
-        
+
         /// <summary>
         ///   查找类似 Change the behavior of Subfolder and Preview tooltips.;Subfolder Tips;Enable Subfolder Tips;Only with the Shift key is down;Show files;Show preview tooltips when mousing over menu items;Preview tooltips;Enable preview tooltips;Only with the Shift key is down;Show file information below images;Maximum Width x Height:;Font:;Text filetypes;Image and Video filetypes 的本地化字符串。
         /// </summary>
@@ -252,7 +243,7 @@ namespace QTTabBarLib {
         }
         
         /// <summary>
-        ///   查找类似 Window;Tabs;Tweaks;Tooltips;General;Appearance;Mouse;Keys;About 的本地化字符串。
+        ///   查找类似 Window;Tabs;Tooltips;General;Appearance;Mouse;Keys;About 的本地化字符串。
         /// </summary>
         public static string TabBar_Option_Genre {
             get {
