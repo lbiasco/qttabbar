@@ -7,11 +7,6 @@ using Microsoft.Win32;
 
 namespace QTTabBarLib {
     internal static class StaticReg {
-        internal static bool SkipNextCapture {
-            get { return (int)(ReadProp("SkipNextCapture") ?? 0) != 0; }
-            set { WriteProp("SkipNextCapture", value ? 1 : 0); }
-        }
-
         internal static UniqueList<string> ExecutedPathsList = new UniqueList<string>(16); // todo
         internal static UniqueList<string> ClosedTabHistoryList = new UniqueList<string>(16); // todo
 

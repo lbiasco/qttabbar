@@ -1247,51 +1247,6 @@ namespace QTTabBarLib {
             }
         }
 
-        public static void KillCurrentProcess()
-        {
-            // TASKKILL /T /PID 1230 /PID 1241 /PID 1253 
-            // Process process = Process.GetCurrentProcess();
-            // process.Kill();
-
-            // Process.Start("TASKKILL /F /T /PID " + process.Id);
-            /*string MyDosComLine1;
-            MyDosComLine1 = "TASKKILL /F /T /PID " + process.Id;//返回根目录命令
-            Process myProcess = new Process();
-            myProcess.StartInfo.FileName = "cmd.exe ";//打开DOS控制平台 
-            myProcess.StartInfo.UseShellExecute = false;
-            myProcess.StartInfo.CreateNoWindow = true;//是否显示DOS窗口，true代表隐藏;
-            myProcess.StartInfo.RedirectStandardInput = true;
-            myProcess.StartInfo.RedirectStandardOutput = true;
-            myProcess.StartInfo.RedirectStandardError = true;
-            myProcess.Start();
-            StreamWriter sIn = myProcess.StandardInput;//标准输入流 
-            sIn.AutoFlush = true;
-            StreamReader sOut = myProcess.StandardOutput;//标准输入流
-            StreamReader sErr = myProcess.StandardError;//标准错误流 
-            sIn.Write(MyDosComLine1 + Environment.NewLine);//第一条DOS命令
-            log("write dos command: " + MyDosComLine1);
-            sIn.Write("exit" + Environment.NewLine);//第四条DOS命令，退出DOS窗口
-            if (myProcess.HasExited == false)
-            {
-                myProcess.Kill();
-            }
-            else
-            {
-            }
-            sIn.Close();
-            sOut.Close();
-            sErr.Close();
-            myProcess.Close();*/
-        }
-
-        public static void Wait4SelectFiles(WebBrowserClass explorer)
-        {
-            if (explorer != null)
-            {
-                explorer.Quit();
-            }
-        }
-
         public static bool IsEmpty(string text)
         {
             return null == text || text.Trim().Length == 0;

@@ -210,7 +210,6 @@
                 <ComponentRef Id="QTTabBarReg_$(var.arch)" />
                 <ComponentRef Id="AutoLoaderReg_$(var.arch)" />
                 <ComponentRef Id="InstallDate_$(var.arch)" />
-                <!--<ComponentRef Id="NoCaptureAt_$(var.arch)" />-->
 
           <!-- COM Objects -->
                 <ComponentRef Id="QTTabBarClass_$(var.arch)" />

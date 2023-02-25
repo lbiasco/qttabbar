@@ -254,42 +254,23 @@ namespace QTTabBarLib {
 
         [Serializable]
         public class _Window {
-            public bool CaptureNewWindows        { get; set; }
-            public bool CaptureWeChatSelection   { get; set; } // 是否捕获微信、qq、钉钉的打开文件选中状态
             public bool RestoreSession           { get; set; }
             public bool RestoreOnlyLocked        { get; set; }
             public bool CloseBtnClosesUnlocked   { get; set; }
             public bool CloseBtnClosesSingleTab  { get; set; }
             public bool TrayOnClose              { get; set; }
             public bool TrayOnMinimize           { get; set; }
-            public bool AutoHookWindow           { get; set; }
            
             public byte[] DefaultLocation        { get; set; }
 
             public _Window() {
-              /*  CaptureNewWindows = false;
-                RestoreSession = false;
-                RestoreOnlyLocked = false;
-                CloseBtnClosesSingleTab = true;
-                CloseBtnClosesUnlocked = false;
-                TrayOnClose = false;
-                TrayOnMinimize = false;*/
-
-                /* qwop's default value. */
-                CaptureNewWindows = true;
-                CaptureWeChatSelection = true;
                 RestoreSession = true;
                 RestoreOnlyLocked = false;
                 CloseBtnClosesUnlocked = false;
                 CloseBtnClosesSingleTab = true;
                 TrayOnClose = false;
                 TrayOnMinimize = false;
-                // 默认关闭自动启动hook
-                AutoHookWindow = false;
-  //              string idl = Environment.OSVersion.Version >= new Version(6, 1)
-  //                       ? "::{031E4825-7B94-4DC3-B131-E946B44C8DD5}"  // Libraries
-  //                     : "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"; // Computer
-                string idl = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"; // 我的电脑， 默认打开
+                string idl = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
                 using(IDLWrapper w = new IDLWrapper(idl)) {
                     DefaultLocation = w.IDL;
                 }
