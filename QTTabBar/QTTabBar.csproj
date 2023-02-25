@@ -484,9 +484,6 @@
     <Compile Include="SubDirTipForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TabSwitchForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ThumbnailTooltipForm.cs">
       <SubType>Form</SubType>
     </Compile>

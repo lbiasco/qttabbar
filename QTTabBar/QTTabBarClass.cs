@@ -114,7 +114,6 @@ namespace QTTabBarLib {
         private SubDirTipForm subDirTip_Tab;
         public QTabControl tabControl1;
         private QTabItem tabForDD;
-        private TabSwitchForm tabSwitcher;
         private Timer timerOnTab;
         private Timer timerSelectionChanged;
         
@@ -606,21 +605,9 @@ namespace QTTabBarLib {
                     }
 
                     switch(key) {
-                        case Keys.ControlKey:
-                            if(Config.Keys.UseTabSwitcher) {
-                                HideTabSwitcher(true);
-                            }
-                            break;
-
                         case Keys.Menu: // Alt key
                             if(Config.Tabs.ShowCloseButtons && Config.Tabs.CloseBtnsWithAlt) {
                                 tabControl1.ShowCloseButton(false);
-                            }
-                            break;
-
-                        case Keys.Tab:
-                            if(Config.Keys.UseTabSwitcher && tabSwitcher != null && tabSwitcher.IsShown) {
-                                tabControl1.SetPseudoHotIndex(tabSwitcher.SelectedIndex);
                             }
                             break;
                     }
@@ -1011,10 +998,6 @@ namespace QTTabBarLib {
                         dropTargetWrapper = null;
                     }
                     OptionsDialog.ForceClose();
-                    if(tabSwitcher != null) {
-                        tabSwitcher.Dispose();
-                        tabSwitcher = null;
-                    }
                 }
                 if(TravelLog != null) {
                     QTUtility2.log("ReleaseComObject TravelLog");
@@ -1483,9 +1466,7 @@ namespace QTTabBarLib {
         private bool DoBindAction(BindAction action, bool fRepeat = false, QTabItem tab = null, IDLWrapper item = null) {
             if(fRepeat && !(
                     action == BindAction.GoBack ||
-                    action == BindAction.GoForward ||
-                    action == BindAction.TransparencyPlus ||
-                    action == BindAction.TransparencyMinus)) {
+                    action == BindAction.GoForward)) {
                 return false;
             }
 
@@ -1661,43 +1642,6 @@ namespace QTTabBarLib {
 
                 case BindAction.ToggleTopMost:
                     ToggleTopMost(); // todo: move v to < ?
-                    break;
-
-                case BindAction.TransparencyPlus:
-                case BindAction.TransparencyMinus: {
-                        // TODO!!!
-                        int num9;
-                        int num10;
-                        byte num11;
-                        if(0x80000 != ((int)PInvoke.Ptr_OP_AND(PInvoke.GetWindowLongPtr(ExplorerHandle, -20), 0x80000))) {
-                            if(action == BindAction.TransparencyPlus) {
-                                return true;
-                            }
-                            PInvoke.SetWindowLongPtr(ExplorerHandle, -20, PInvoke.Ptr_OP_OR(PInvoke.GetWindowLongPtr(ExplorerHandle, -20), 0x80000));
-                            PInvoke.SetLayeredWindowAttributes(ExplorerHandle, 0, 0xff, 2);
-                        }
-                        if(PInvoke.GetLayeredWindowAttributes(ExplorerHandle, out num9, out num11, out num10)) {
-                           // IntPtr ptr3;
-                            if(action == BindAction.TransparencyPlus) {
-                                if(num11 > 0xf3) {
-                                    num11 = 0xff;
-                                }
-                                else {
-                                    num11 = (byte)(num11 + 12);
-                                }
-                            }
-                            else if(num11 < 0x20) {
-                                num11 = 20;
-                            }
-                            else {
-                                num11 = (byte)(num11 - 12);
-                            }
-                            PInvoke.SetLayeredWindowAttributes(ExplorerHandle, 0, num11, 2);
-                            if(num11 == 0xff) {
-                                PInvoke.SetWindowLongPtr(ExplorerHandle, -20, PInvoke.Ptr_OP_AND(PInvoke.GetWindowLongPtr(ExplorerHandle, -20), 0xfff7ffff));
-                            }
-                        }
-                    }
                     break;
 
                 case BindAction.FocusFileList:
@@ -2561,7 +2505,6 @@ namespace QTTabBarLib {
 
                 case WM.NCLBUTTONDOWN:
                 case WM.NCRBUTTONDOWN:
-                    HideTabSwitcher(false);
                     return false;
 
                 case WM.MOVE:
@@ -2584,7 +2527,6 @@ namespace QTTabBarLib {
                     else {
                         listView.HideThumbnailTooltip(1);
                         listView.HideSubDirTip_ExplorerInactivated();
-                        HideTabSwitcher(false);
                         if(tabControl1.Focused) {
                             listView.SetFocus();
                         }
@@ -2606,7 +2548,6 @@ namespace QTTabBarLib {
 
                 case WM.NCMBUTTONDOWN:
                 case WM.NCXBUTTONDOWN:
-                    HideTabSwitcher(false);
                     return false;
 
                 case WM.SYSCOMMAND:
@@ -2668,14 +2609,6 @@ namespace QTTabBarLib {
                     return false;
 
                 case WM.PARENTNOTIFY:
-                    switch((((int)msg.WParam) & 0xffff)) {
-                        case WM.LBUTTONDOWN:
-                        case WM.RBUTTONDOWN:
-                        case WM.MBUTTONDOWN:
-                        case WM.XBUTTONDOWN:
-                            HideTabSwitcher(false);
-                            break;
-                    }
                     return false;
 
 
@@ -3372,12 +3305,6 @@ namespace QTTabBarLib {
                         Cursor = GetCursor(false);
                     }
                     break;
-
-                case Keys.Tab:
-                    if(Config.Keys.UseTabSwitcher && (mkey & Keys.Control) != Keys.None) {
-                        return ShowTabSwitcher((mkey & Keys.Shift) != Keys.None, fRepeat);
-                    }
-                    break;
             }
 
             switch(mkey) {
@@ -3698,13 +3625,6 @@ namespace QTTabBarLib {
         private void HideSubDirTip_Tab_Menu() {
             if(subDirTip_Tab != null) {
                 subDirTip_Tab.HideMenu();
-            }
-        }
-
-        private void HideTabSwitcher(bool fSwitch) {
-            if((tabSwitcher != null) && tabSwitcher.IsShown) {
-                tabSwitcher.HideSwitcher(fSwitch);
-                tabControl1.SetPseudoHotIndex(-1);
             }
         }
 
@@ -5224,39 +5144,6 @@ namespace QTTabBarLib {
             }
         }
 
-        private bool ShowTabSwitcher(bool fShift, bool fRepeat) {
-            listView.HideSubDirTip();
-            listView.HideThumbnailTooltip();
-            if(tabControl1.TabCount < 2) {
-                return false;
-            }
-            if(tabSwitcher == null) {
-                tabSwitcher = new TabSwitchForm();
-                tabSwitcher.Switched += tabSwitcher_Switched;
-            }
-            if(!tabSwitcher.IsShown) {
-                List<PathData> lstPaths = new List<PathData>();
-                string str = Config.Tabs.RenameAmbTabs ? " @ " : " : ";
-                foreach(QTabItem item in tabControl1.TabPages) {
-                    string strDisplay = item.Text;
-                    if(!string.IsNullOrEmpty(item.Comment)) {
-                        strDisplay += str + item.Comment;
-                    }
-                    lstPaths.Add(new PathData(strDisplay, item.CurrentPath, item.ImageKey));
-                }
-                tabSwitcher.ShowSwitcher(ExplorerHandle, tabControl1.SelectedIndex, lstPaths);
-            }
-            int index = tabSwitcher.Switch(fShift);
-            if(!fRepeat || tabControl1.TabCount < 13) {
-                tabControl1.SetPseudoHotIndex(index);
-            }
-            return true;
-        }
-
-        /**
-         * 显示描述信息
-         *  shift 显示详细信息
-         */
         private void ShowToolTipForDD(QTabItem tab, int iState, int grfKeyState) {
             if(((tabForDD == null) || (tabForDD != tab)) || (iModKeyStateDD != grfKeyState)) {
                 tabForDD = tab;
@@ -5693,22 +5580,11 @@ namespace QTTabBarLib {
         private void tabControl1_PointedTabChanged(object sender, QTabCancelEventArgs e) {
         }
 
-
-       
-
-
-
         private void tabControl1_TabCountChanged(object sender, QTabCancelEventArgs e) {
         }
 
         private void tabControl1_TabIconMouseDown(object sender, QTabCancelEventArgs e) {
             ShowSubdirTip_Tab(e.TabPage, e.Action == TabControlAction.Selecting, e.TabPageIndex, false, e.Cancel);
-        }
-
-       
-
-        private void tabSwitcher_Switched(object sender, ItemCheckEventArgs e) {
-            tabControl1.SelectedIndex = e.Index;
         }
 
         private void timerOnTab_Tick(object sender, EventArgs e) {

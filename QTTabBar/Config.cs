@@ -152,8 +152,6 @@ namespace QTTabBarLib {
         CopyCurrentFolderName,
         ChecksumSelected,
         ToggleTopMost,
-        TransparencyPlus,
-        TransparencyMinus,
         FocusFileList,
         FocusSearchBarReal,
         ShowSDTSelected,
@@ -387,36 +385,18 @@ namespace QTTabBarLib {
             public List<string> ImageExt         { get; set; }
             
             public _Tips() {
-                /*ShowSubDirTips = true;
-                 SubDirTipsPreview = true;
-                 SubDirTipsFiles = true;
-                 SubDirTipsWithShift = false;
-                 ShowTooltipPreviews = true;
-                 ShowPreviewsWithShift = false;
-                 ShowPreviewInfo = true;
-                 PreviewMaxWidth = 512;
-                 PreviewMaxHeight = 256;
-                 PreviewFont = Control.DefaultFont;
-                 TextExt = new List<string> {".txt", ".ini", ".inf" ,".cs", ".log", ".js", ".vbs"};
-                 ImageExt = ThumbnailTooltipForm.MakeDefaultImgExts();*/
-
                 ShowSubDirTips = true;
-                SubDirTipsPreview = true;
+                SubDirTipsPreview = false;
                 SubDirTipsFiles = true;
-                SubDirTipsWithShift = false ; // 仅当shift键按下显示子目录
-                ShowTooltipPreviews = true;
-                ShowPreviewInfo = true; // 启用文件预览
-                ShowPreviewsWithShift = true; // 仅当shift健按下, 启用文件预览
+                SubDirTipsWithShift = false ;
+                ShowTooltipPreviews = false;
+                ShowPreviewInfo = true;
+                ShowPreviewsWithShift = true;
                 
-                // 预览的宽高
                 PreviewMaxWidth = 600;
                 PreviewMaxHeight = 400;
-                //  PreviewMaxWidth = 512;
-                // PreviewMaxHeight = 256;
-                //  字体配置
                 PreviewFont = Control.DefaultFont;
                 PreviewFont = new Font(new FontFamily("Segoe UI"), 9f);
-                // 文本类型扩展名
                 TextExt = new List<string> { 
                     ".txt",".rtf"
                     ,".ini", ".inf",".properties", ".ruleset", ".settings"
@@ -441,7 +421,6 @@ namespace QTTabBarLib {
                     ,".jsp", ".asp", ".php",".aspx"
                     ,".resx",".xaml",  ".config", ".manifest", ".csproj", ".vbproj"
                 };
-                // 配置默认的图像扩展名
                 ImageExt = ThumbnailTooltipForm.MakeDefaultImgExts();
             }
         }
@@ -466,9 +445,7 @@ namespace QTTabBarLib {
                 FileHistoryCount = 15;
                 NetworkTimeout = 0;
                 AutoUpdate = true;
-                // 默认关闭声音播放
                 SoundBox = false;
-                // 默认不启用日志功能 
                 EnableLog = false;
             }
         }
@@ -664,7 +641,6 @@ namespace QTTabBarLib {
         [Serializable]
         public class _Keys {
             public int[] Shortcuts               { get; set; }
-            public bool UseTabSwitcher           { get; set; }
 
             public _Keys() {
                 var dict = new Dictionary<BindAction, Keys> {
@@ -679,7 +655,6 @@ namespace QTTabBarLib {
                     {BindAction.CloseCurrent,       Key.W     | Key.Control},
                     {BindAction.CloseAllButCurrent, Key.W     | Key.Control | Key.Shift},
                     {BindAction.RestoreLastClosed,  Key.Z     | Key.Control | Key.Shift},
-                    // 取消锁定键盘快捷键
                    // {BindAction.LockCurrent,        Key.L     | Key.Control},
                    // {BindAction.LockAll,            Key.L     | Key.Control | Key.Shift},
                     {BindAction.BrowseFolder,       Key.O     | Key.Control},
@@ -689,29 +664,22 @@ namespace QTTabBarLib {
                     {BindAction.ShowRecentTabsMenu, Key.U     | Key.Alt},
                     {BindAction.ShowRecentFilesMenu,Key.F     | Key.Alt},
                     
-
-
-                    // Bug fix 热键冲突， 调整 by indiff 
                     // {BindAction.NewFile,            Key.N     | Key.Control},
                     {BindAction.NewFile,            Key.N     | Key.Control | Key.Alt},
                     // {BindAction.NewFolder,          Key.N     | Key.Control | Key.Shift},
                    //  {BindAction.NewFolder,          Key.N     | Key.Shift }, // 系统默认自带
                 };
-                // 修复数组越界问题 by indiff
                 var keyboardActionCount = (int)BindAction.KEYBOARD_ACTION_COUNT;
                 Shortcuts = new int[keyboardActionCount];
                 foreach(var pair in dict)
                 {
                     var pairKey = (int)pair.Key;
-                    // 修复数组越界问题 by indiff
                     if (pairKey > keyboardActionCount - 1)
                     {
                         continue;
                     }
                     Shortcuts[pairKey] = (int)pair.Value | QTUtility.FLAG_KEYENABLED;
                 }
-                // 启用标签切换器
-                UseTabSwitcher = true;
             }
         }
 

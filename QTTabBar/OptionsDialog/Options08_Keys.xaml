@@ -50,15 +50,7 @@
         <StackPanel
             DockPanel.Dock="Bottom"
             Margin="0,10,0,0"
-            Orientation="Vertical">
-            <Label
-                Content="{qt:Resx Key=Options_Page08_Keys, Index=2}"
-                Style="{StaticResource SectionHeaderStyle}"/>
-            <CheckBox
-                Content="{qt:Resx Key=Options_Page08_Keys, Index=3}"
-                IsChecked="{Binding Path=UseTabSwitcher}"
-                Margin="13,0,1,0"/>
-        </StackPanel>
+            Orientation="Vertical"/>
         <TextBlock 
             Text="{qt:Resx Key=Options_Page08_Keys, Index=1}"
             TextWrapping="Wrap"
