@@ -173,40 +173,10 @@
         <Label
             Content="{qt:Resx Key=Options_Page02_Tabs, Index=17}"
             Style="{StaticResource SectionHeaderStyle}"/>
-        <CheckBox x:Name="chkShowNavButtons"
-            Content="{qt:Resx Key=Options_Page02_Tabs, Index=18}"
-            IsChecked="{Binding Path=ShowNavButtons}"
+        <CheckBox x:Name="chkShowOptionsButton"
+            Content="Show options button on tab bar"
+            IsChecked="{Binding Path=ShowOptionsButton}"
             Style="{StaticResource CheckStyle}"/>
-        <StackPanel
-            Margin="31,1,0,1"
-            Orientation="Horizontal">
-            <qt:RadioButtonEx x:Name="radNavButtonsOnRight_No"
-                Content="{qt:Resx Key=Options_Page02_Tabs, Index=19}"
-                HorizontalAlignment="Left"
-                IsEnabled="{Binding Path=IsChecked, ElementName=chkShowNavButtons}"
-                Margin="0,0,10,0"
-                Style="{StaticResource CheckStyle}">
-                <qt:RadioButtonEx.IsCheckedReal>
-                    <MultiBinding Converter="{StaticResource LogicalAndMultiConverter}">
-                        <Binding Path="NavButtonsOnRight" Converter="{StaticResource BoolInverterConverter}"/>
-                        <Binding Path="IsEnabled" RelativeSource="{RelativeSource Self}"/>
-                    </MultiBinding>
-                </qt:RadioButtonEx.IsCheckedReal>
-            </qt:RadioButtonEx>
-            <qt:RadioButtonEx x:Name="radNavButtonsOnRight_Yes"
-                Content="{qt:Resx Key=Options_Page02_Tabs, Index=20}"
-                HorizontalAlignment="Left"
-                IsEnabled="{Binding Path=IsChecked, ElementName=chkShowNavButtons}"
-                Margin="0,0,10,0"
-                Style="{StaticResource CheckStyle}">
-                <qt:RadioButtonEx.IsCheckedReal>
-                    <MultiBinding Converter="{StaticResource LogicalAndMultiConverter}">
-                        <Binding Path="NavButtonsOnRight"/>
-                        <Binding Path="IsEnabled" RelativeSource="{RelativeSource Self}"/>
-                    </MultiBinding>
-                </qt:RadioButtonEx.IsCheckedReal>
-            </qt:RadioButtonEx>
-        </StackPanel>
         <CheckBox x:Name="chkMultipleTabRows"
             Content="{qt:Resx Key=Options_Page02_Tabs, Index=21}"
             IsChecked="{Binding Path=MultipleTabRows}"

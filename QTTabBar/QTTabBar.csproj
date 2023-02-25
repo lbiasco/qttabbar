@@ -212,7 +212,6 @@
     <Compile Include="ExplorerBrowser\NavigationLogEnums.cs" />
     <Compile Include="ExplorerBrowser\NavigationLogEvents.cs" />
     <Compile Include="ExplorerBrowser\NavigationOptions.cs" />
-    <Compile Include="ExplorerManager.cs" />
     <Compile Include="ExplorerProcessCaptor.cs" />
     <Compile Include="FileRename\FileRenameDialog.cs">
       <SubType>Form</SubType>
@@ -312,9 +311,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="QTSecondViewBar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="QTTabBar\WindowSubclass.cs" />
     <Compile Include="RegistryUtil.cs" />
     <Compile Include="Resources_Image.cs" />
@@ -352,7 +348,6 @@
     <Compile Include="TabBarBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Toolbar.cs" />
     <Compile Include="TrayIcon.cs" />
     <Compile Include="TreeViewWrapper.cs" />
     <Compile Include="Interop\INameSpaceTreeControl.cs" />

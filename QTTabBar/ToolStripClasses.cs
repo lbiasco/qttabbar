@@ -291,37 +291,6 @@ namespace QTTabBarLib {
     internal sealed class ToolbarRenderer : ToolStripSystemRenderer {
         protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e) {
         }
-
-        /*protected override void OnRenderOverflowButtonBackground(ToolStripItemRenderEventArgs e)
-        {
-            if (e.ToolStrip.OverflowButton.Enabled)
-            {
-                /*if (e.ToolStrip.OverflowButton.Pressed)
-                {
-                    LinearGradientBrush lgb = new LinearGradientBrush(e.ToolStrip.OverflowButton.Bounds, ofPressedColor1, ofPressedColor2, ofPressedAngle);
-                    e.Graphics.FillRectangle(lgb, e.Graphics.ClipBounds);
-                    lgb.Dispose();
-
-                }
-                else if (e.ToolStrip.OverflowButton.Selected)
-                {
-                    LinearGradientBrush lgb = new LinearGradientBrush(e.ToolStrip.OverflowButton.Bounds, ofHighlightColor1, ofHighlightColor2, ofHighlightAngle);
-                    e.Graphics.FillRectangle(lgb, e.Graphics.ClipBounds);
-                    lgb.Dispose();
-                }#1#
-            }
-            var dToutiaoX1080IntellijIdea3Png = @"D:\toutiao\1920x1080-intellij-idea3.png";
-            // var dToutiaoX1080IntellijIdea3Png = @"D:\Users\Administrator\Documents\Tencent Files\531299332\Image\Group2\IY\S2\IYS2F)882TXGVT[JIR[`4BY.bmp";
-
-            using (FreeBitmap freeBitmap = new FreeBitmap(dToutiaoX1080IntellijIdea3Png))
-            using (Bitmap bmp = freeBitmap.Clone())
-            {
-                bmp.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                // QTUtility2.log("SetWaterMarkImage " + dToutiaoX1080IntellijIdea3Png);
-                e.Graphics.DrawImage(bmp,
-                    new Rectangle(0, e.ToolStrip.OverflowButton.Height - bmp.Height, e.ToolStrip.OverflowButton.Bounds.Width, e.ToolStrip.OverflowButton.Bounds.Height));
-            }
-        }*/
     }
 
     internal sealed class VistaMenuRenderer : ToolStripSystemRenderer {

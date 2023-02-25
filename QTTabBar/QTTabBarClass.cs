@@ -47,6 +47,8 @@ using IShellView = QTTabBarLib.Interop.IShellView;
 using ToolTip = System.Windows.Forms.ToolTip;
 using System.Management;
 using IDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Windows.Controls.Primitives;
 
 namespace QTTabBarLib {
     /**
@@ -60,8 +62,8 @@ namespace QTTabBarLib {
        
         private VisualStyleRenderer bgRenderer;
         private BreadcrumbBar breadcrumbBar;
-        
-        
+        private ToolStripDropDownButton buttonNavHistoryMenu;
+
         private IContainer components;
         private ContextMenuStripEx contextMenuDropped;
         private QTabItem ContextMenuedTab;
@@ -118,41 +120,10 @@ namespace QTTabBarLib {
         
         private ToolTip toolTipForDD;
         private NativeWindowController travelBtnController;
-        
-        
+
+        private IntPtr TravelToolBarHandle;
         private TreeViewWrapper treeViewWrapper;
-        /*
-        private ToolStripMenuItem tsmiBrowseFolder;
-        private ToolStripMenuItem tsmiCloneThis;
-        private ToolStripMenuItem tsmiClose;
-        private ToolStripMenuItem tsmiCloseAllButCurrent;
-        private ToolStripMenuItem tsmiCloseAllButThis;
-        private ToolStripMenuItem tsmiCloseLeft;
-        private ToolStripMenuItem tsmiCloseRight;
-        private ToolStripMenuItem tsmiCloseWindow;
-        private ToolStripMenuItem tsmiCopy;
-        private ToolStripMenuItem tsmiCreateWindow;
-        private ToolStripMenuItem tsmiExecuted;
-        private ToolStripMenuItem tsmiHistory;
-        private ToolStripMenuItem tsmiLastActiv;
-        private ToolStripMenuItem tsmiLockThis;
-        private ToolStripMenuItem tsmiLockToolbar;
-        private ToolStripMenuItem tsmiMergeWindows;
-        private ToolStripMenuItem tsmiOption;
-        private ToolStripMenuItem tsmiProp;
-        private ToolStripMenuItem tsmiTabOrder;
-        private ToolStripMenuItem tsmiUndoClose;
 
-        /*add by qwop 2012.07.13#1#
-        private ToolStripMenuItem tsmiOpenCmd;
-        private ToolStripMenuItem enableApiHook;
-        /*add by qwop 2012.07.13#1#
-
-        private ToolStripSeparator tssep_Sys1;
-        private ToolStripSeparator tssep_Sys2;
-        private ToolStripSeparator tssep_Tab1;
-        private ToolStripSeparator tssep_Tab2;
-        private ToolStripSeparator tssep_Tab3;*/
         private readonly int WM_NEWTREECONTROL = PInvoke.RegisterWindowMessage("QTTabBar_NewTreeControl");
         private readonly int WM_BROWSEOBJECT = PInvoke.RegisterWindowMessage("QTTabBar_BrowseObject");
         private readonly int WM_HEADERINALLVIEWS = PInvoke.RegisterWindowMessage("QTTabBar_HeaderInAllViews");
@@ -161,11 +132,10 @@ namespace QTTabBarLib {
         private readonly int WM_CHECKPULSE = PInvoke.RegisterWindowMessage("QTTabBar_CheckPulse");
         private readonly int WM_SELECTFILE = PInvoke.RegisterWindowMessage("QTTabBar_SelectFile");
 
-        
+
         internal bool CanNavigateBackward { get { return ((navBtnsFlag & 1) != 0); } }
         internal bool CanNavigateForward { get { return ((navBtnsFlag & 2) != 0); } }
         internal int TabCount { get { return tabControl1.TabCount; } }
-
         internal int SelectedTabIndex {
             get {
                 return tabControl1.TabPages.IndexOf(CurrentTab);
@@ -180,10 +150,6 @@ namespace QTTabBarLib {
 
         #region qwop 自定义区
         private static QTTabBarClass lstTabBar;
-        public static void OpenOptionDialog()
-        {
-            OptionsDialog.Open();
-        }
 
         public static QTTabBarClass GetThreadTabBar()
         {
@@ -2852,7 +2818,8 @@ namespace QTTabBarLib {
                         QTUtility2.log("QTTabBarClass Explorer_NavigateComplete2 WindowUtils.BringExplorerToFront");
                         WindowUtils.BringExplorerToFront(ExplorerHandle);
                     }
-                    if(buttonNavHistoryMenu.DropDown.Visible) {
+                    if(buttonNavHistoryMenu.DropDown.Visible)
+                    {
                         QTUtility2.log("QTTabBarClass Explorer_NavigateComplete2 buttonNavHistoryMenu.DropDown.Visible");
                         buttonNavHistoryMenu.DropDown.Close(ToolStripDropDownCloseReason.AppFocusChange);
                     }
@@ -3280,10 +3247,11 @@ namespace QTTabBarLib {
             return ShellBrowser;
         }
 
-        private IntPtr GetTravelToolBarWindow32() {
+        private IntPtr GetTravelToolBarWindow32()
+        {
             IntPtr hwndTravelBand = WindowUtils.FindChildWindow(ExplorerHandle, hwnd => PInvoke.GetClassName(hwnd) == "TravelBand");
-            return hwndTravelBand != IntPtr.Zero 
-                    ? PInvoke.FindWindowEx(hwndTravelBand, IntPtr.Zero, "ToolbarWindow32", null) 
+            return hwndTravelBand != IntPtr.Zero
+                    ? PInvoke.FindWindowEx(hwndTravelBand, IntPtr.Zero, "ToolbarWindow32", null)
                     : IntPtr.Zero;
         }
 
@@ -4118,17 +4086,9 @@ namespace QTTabBarLib {
         }
 
         private void InitializeComponent() {
-            // // AutoScaleMode.Dpi  / by indiff dpi
-            // AutoScaleMode = AutoScaleMode.Dpi;
             components = new Container();
-            /*
-             提供当单击 ToolStripDropDown、ToolStripDropDownButton 或 ToolStripMenuItem 控件时，显示 ToolStripSplitButton 的控件的基本功能。
-             按钮工具栏
-             */
             buttonNavHistoryMenu = new ToolStripDropDownButton();
-            // 用于放置标签栏
             tabControl1 = new QTabControl();
-            // 当前的标签
             CurrentTab = new QTabItem(string.Empty, string.Empty, tabControl1);
             contextMenuTab = new ContextMenuStripEx(components, false);
             contextMenuSys = new ContextMenuStripEx(components, false);
@@ -4137,11 +4097,10 @@ namespace QTTabBarLib {
             contextMenuTab.SuspendLayout();
             SuspendLayout();
 
-            // 判断是否显示按钮工具栏
-            bool flag = Config.Tabs.ShowNavButtons;
+            bool flag = Config.Tabs.ShowOptionsButton;
             if (flag)
             {
-                InitializeNavBtns(false);
+                InitializeOptionsButton();
             }
 
             buttonNavHistoryMenu.AutoSize = false;
@@ -4152,10 +4111,8 @@ namespace QTTabBarLib {
             buttonNavHistoryMenu.DropDown.ItemClicked += NavigationButton_DropDownMenu_ItemClicked;
             buttonNavHistoryMenu.DropDownOpening += NavigationButtons_DropDownOpening;
             buttonNavHistoryMenu.DropDown.ImageList = QTUtility.ImageListGlobal;
-            
-            
+
             tabControl1.SetRedraw(false);
-            // 添加当前标签
             tabControl1.TabPages.Add(CurrentTab);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.ContextMenuStrip = contextMenuTab;
@@ -4176,7 +4133,6 @@ namespace QTTabBarLib {
             tabControl1.TabCountChanged += tabControl1_TabCountChanged;
             tabControl1.CloseButtonClicked += tabControl1_CloseButtonClicked;
             tabControl1.TabIconMouseDown += tabControl1_TabIconMouseDown;
-            // 注册蓝色新增按钮的点击事件
             tabControl1.PlusButtonClicked += tabControl1_PlusButtonClicked;
             
             contextMenuTab.Items.Add(new ToolStripMenuItem());
@@ -4190,7 +4146,7 @@ namespace QTTabBarLib {
             contextMenuSys.Opening += contextMenuSys_Opening;
             Controls.Add(tabControl1);
             if(flag) {
-                Controls.Add(toolStrip);
+                Controls.Add(optionsStrip);
             }
             MinSize = new Size(150, Config.Skin.TabHeight + 2);
             Height = Config.Skin.TabHeight + 2;
@@ -4202,8 +4158,8 @@ namespace QTTabBarLib {
             contextMenuSys.ResumeLayout(false);
             contextMenuTab.ResumeLayout(false);
             if(flag) {
-                toolStrip.ResumeLayout(false);
-                toolStrip.PerformLayout();
+                optionsStrip.ResumeLayout(false);
+                optionsStrip.PerformLayout();
             }
             ResumeLayout(false);
         }
@@ -4224,50 +4180,28 @@ namespace QTTabBarLib {
         /**
          * 初始化工具栏
          */
-        private void InitializeNavBtns(bool fSync) {
-            toolStrip = new ToolStripClasses();
-            buttonBack = new ToolStripButton();
-            buttonForward = new ToolStripButton();
-            toolStrip.SuspendLayout();
-            if(!QTUtility.ImageListGlobal.Images.ContainsKey("navBack")) {
-                QTUtility.ImageListGlobal.Images.Add("navBack", Resources_Image.imgNavBack);
+        private void InitializeOptionsButton() {
+            optionsStrip = new ToolStripClasses();
+            buttonOptions = new ToolStripButton();
+            optionsStrip.SuspendLayout();
+            if(!QTUtility.ImageListGlobal.Images.ContainsKey("options")) {
+                QTUtility.ImageListGlobal.Images.Add("options", Resources_Image.imgOptionsButton_White);
             }
-            if(!QTUtility.ImageListGlobal.Images.ContainsKey("navFrwd")) {
-                QTUtility.ImageListGlobal.Images.Add("navFrwd", Resources_Image.imgNavFwd);
-            }
-            toolStrip.Dock = Config.Tabs.NavButtonsOnRight ? DockStyle.Right : DockStyle.Left;
-            toolStrip.AutoSize = false;
-            toolStrip.CanOverflow = false;
-            toolStrip.LayoutStyle = ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { buttonBack, buttonForward, buttonNavHistoryMenu });
-            toolStrip.Renderer = new ToolbarRenderer();
-            toolStrip.Width = 0x3f;
-            toolStrip.TabStop = false;
-            
-            // dark mode ?  by indiff 插件的背景色
-            toolStrip.BackColor = QTUtility.InNightMode ? Color.Black : Color.WhiteSmoke;
-            /*if (QTUtility.InNightMode)
-            {
-                toolStrip.BackColor = Color.Black;
-            }
-            else
-            {
-                toolStrip.BackColor = SystemColors.Window;
-            }*/
+            optionsStrip.Dock = DockStyle.Right;
+            optionsStrip.GripStyle = ToolStripGripStyle.Hidden;
+            optionsStrip.Items.Add(buttonOptions);
+            optionsStrip.Renderer = new ToolbarRenderer();
+            optionsStrip.Width = 50;
+            optionsStrip.BackColor = Color.Transparent;
 
-            buttonBack.AutoSize = false;
-            buttonBack.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            buttonBack.Enabled = fSync ? ((navBtnsFlag & 1) != 0) : false;
-            buttonBack.Image = QTUtility.ImageListGlobal.Images["navBack"];
-            buttonBack.Size = new Size(0x15, 0x15);
-            buttonBack.Click += NavigationButtons_Click;
-            buttonForward.AutoSize = false;
-            buttonForward.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            buttonForward.Enabled = fSync ? ((navBtnsFlag & 2) != 0) : false;
-            buttonForward.Image = QTUtility.ImageListGlobal.Images["navFrwd"];
-            buttonForward.Size = new Size(0x15, 0x15);
-            buttonForward.Click += NavigationButtons_Click;
+            buttonOptions.AutoSize = false;
+            buttonOptions.ForeColor = Config.Skin.ToolBarTextColor;
+            buttonOptions.BackColor = Config.Skin.RebarColor;
+            buttonOptions.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            buttonOptions.Text = buttonOptions.ToolTipText = "Options";
+            buttonOptions.Enabled = true;
+            buttonOptions.Image = QTUtility.ImageListGlobal.Images["options"];
+            buttonOptions.Click += OptionsButton_Click;
         }
         /**
          * 初始化已经打开的窗口
@@ -4462,9 +4396,11 @@ namespace QTTabBarLib {
             if(ReBarHandle != IntPtr.Zero) {
                 rebarController = new RebarController(this, ReBarHandle, BandObjectSite as IOleCommandTarget);
             }
-            if(!QTUtility.IsXP) {
+            if(!QTUtility.IsXP)
+            {
                 TravelToolBarHandle = GetTravelToolBarWindow32();
-                if(TravelToolBarHandle != IntPtr.Zero) {
+                if(TravelToolBarHandle != IntPtr.Zero)
+                {
                     travelBtnController = new NativeWindowController(TravelToolBarHandle);
                     travelBtnController.MessageCaptured += travelBtnController_MessageCaptured;
                 }
@@ -5106,20 +5042,24 @@ namespace QTTabBarLib {
             }
         }
 
-        private void NavigationButtons_Click(object sender, EventArgs e) {
-            NavigateCurrentTab(sender == buttonBack);
+        private void OptionsButton_Click(object sender, EventArgs e) {
+            OptionsDialog.Open();
         }
 
-        private void NavigationButtons_DropDownOpening(object sender, EventArgs e) {
+        private void NavigationButtons_DropDownOpening(object sender, EventArgs e)
+        {
             buttonNavHistoryMenu.DropDown.SuspendLayout();
-            while(buttonNavHistoryMenu.DropDownItems.Count > 0) {
+            while(buttonNavHistoryMenu.DropDownItems.Count > 0)
+            {
                 buttonNavHistoryMenu.DropDownItems[0].Dispose();
             }
-            if((CurrentTab.HistoryCount_Back + CurrentTab.HistoryCount_Forward) > 1) {
+            if((CurrentTab.HistoryCount_Back + CurrentTab.HistoryCount_Forward) > 1)
+            {
                 buttonNavHistoryMenu.DropDownItems.AddRange(CreateNavBtnMenuItems(true).ToArray());
                 buttonNavHistoryMenu.DropDownItems.AddRange(CreateBranchMenu(true, components, tsmiBranchRoot_DropDownItemClicked).ToArray());
             }
-            else {
+            else
+            {
                 ToolStripMenuItem item = new ToolStripMenuItem("none");
                 item.Enabled = false;
                 buttonNavHistoryMenu.DropDownItems.Add(item);
@@ -5454,21 +5394,20 @@ namespace QTTabBarLib {
             SuspendLayout();
             tabControl1.SuspendLayout();
             tabControl1.RefreshOptions(false);
-            if(Config.Tabs.ShowNavButtons) {
-                if(toolStrip == null) {
-                    InitializeNavBtns(true);
-                    buttonNavHistoryMenu.Enabled = navBtnsFlag != 0;
-                    Controls.Add(toolStrip);
+            if(Config.Tabs.ShowOptionsButton) {
+                if(optionsStrip == null) {
+                    InitializeOptionsButton();
+                    Controls.Add(optionsStrip);
                 }
                 else {
-                    toolStrip.SuspendLayout();
+                    optionsStrip.SuspendLayout();
                 }
-                toolStrip.Dock = Config.Tabs.NavButtonsOnRight ? DockStyle.Right : DockStyle.Left;
-                toolStrip.ResumeLayout(false);
-                toolStrip.PerformLayout();
+                optionsStrip.Dock = DockStyle.Right;
+                optionsStrip.ResumeLayout(false);
+                optionsStrip.PerformLayout();
             }
-            else if(toolStrip != null) {
-                toolStrip.Dock = DockStyle.None;
+            else if(optionsStrip != null) {
+                optionsStrip.Dock = DockStyle.None;
             }
             int iType = 0;
             if(Config.Tabs.MultipleTabRows) {
@@ -6046,9 +5985,29 @@ namespace QTTabBarLib {
             }*/
         }
 
-        
+        private void SyncToolbarTravelButton()
+        {
+            if(!QTUtility.IsXP)
+            {
+                IntPtr ptr = (IntPtr)0x10001;
+                IntPtr ptr2 = (IntPtr)0x10000;
+                bool flag = (navBtnsFlag & 1) != 0;
+                bool flag2 = (navBtnsFlag & 2) != 0;
+                PInvoke.SendMessage(TravelToolBarHandle, 0x401, (IntPtr)0x100, flag ? ptr : ptr2);
+                PInvoke.SendMessage(TravelToolBarHandle, 0x401, (IntPtr)0x101, flag2 ? ptr : ptr2);
+                PInvoke.SendMessage(TravelToolBarHandle, 0x401, (IntPtr)0x102, (flag || flag2) ? ptr : ptr2);
+            }
+        }
 
-        
+        private void SyncTravelState()
+        {
+            if(CurrentTab != null)
+            {
+                navBtnsFlag = ((CurrentTab.HistoryCount_Back > 1) ? 1 : 0) | ((CurrentTab.HistoryCount_Forward > 0) ? 2 : 0);
+                QTabItem.CheckSubTexts(tabControl1);
+                SyncToolbarTravelButton();
+            }
+        }
 
         private void tabControl1_CloseButtonClicked(object sender, QTabCancelEventArgs e) {
             if(NowTabDragging) {
@@ -6375,29 +6334,37 @@ namespace QTTabBarLib {
             return base.TranslateAcceleratorIO(ref msg);
         }
 
-        private bool travelBtnController_MessageCaptured(ref Message m) {
-            if(CurrentTab == null) {
+        private bool travelBtnController_MessageCaptured(ref Message m)
+        {
+            if(CurrentTab == null)
+            {
                 QTUtility2.log("QTTabBarClass travelBtnController_MessageCaptured CurrentTab == null");
                 return false;
             }
-            switch(m.Msg) {
+            switch(m.Msg)
+            {
                 case WM.LBUTTONDOWN:
-                case WM.LBUTTONUP: {
+                case WM.LBUTTONUP:
+                    {
                         Point pt = QTUtility2.PointFromLPARAM(m.LParam);
                         int num = (int)PInvoke.SendMessage(travelBtnController.Handle, 0x445, IntPtr.Zero, ref pt);
                         bool flag = CurrentTab.HistoryCount_Back > 1;
                         bool flag2 = CurrentTab.HistoryCount_Forward > 0;
-                        if(m.Msg != 0x202) {
+                        if(m.Msg != 0x202)
+                        {
                             PInvoke.SetCapture(travelBtnController.Handle);
-                            if(((flag && (num == 0)) || (flag2 && (num == 1))) || ((flag || flag2) && (num == 2))) {
+                            if(((flag && (num == 0)) || (flag2 && (num == 1))) || ((flag || flag2) && (num == 2)))
+                            {
                                 int num5 = (int)PInvoke.SendMessage(travelBtnController.Handle, 0x412, (IntPtr)(0x100 + num), IntPtr.Zero);
                                 int num6 = num5 | 2;
                                 PInvoke.SendMessage(travelBtnController.Handle, 0x411, (IntPtr)(0x100 + num), (IntPtr)num6);
                             }
-                            if((num == 2) && (flag || flag2)) {
+                            if((num == 2) && (flag || flag2))
+                            {
                                 RECT rect;
                                 IntPtr hWnd = PInvoke.SendMessage(travelBtnController.Handle, 0x423, IntPtr.Zero, IntPtr.Zero);
-                                if(hWnd != IntPtr.Zero) {
+                                if(hWnd != IntPtr.Zero)
+                                {
                                     PInvoke.SendMessage(hWnd, 0x41c, IntPtr.Zero, IntPtr.Zero);
                                 }
                                 PInvoke.GetWindowRect(travelBtnController.Handle, out rect);
@@ -6407,15 +6374,18 @@ namespace QTTabBarLib {
                             break;
                         }
                         PInvoke.ReleaseCapture();
-                        for(int i = 0; i < 3; i++) {
+                        for(int i = 0; i < 3; i++)
+                        {
                             int num3 = (int)PInvoke.SendMessage(travelBtnController.Handle, 0x412, (IntPtr)(0x100 + i), IntPtr.Zero);
                             int num4 = num3 & -3;
                             PInvoke.SendMessage(travelBtnController.Handle, 0x411, (IntPtr)(0x100 + i), (IntPtr)num4);
                         }
-                        if((num == 0) && flag) {
+                        if((num == 0) && flag)
+                        {
                             NavigateCurrentTab(true);
                         }
-                        else if((num == 1) && flag2) {
+                        else if((num == 1) && flag2)
+                        {
                             NavigateCurrentTab(false);
                         }
                         break;
@@ -6424,41 +6394,50 @@ namespace QTTabBarLib {
                     m.Result = IntPtr.Zero;
                     return true;
 
-                case WM.USER+1:
-                    if(((((int)((long)m.LParam)) >> 0x10) & 0xffff) == 1) {
+                case WM.USER + 1:
+                    if(((((int)((long)m.LParam)) >> 0x10) & 0xffff) == 1)
+                    {
                         return false;
                     }
                     m.Result = (IntPtr)1;
                     return true;
 
                 case WM.MOUSEACTIVATE:
-                    if(buttonNavHistoryMenu.DropDown.Visible) {
+                    if(buttonNavHistoryMenu.DropDown.Visible)
+                    {
                         m.Result = (IntPtr)4;
                         buttonNavHistoryMenu.DropDown.Close(ToolStripDropDownCloseReason.AppClicked);
                         return true;
                     }
                     return false;
 
-                case WM.NOTIFY: {
+                case WM.NOTIFY:
+                    {
                         NMHDR nmhdr = (NMHDR)Marshal.PtrToStructure(m.LParam, typeof(NMHDR));
-                        if(nmhdr.code != -530) {
+                        if(nmhdr.code != -530)
+                        {
                             return false;
                         }
                         NMTTDISPINFO nmttdispinfo = (NMTTDISPINFO)Marshal.PtrToStructure(m.LParam, typeof(NMTTDISPINFO));
                         string str;
-                        if(nmttdispinfo.hdr.idFrom == ((IntPtr)0x100)) {
+                        if(nmttdispinfo.hdr.idFrom == ((IntPtr)0x100))
+                        {
                             str = MakeTravelBtnTooltipText(true);
-                            if(str.Length > 0x4f) {
+                            if(str.Length > 0x4f)
+                            {
                                 str = "Back";
                             }
                         }
-                        else if(nmttdispinfo.hdr.idFrom == ((IntPtr)0x101)) {
+                        else if(nmttdispinfo.hdr.idFrom == ((IntPtr)0x101))
+                        {
                             str = MakeTravelBtnTooltipText(false);
-                            if(str.Length > 0x4f) {
+                            if(str.Length > 0x4f)
+                            {
                                 str = "Forward";
                             }
                         }
-                        else {
+                        else
+                        {
                             return false;
                         }
                         nmttdispinfo.szText = str;
@@ -6471,7 +6450,8 @@ namespace QTTabBarLib {
             }
             m.Result = IntPtr.Zero;
             return true;
-       }
+        }
+
 
         private bool FolderLinkClicked(IDLWrapper wrapper, Keys modifierKeys, bool middle) {
             QTUtility2.log("QTTabBarClass FolderLinkClicked");
@@ -6685,9 +6665,8 @@ namespace QTTabBarLib {
         }
 
         protected override bool IsTabSubFolderMenuVisible => throw new NotImplementedException();
-
+        private int navBtnsFlag;
         protected bool NavigatedByCode;
-        
         protected bool NowTabsAddingRemoving;
         protected bool NowInTravelLog;
         protected bool NowModalDialogShown;
@@ -6698,13 +6677,9 @@ namespace QTTabBarLib {
         protected bool NowTopMost;
         protected bool fNavigatedByTabSelection;
         protected int CurrentTravelLogIndex;
-        protected int navBtnsFlag;
-        // TODO add fields
-        protected ToolStripClasses toolStrip;
-        protected ToolStripButton buttonBack;
-        protected ToolStripButton buttonForward;
-        protected ToolStripDropDownButton buttonNavHistoryMenu;
-        protected IntPtr TravelToolBarHandle;
+        // TODO: Options is simple so this should be cleaned up a lot
+        protected ToolStripClasses optionsStrip;
+        protected ToolStripButton buttonOptions;
 
         protected void AddToHistory(QTabItem closingTab)
         {
@@ -7009,36 +6984,6 @@ namespace QTTabBarLib {
                 {
                     listView.SetFocus();
                 }
-            }
-        }
-
-        protected void SyncTravelState()
-        {
-            if (CurrentTab != null)
-            {
-                navBtnsFlag = ((CurrentTab.HistoryCount_Back > 1) ? 1 : 0) | ((CurrentTab.HistoryCount_Forward > 0) ? 2 : 0);
-                if (Config.Tabs.ShowNavButtons && (toolStrip != null))
-                {
-                    buttonBack.Enabled = (navBtnsFlag & 1) != 0;
-                    buttonForward.Enabled = (navBtnsFlag & 2) != 0;
-                    buttonNavHistoryMenu.Enabled = navBtnsFlag != 0;
-                }
-                QTabItem.CheckSubTexts(tabControl1);
-                SyncToolbarTravelButton();
-            }
-        }
-
-        private void SyncToolbarTravelButton()
-        {
-            if (!QTUtility.IsXP)
-            {
-                IntPtr ptr = (IntPtr)0x10001;
-                IntPtr ptr2 = (IntPtr)0x10000;
-                bool flag = (navBtnsFlag & 1) != 0;
-                bool flag2 = (navBtnsFlag & 2) != 0;
-                PInvoke.SendMessage(TravelToolBarHandle, 0x401, (IntPtr)0x100, flag ? ptr : ptr2);
-                PInvoke.SendMessage(TravelToolBarHandle, 0x401, (IntPtr)0x101, flag2 ? ptr : ptr2);
-                PInvoke.SendMessage(TravelToolBarHandle, 0x401, (IntPtr)0x102, (flag || flag2) ? ptr : ptr2);
             }
         }
 

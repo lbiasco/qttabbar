@@ -59,52 +59,7 @@ namespace QTTabBarLib {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        public static System.Drawing.Bitmap ButtonStrip16 {
-            get {
-                object obj = ResourceManager.GetObject("ButtonStrip16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        public static System.Drawing.Bitmap ButtonStrip24 {
-            get {
-                object obj = ResourceManager.GetObject("ButtonStrip24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
 
-
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        public static System.Drawing.Bitmap ButtonStripWhite16
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("ButtonStripWhite16", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        public static System.Drawing.Bitmap ButtonStripWhite24
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("ButtonStripWhite24", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         /// <summary>
         ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
@@ -364,7 +319,25 @@ namespace QTTabBarLib {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
+
+        public static System.Drawing.Bitmap imgOptionsButton_Black
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("imgOptionsButton_Black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        public static System.Drawing.Bitmap imgOptionsButton_White
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("imgOptionsButton_White", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
@@ -761,16 +734,6 @@ namespace QTTabBarLib {
         public static System.Drawing.Bitmap menuOpen {
             get {
                 object obj = ResourceManager.GetObject("menuOpen", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
-        /// </summary>
-        public static System.Drawing.Bitmap paypalBtn {
-            get {
-                object obj = ResourceManager.GetObject("paypalBtn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -310,30 +310,12 @@ namespace QTTabBarLib {
             public bool ShowCloseButtons         { get; set; }
             public bool CloseBtnsWithAlt         { get; set; }
             public bool CloseBtnsOnHover         { get; set; }
-            public bool ShowNavButtons           { get; set; }
-            public bool NavButtonsOnRight        { get; set; }
+            public bool ShowOptionsButton        { get; set; }
             public bool MultipleTabRows          { get; set; }
             public bool ActiveTabOnBottomRow     { get; set; }
             public bool NeedPlusButton           { get; set; }
 
             public _Tabs() {
-               /* NewTabPosition = TabPos.Rightmost;
-                NextAfterClosed = TabPos.LastActive;
-                ActivateNewTab = true;
-                NeverOpenSame = true;
-                RenameAmbTabs = false;
-                DragOverTabOpensSDT = false;
-                ShowFolderIcon = true;
-                ShowSubDirTipOnTab = true;
-                ShowDriveLetters = false;
-                ShowCloseButtons = false;
-                CloseBtnsWithAlt = false;
-                CloseBtnsOnHover = false;
-                ShowNavButtons = false;
-                MultipleTabRows = true;
-                ActiveTabOnBottomRow = true;*/
-
-                /* qwop's default's value.*/
                 NewTabPosition = TabPos.Rightmost;  // 新标签在最右侧
                 NextAfterClosed = TabPos.LastActive; // 关闭标签时候切换导
                 ActivateNewTab = true;  // 是否立即切换到新标签
@@ -341,13 +323,12 @@ namespace QTTabBarLib {
                 RenameAmbTabs = true;  // 模糊重命名标签
                 DragOverTabOpensSDT = false; // 拖拽标签后的操作
                 ShowFolderIcon = true;  // 显示驱动器图标
-                ShowSubDirTipOnTab = false;  // 在文件夹显示子标签
-                ShowDriveLetters = false; // 显示驱动器字符
+                ShowSubDirTipOnTab = true;  // 在文件夹显示子标签
+                ShowDriveLetters = true; // 显示驱动器字符
                 ShowCloseButtons = true;  // 显示关闭按钮
                 CloseBtnsWithAlt = false; // 只有alt按住进行关闭
                 CloseBtnsOnHover = false;  // 仅鼠标悬浮关闭
-                ShowNavButtons = false;  // 在标签显示导航按钮 (	(默认配置关闭按钮显示)标签栏右侧的两个按钮能否添加一个选项以控制是否去掉呢。#28）
-                NavButtonsOnRight = true; // 在最右边
+                ShowOptionsButton = true;  // 在标签显示导航按钮 (	(默认配置关闭按钮显示)标签栏右侧的两个按钮能否添加一个选项以控制是否去掉呢。#28）
                 MultipleTabRows = true; // 允许多行标签
                 ActiveTabOnBottomRow = true; // 始终将活动标签置于底部行
                 NeedPlusButton = true; // 是否蓝色新增标签按钮
